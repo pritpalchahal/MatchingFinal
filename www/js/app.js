@@ -44,7 +44,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     url: '/summary',
     views: {
       'tab-summary': {
-        templateUrl: 'templates/tab-dash.html',
+        templateUrl: 'templates/tab-summary.html',
         controller: 'SummaryCtrl'
       }
     }
@@ -54,7 +54,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       url: '/exs',
       views: {
         'tab-exs': {
-          templateUrl: 'templates/tab-chats.html',
+          templateUrl: 'templates/tab-exercises.html',
           controller: 'ExsCtrl'
         }
       }
@@ -63,7 +63,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       url: '/exs/:exId',
       views: {
         'tab-exs': {
-          templateUrl: 'templates/chat-detail.html',
+          templateUrl: 'templates/ex-detail.html',
           controller: 'ExerciseCtrl'
         }
       }
@@ -73,13 +73,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     url: '/howtoplay',
     views: {
       'tab-howtoplay': {
-        templateUrl: 'templates/tab-account.html',
+        templateUrl: 'templates/tab-howtoplay.html',
         controller: 'HowToPlayCtrl'
       }
     }
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/howtoplay');
+  $urlRouterProvider.otherwise('/tab/exs');
 
 });
