@@ -1,0 +1,29 @@
+
+<response from="collocations">
+  <player from="BNC" ql="5">
+    <word word="enhance">
+      <collo ID="691820" colloType="vn" fre="34" sentID="A1257_1190_106/A84_81_138/A1275_144_139/A631_108_171/A535_466_182/A1257_1294_207/A1242_1016_301/A395_497_333/A147_1288_425/A414_586_552">enhance the quality of</collo>
+
+      <collo ID="691821" colloType="vn" fre="9" sentID="A3990_301_165/A1073_1842_193/A208_560_238/A2267_6245_255/A441_4500_381/A3108_2324_666/A248_671_823/A248_857_823/A2461_360_827">enhance the value of</collo>
+
+      <collo ID="691822" colloType="vn" fre="7" sentID="A1298_1316_88/A1073_730_143/A2267_6335_173/A385_1548_225/A3898_257_240/A1269_1441_346/A2927_248_431">enhance the effectiveness of</collo>
+
+      <collo ID="691823" colloType="vn" fre="6" sentID="A1637_934_201/A1846_171_231/A830_637_236/A221_8159_267/A711_1737_302/A309_559_307">enhance the appearance of</collo>
+
+      <collo ID="691824" colloType="vn" fre="6" sentID="A2567_106_156/A3911_606_258/A880_61_315/A244_576_327/A3355_2310_337/A3748_791_337">enhance the role of</collo>
+    </word>
+
+    <word word="highlight">
+      <collo ID="994587" colloType="vn" fre="13" sentID="A654_119_135/A1666_6194_167/A376_3538_240/A4_2314_258/A1751_1063_294/A2945_789_320/A1803_360_373/A1005_209_459/A1282_492_470/A1626_12825_551">highlight the need for</collo>
+
+      <collo ID="994588" colloType="vn" fre="9" sentID="A1237_4787_100/A1342_1757_200/A3989_655_209/A1983_1241_242/A1626_3013_256/A3592_2250_262/A786_140_267/A39_202_366/A1555_9733_484">highlight the plight of</collo>
+
+      <collo ID="994589" colloType="vn" fre="9" sentID="A3645_128_108/A1036_660_146/A2986_1058_170/A217_413_230/A704_1564_246/A1194_265_330/A670_1181_343/A1999_2184_490/A2784_436_516">highlight the importance of</collo>
+
+      <collo ID="994590" colloType="vn" fre="4" sentID="A3460_241_171/A441_7949_305/A196_74_338/A3968_124_355">highlight the way in</collo>
+
+      <collo ID="994591" colloType="vn" fre="4" sentID="A322_341_56/A3230_677_203/A2839_1429_274/A432_688_297">highlight the problems</collo>
+    </word>
+  </player>
+</response>
+

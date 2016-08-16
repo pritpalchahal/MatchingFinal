@@ -1,0 +1,29 @@
+
+<response from="collocations">
+  <player from="BNC" ql="5">
+    <word word="fake">
+      <collo ID="1314495" colloType="an" fre="9" sentID="A3535_1429_90/A1094_805_96/A1003_458_138/A3827_315_145/A2523_1542_175/A3223_1366_217/A894_1585_238/A1094_704_241/A3223_1363_245">fake fur</collo>
+
+      <collo ID="1314496" colloType="an" fre="7" sentID="A2477_334_32/A900_256_50/A1750_2378_114/A2992_1722_174/A2992_1727_208/A271_1018_223/A2992_1672_231">fake tan</collo>
+
+      <collo ID="1314497" colloType="an" fre="5" sentID="A2123_886_120/A1503_231_142/A1829_804_163/A2123_893_181/A2123_884_284">fake goods</collo>
+
+      <collo ID="1314498" colloType="an" fre="4" sentID="A407_337_142/A271_1381_201/A2461_2199_244/A1816_58_1844">fake flowers</collo>
+
+      <collo ID="1314499" colloType="an" fre="3" sentID="A24_2525_165/A1666_3375_170/A270_1346_257">fake gun</collo>
+    </word>
+
+    <word word="false">
+      <collo ID="300299" colloType="an" fre="79" sentID="A377_595_102/A390_111_145/A1000_148_153/A305_1219_157/A603_5_169/A1009_1332_174/A978_1520_178/A1009_1334_216/A790_620_224/A1071_1296_335">false pretences</collo>
+
+      <collo ID="300300" colloType="an" fre="58" sentID="A580_305_244/A279_941_272/A580_408_276/A580_303_291/A164_647_293/A336_1380_303/A255_1849_314/A84_309_315/A120_52_340/A515_455_341">false starts</collo>
+
+      <collo ID="300301" colloType="an" fre="52" sentID="A946_1859_128/A274_1249_137/A103_84_166/A464_1284_193/A673_6826_198/A860_854_216/A475_1130_227/A357_2367_265/A401_2255_268/A246_717_306">false teeth</collo>
+
+      <collo ID="300302" colloType="an" fre="51" sentID="A792_961_129/A122_393_150/A923_372_171/A699_246_191/A191_34_212/A189_979_270/A796_198_274/A822_179_301/A719_502_328/A651_102_353">false impression</collo>
+
+      <collo ID="300303" colloType="an" fre="51" sentID="A210_89_44/A527_2320_44/A164_29_104/A365_17_120/A527_2319_138/A517_1518_151/A129_1332_180/A215_1977_229/A653_184_248/A596_2015_250">false sense</collo>
+    </word>
+  </player>
+</response>
+

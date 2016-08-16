@@ -1,0 +1,29 @@
+
+<response from="collocations">
+  <player from="BNC" ql="5">
+    <word word="flock">
+      <collo ID="808845" colloType="non" fre="33" sentID="A1064_323_88/A711_1646_126/A1237_5655_169/A826_201_198/A1342_1112_283/A532_1477_320/A136_2183_352/A1376_2_361/A826_804_369/A293_757_389">flock of sheep</collo>
+
+      <collo ID="808846" colloType="non" fre="14" sentID="A3304_443_88/A2581_958_121/A3233_2043_145/A2995_1750_149/A736_119_153/A391_1014_282/A3120_1143_308/A2539_327_326/A667_1358_348/A2477_1856_527">flock of birds</collo>
+
+      <collo ID="808847" colloType="non" fre="7" sentID="A1743_1615_108/A1743_54_111/A1577_260_119/A1583_22_126/A3154_1313_137/A239_1817_162/A2235_718_281">flock of gulls</collo>
+
+      <collo ID="808848" colloType="non" fre="6" sentID="A301_822_119/A447_86_281/A2212_227_324/A1796_890_345/A2212_35_381/A499_1272_517">flock of geese</collo>
+
+      <collo ID="808850" colloType="non" fre="5" sentID="A1825_933_219/A1397_494_229/A2968_932_231/A1397_489_309/A1810_810_675">flock of pigeons</collo>
+    </word>
+
+    <word word="swarm">
+      <collo ID="186054" colloType="non" fre="6" sentID="A180_1636_165/A1787_116_181/A1994_223_196/A1327_119_208/A426_245_256/A2716_9388_314">swarm of bees</collo>
+
+      <collo ID="186055" colloType="non" fre="3" sentID="A1237_1539_240/A2469_1105_275/A3783_369_288">swarm of locusts</collo>
+
+      <collo ID="186056" colloType="non" fre="2" sentID="A1965_1466_233/A1327_594_754">swarm of people</collo>
+
+      <collo ID="186057" colloType="non" fre="1" sentID="A94_1267_254">swarm of sepoys</collo>
+
+      <collo ID="186058" colloType="non" fre="1" sentID="A167_724_222">swarm of local officials</collo>
+    </word>
+  </player>
+</response>
+

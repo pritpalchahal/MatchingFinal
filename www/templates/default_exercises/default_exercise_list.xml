@@ -1,0 +1,109 @@
+
+<response from="collocations">
+  <categoryList c="collocations" flax_server_domain="/greenstone3" type="11">
+    <category id="1" name="none">
+      <categorysummary>default category</categorysummary>
+
+      <exercise category_id="1" id="19" name="reserve preserve" type="CollocationMatching">
+        <url>default_exercises/ex_01.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;reserve|1365608|1365610|1365613|1365615|1365620|)preserve|971674|971677|971678|971679|971681|)]colloType;vn]quest_len;5&amp;s1.flaxdbinfo=dbid;19&amp;s1.exercisename=reserve preserve</summary>
+      </exercise>
+
+      <exercise category_id="1" id="17" name="identify recognise" type="CollocationMatching">
+        <url>default_exercises/ex_02.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;identify|1367580|1367582|1367584|1367586|1367589|)recognise|1221048|1221049|1221050|1221054|1221057|)]colloType;vn]quest_len;5&amp;s1.flaxdbinfo=dbid;17&amp;s1.exercisename=identify recognise</summary>
+      </exercise>
+
+      <exercise category_id="1" id="18" name="ill sick" type="CollocationMatching">
+        <url>default_exercises/ex_03.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;ill|125817|125820|125821|125826|125828|)sick|1244786|1244789|1244790|1244795|1108866|)]colloType;an]quest_len;5&amp;s1.flaxdbinfo=dbid;18&amp;s1.exercisename=ill sick</summary>
+      </exercise>
+
+      <exercise category_id="1" id="15" name="holiday leave" type="CollocationMatching">
+        <url>default_exercises/ex_04.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;holiday|134243|218673|60420|22997|60422|)leave|234415|624573|561329|153880|650785|)]colloType;nn]quest_len;5&amp;s1.flaxdbinfo=dbid;15&amp;s1.exercisename=holiday leave</summary>
+      </exercise>
+
+      <exercise category_id="1" id="16" name="enormous massive" type="CollocationMatching">
+        <url>default_exercises/ex_05.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;enormous|517225|517226|517227|517229|517230|)massive|1101250|1101251|1101252|1101256|1101260|)]colloType;an]quest_len;5&amp;s1.flaxdbinfo=dbid;16&amp;s1.exercisename=enormous massive</summary>
+      </exercise>
+
+      <exercise category_id="1" id="13" name="authentic real" type="CollocationMatching">
+        <url>default_exercises/ex_06.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;authentic|170173|170174|170175|170176|170178|)real|1833503|1833505|1833507|1833509|1833512|)]colloType;an]quest_len;5&amp;s1.flaxdbinfo=dbid;13&amp;s1.exercisename=authentic real</summary>
+      </exercise>
+
+      <exercise category_id="1" id="14" name="habit custom" type="CollocationMatching">
+        <url>default_exercises/ex_07.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;habit|1628369|1107438|1123474|645229|305581|)custom|1441973|566367|1330198|1740594|935263|)]colloType;an]quest_len;5&amp;s1.flaxdbinfo=dbid;14&amp;s1.exercisename=habit custom</summary>
+      </exercise>
+
+      <exercise category_id="1" id="11" name="suitable appropriate" type="CollocationMatching">
+        <url>default_exercises/ex_08.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;suitable|185649|185651|185652|185655|185656|)appropriate|1452416|1452419|1452422|1452424|1452425|)]colloType;an]quest_len;5&amp;s1.flaxdbinfo=dbid;11&amp;s1.exercisename=suitable appropriate</summary>
+      </exercise>
+
+      <exercise category_id="1" id="12" name="flock swarm" type="CollocationMatching">
+        <url>default_exercises/ex_09.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;flock|808845|808846|808847|808848|808850|)swarm|186054|186055|186056|186057|186058|)]colloType;non]quest_len;5&amp;s1.flaxdbinfo=dbid;12&amp;s1.exercisename=flock swarm</summary>
+      </exercise>
+
+      <exercise category_id="1" id="3" name="empty vacant" type="CollocationMatching">
+        <url>default_exercises/ex_10.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;empty|1665343|1665344|1665345|1665346|1665348|)vacant|905122|905123|905124|905125|905126|)]colloType;an]quest_len;5&amp;s1.flaxdbinfo=dbid;3&amp;s1.exercisename=empty vacant</summary>
+      </exercise>
+
+      <exercise category_id="1" id="20" name="drop slice" type="CollocationMatching">
+        <url>default_exercises/ex_11.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;drop|757303|757304|757305|757306|757307|)slice|717661|717662|717663|717665|717666|)]colloType;non]quest_len;5&amp;s1.flaxdbinfo=dbid;20&amp;s1.exercisename=drop slice</summary>
+      </exercise>
+
+      <exercise category_id="1" id="2" name="effective efficient" type="CollocationMatching">
+        <url>default_exercises/ex_12.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;effective|1371600|1371604|1371605|1371606|1371607|)efficient|1093964|1093966|1093968|1093969|1093970|)]colloType;an]quest_len;5&amp;s1.flaxdbinfo=dbid;2&amp;s1.exercisename=effective efficient</summary>
+      </exercise>
+
+      <exercise category_id="1" id="1" name="economic economical" type="CollocationMatching">
+        <url>default_exercises/ex_13.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;economic|718846|718847|718848|718849|718850|)economical|590750|590751|590752|590753|590754|)]colloType;an]quest_len;5&amp;s1.flaxdbinfo=dbid;1&amp;s1.exercisename=economic economical</summary>
+      </exercise>
+
+      <exercise category_id="1" id="10" name="fast instant" type="CollocationMatching">
+        <url>default_exercises/ex_14.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;fast|427749|427750|427751|427752|427754|)instant|473902|473903|473904|473905|473906|)]colloType;an]quest_len;5&amp;s1.flaxdbinfo=dbid;10&amp;s1.exercisename=fast instant</summary>
+      </exercise>
+
+      <exercise category_id="1" id="7" name="equal equivalent" type="CollocationMatching">
+        <url>default_exercises/ex_15.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;equal|1645615|1645616|1645617|1645618|1645619|)equivalent|619463|933508|933509|933510|933511|)]colloType;an]quest_len;5&amp;s1.flaxdbinfo=dbid;7&amp;s1.exercisename=equal equivalent</summary>
+      </exercise>
+
+      <exercise category_id="1" id="6" name="entire complete" type="CollocationMatching">
+        <url>default_exercises/ex_16.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;entire|135702|135703|135704|135705|135706|)complete|209928|209929|209930|209931|209932|)]colloType;an]quest_len;5&amp;s1.flaxdbinfo=dbid;6&amp;s1.exercisename=entire complete</summary>
+      </exercise>
+
+      <exercise category_id="1" id="5" name="enhance highlight" type="CollocationMatching">
+        <url>default_exercises/ex_17.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;enhance|691820|691821|691822|691823|691824|)highlight|994587|994588|994589|994590|994591|)]colloType;vn]quest_len;5&amp;s1.flaxdbinfo=dbid;5&amp;s1.exercisename=enhance highlight</summary>
+      </exercise>
+
+      <exercise category_id="1" id="4" name="energy power" type="CollocationMatching">
+        <url>default_exercises/ex_18.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;energy|128312|128314|128315|128316|128318|)power|571207|429973|109707|571209|571210|)]colloType;nn]quest_len;5&amp;s1.flaxdbinfo=dbid;4&amp;s1.exercisename=empty vacant</summary>
+      </exercise>
+
+      <exercise category_id="1" id="9" name="family home" type="CollocationMatching">
+        <url>default_exercises/ex_19.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;family|218651|218652|218653|218654|218655|)home|561232|379155|561233|561234|561236|)]colloType;nn]quest_len;5&amp;s1.flaxdbinfo=dbid;9&amp;s1.exercisename=family home</summary>
+      </exercise>
+
+      <exercise category_id="1" id="8" name="fake false" type="CollocationMatching">
+        <url>default_exercises/ex_20.xml</url>
+        <summary>?a=g&amp;rt=r&amp;c=collocations&amp;s1.collname=collocations&amp;s=CollocationMatching&amp;sa=Activity&amp;s1.service=99&amp;s1.activity=CollocationMatching&amp;s1.params=qs;fake|1314495|1314496|1314497|1314498|1314499|)false|300299|300300|300301|300302|300303|)]colloType;an]quest_len;5&amp;s1.flaxdbinfo=dbid;8&amp;s1.exercisename=fake false</summary>
+      </exercise>
+    </category>
+  </categoryList>
+</response>
+
