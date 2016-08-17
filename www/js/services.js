@@ -41,15 +41,15 @@ angular.module('starter.services', [])
                 collos[j].right.push(getRight(text));
               };
             };
-            for(var j=0 ; j<collos.length; j++){
-              for(var k=0; k<collos[j].left.length; k++){
-                console.log(collos[j].left[k]);
-              }
-              for(var k=0; k<collos[j].right.length; k++){
-                console.log(collos[j].right[k]);
-              }
-            };
-            return words;
+            // for(var j=0 ; j<collos.length; j++){
+            //   for(var k=0; k<collos[j].left.length; k++){
+            //     console.log(collos[j].left[k]);
+            //   }
+            //   for(var k=0; k<collos[j].right.length; k++){
+            //     console.log(collos[j].right[k]);
+            //   }
+            // };
+            return collos;
           });
         }
       }

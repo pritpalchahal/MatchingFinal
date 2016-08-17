@@ -5,10 +5,16 @@
   The Friends service returns an array of friend data
 -->
 <ion-view view-title="{{title}}">
-  <ion-content class="padding">
+  <ion-content class="padding" scroll="false">
+    <ion-slides  options="options" slider="data.slider">
+      <ion-slide-page ng-repeat="collo in left1 track by $index">
+        <div class="box">{{collo}} <span>{{right1[$index]}}</span></div>
+        <div class="box">{{left2[$index]}} <span>{{right2[$index]}}</span></div>
+      </ion-slide-page>
+    </ion-slides>
     <!-- <img ng-src="{{chat.face}}" style="width: 64px; height: 64px"> -->
-    <p>
+    <!-- <p>
       {{chat.lastText}}
-    </p>
+    </p> -->
   </ion-content>
 </ion-view>
