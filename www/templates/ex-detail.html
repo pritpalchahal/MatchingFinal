@@ -7,9 +7,56 @@
 <ion-view view-title="{{title}}">
   <ion-content class="padding" scroll="false">
     <ion-slides  options="options" slider="data.slider">
-      <ion-slide-page ng-repeat="collo in left1 track by $index">
-        <div class="box">{{collo}} <span>{{right1[$index]}}</span></div>
-        <div class="box">{{left2[$index]}} <span>{{right2[$index]}}</span></div>
+      <ion-slide-page ng-repeat="collo in left1 track by $index" ng-init="slideIndex = $index">
+        <!-- <div class="box">{{collo}} <span>{{right1[$index]}}</span></div>
+        <div class="box">{{left2[$index]}} <span>{{right2[$index]}}</span></div> --> 
+
+        <div class="col"> 
+
+          <ul class="draggable-objects">
+            <li  ng-repeat="obj in draggableObjects[slideIndex]">
+              <div ng-drag="true" ng-drag-data="obj" data-allow-transform="false"> {{obj}} </div>
+            </li>
+          </ul>
+
+          <hr/>
+
+          <div class="row">
+
+            <div class="fixed-value col">
+                {{left1[slideIndex]}}
+            </div>
+
+            <div ng-drop="true" ng-drop-success="onDropComplete1($data,$event)" class="col">
+
+              <div ng-repeat="obj in droppedObjects1[slideIndex] track by $index" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess1($data,$event)" ng-center-anchor="{{centerAnchor}}">
+                {{obj}}
+              </div>
+
+            </div>
+          </div>
+
+          <div class="row">
+
+            <div class="fixed-value col">
+                {{left2[slideIndex]}}
+            </div>
+
+
+            <div ng-drop="true" ng-drop-success="onDropComplete2($data,$event)" class="col">
+
+              <div ng-repeat="obj in droppedObjects2[slideIndex] track by $index" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess2($data,$event)" ng-center-anchor="{{centerAnchor}}">
+                {{obj}}
+              </div>
+
+            </div>
+          </div>
+
+        </div> 
+
+        <button class="button bar bar-positive">
+          Check Answer
+        </button>
       </ion-slide-page>
     </ion-slides>
     <!-- <img ng-src="{{chat.face}}" style="width: 64px; height: 64px"> -->

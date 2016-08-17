@@ -1,1 +1,126 @@
-/* Empty. Add your own CSS if you like */
+.slider-pager {
+    top: 0;
+    bottom: initial;
+}
+
+table, th , td  {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
+}
+table tr:nth-child(odd) {
+  background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+.home .scroll-content {
+  display: table !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin-top: -50px; /* the height of the centered content */
+  text-align: center;
+}
+.home .scroll {
+  display: table-cell;
+  vertical-align: middle;
+}
+.row {
+    display: flex; /* equal height of the children */
+    flex-wrap: wrap;
+    align-content: center;
+    -webkit-align-content:center;
+}
+.col{
+    flex: 1; /* additionally, equal width */
+    /*padding: 1em;
+    border: solid;
+    align-content: center;*/
+}
+
+
+*{
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+[ng-drag]{
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+[ng-drag]{
+    /*width: 100px;*/
+    /*height: 50px;*/
+    /*background: rgba(255,0,0, 0.5);*/
+    /*border: solid 1px black;*/
+    color:black;
+    text-align: center;
+    font-size: 14px;
+    padding: 10px;
+    display: block;
+    margin:0 10px;
+    cursor: move;
+}
+.data-value {
+    /*background: rgba(255,0,0, 0.5);*/
+    border-right: solid 1px black;
+    color:black;
+    text-align: center;
+    font-size: 14px;
+    padding: 10px;
+    display: block;
+    /*margin:0 10px;*/
+}
+ul.draggable-objects:after{
+    display: block;
+    content:"";
+    clear:both;
+}
+.draggable-objects li{
+    float:left;
+    display: block;
+    /*width: 120px;
+    height:100px;*/
+}
+[ng-drag].drag-over{
+    border:solid 1px red;
+}
+[ng-drag].dragging{
+    opacity: 0.5;
+}
+[ng-drop]{
+    background: rgba(0,255,0, 0.8);
+    text-align: center;
+    /*width: 600px;*/
+    /*height: 60px;*/
+    /*padding:10px;*/
+    display: block;
+    margin:20px auto;
+    position: relative;
+}
+.fixed-value {
+    background: rgba(0,255,0, 0.5);
+    text-align: center;
+    /*width: 600px;*/
+    display: block;
+    margin:20px auto;
+    position: relative;
+}
+[ng-drop].drag-enter{
+    border:solid 5px red;
+}
+[ng-drop] span.title{
+    display: block;
+    position: absolute;
+    border-style: solid;
+    top:50%;
+    left:50%;
+    margin-left: -100px;
+    margin-top: -10px;
+}
+[ng-drop] div{
+    position: relative;
+    z-index: 2;
+}
