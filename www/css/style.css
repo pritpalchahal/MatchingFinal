@@ -39,6 +39,10 @@ table tr:nth-child(even) {
     align-content: center;*/
 }
 
+p,h2{
+    margin: 10px;
+}
+
 
 *{
     -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
@@ -91,7 +95,7 @@ ul.draggable-objects:after{
     opacity: 0.5;
 }
 [ng-drop]{
-    background: rgba(0,255,0, 0.8);
+    background: rgba(0,255,0, 0.5);
     text-align: center;
     /*width: 600px;*/
     /*height: 60px;*/
@@ -103,7 +107,9 @@ ul.draggable-objects:after{
 .fixed-value {
     background: rgba(0,255,0, 0.5);
     text-align: center;
-    /*width: 600px;*/
+    /*width: 600px;
+    height: 60px;
+    padding:10px;*/
     display: block;
     margin:20px auto;
     position: relative;
@@ -117,6 +123,8 @@ ul.draggable-objects:after{
     border-style: solid;
     top:50%;
     left:50%;
+    width: 200px;
+    height: 20px;
     margin-left: -100px;
     margin-top: -10px;
 }

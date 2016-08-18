@@ -89,12 +89,10 @@ angular.module('starter.services', [])
   var dropObjects2 = [];
 
   var add1 = function(obj,n){
-    dropObjects1[n] = [];
     dropObjects1[n].push(obj);
   };
 
   var add2 = function(obj,n){
-    dropObjects2[n] = [];
     dropObjects2[n].push(obj);
   };
 
