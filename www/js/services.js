@@ -4,7 +4,9 @@ angular.module('starter.services', [])
   var data = [];
   var words = [];
   // var collos = [];
-  var url = "../templates/default_exercises/default_exercise_list.xml";
+
+  //actual path does work in browser but in phone (via phonegap or ionicview, so always keep the $http.get path form index.html)
+  var url = "templates/default_exercises/default_exercise_list.xml";
 
   var getLeft = function(word){
     // return word.split(" ")[0];
@@ -31,7 +33,7 @@ angular.module('starter.services', [])
       var coll = ["l1","l2","r1","r2"];
       for(var i= 0 ; i<data.length; i++){
         if(data[i]._id == parseInt(exId)){
-          return $http.get("../templates/"+data[i].url).then(function(response){
+          return $http.get("templates/"+data[i].url).then(function(response){
             var x2js = new X2JS();
             var jsonData = x2js.xml_str2json(response.data);
             words = jsonData.response.player.word;
@@ -42,18 +44,18 @@ angular.module('starter.services', [])
                 collos[j].left.push(getLeft(text));
                 collos[j].right.push(getRight(text));
 
-                if(j==0){
+                // if(j==0){
 
-                  array.l1.push(getLeft(text));
-                  array.r1.push(getRight(text));
-                }
-                else{
-                  array.l2.push(getLeft(text));
-                  array.r2.push(getRight(text));
-                }
+                //   array.l1.push(getLeft(text));
+                //   array.r1.push(getRight(text));
+                // }
+                // else{
+                //   array.l2.push(getLeft(text));
+                //   array.r2.push(getRight(text));
+                // }
               };
             };
-            console.log(array);
+            // console.log(array);
             // for(var j=0 ; j<collos.length; j++){
             //   for(var k=0; k<collos[j].left.length; k++){
             //     console.log(collos[j].left[k]);

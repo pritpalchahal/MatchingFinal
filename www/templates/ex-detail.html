@@ -5,58 +5,56 @@
   The Friends service returns an array of friend data
 -->
 <ion-view view-title="{{title}}">
-  <ion-content class="padding" scroll="false">
+  <ion-content class="" scroll="false">
     <ion-slides  options="options" slider="data.slider">
       <ion-slide-page ng-repeat="collo in left1 track by $index" ng-init="slideIndex = $index">
         <!-- <div class="box">{{collo}} <span>{{right1[$index]}}</span></div>
         <div class="box">{{left2[$index]}} <span>{{right2[$index]}}</span></div> --> 
 
-        <div class="col"> 
-
+        <div class="draggables container-fluid sub-header"> 
           <ul class="draggable-objects">
             <li  ng-repeat="obj in draggableObjects[slideIndex]">
               <div ng-drag="true" ng-drag-data="obj" data-allow-transform="true"> {{obj}} </div>
             </li>
           </ul>
+        </div>
 
-          <hr/>
+          <div class="row" style="margin-top:30px;">
 
-          <div class="row">
-
-            <div class="fixed-value col">
+            <div class="fixed-value col col-xs-4">
                 {{left1[slideIndex]}}
             </div>
 
-            <div ng-drop="true" ng-drop-success="onDropComplete1($data,$event)" class="col">
+            <div ng-drop="true" ng-drop-success="onDropComplete1($data,$event)" class="col col-xs-8">
 
-              <div ng-repeat="obj in droppedObjects1[slideIndex] track by $index" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess1($data,$event)" ng-center-anchor="{{centerAnchor}}">
+              <div class="draggable-objects" ng-repeat="obj in droppedObjects1[slideIndex] track by $index" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess1($data,$event)" ng-center-anchor="{{centerAnchor}}">
                 {{obj}}
               </div>
 
             </div>
           </div>
 
-          <div class="row">
+          <div class="row" style="margin-top:30px;">
 
-            <div class="fixed-value col">
+            <div class="fixed-value col col-xs-4">
                 {{left2[slideIndex]}}
             </div>
 
 
-            <div ng-drop="true" ng-drop-success="onDropComplete2($data,$event)" class="col">
+            <div ng-drop="true" ng-drop-success="onDropComplete2($data,$event)" class="col col-xs-8">
 
-              <div ng-repeat="obj in droppedObjects2[slideIndex] track by $index" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess2($data,$event)" ng-center-anchor="{{centerAnchor}}">
+              <div class="draggable-objects" ng-repeat="obj in droppedObjects2[slideIndex] track by $index" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess2($data,$event)" ng-center-anchor="{{centerAnchor}}">
                 {{obj}}
               </div>
 
             </div>
           </div>
 
-        </div> 
-
-        <button class="button bar bar-positive">
-          Check Answer
-        </button>
+        <div class="bar bar-footer bar-balanced">
+          <div class="title" ng-click="checkAnswer(slideIndex)">
+            Check Answer
+          </div>
+        </div>
       </ion-slide-page>
     </ion-slides>
     <!-- <img ng-src="{{chat.face}}" style="width: 64px; height: 64px"> -->

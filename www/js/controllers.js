@@ -15,7 +15,6 @@ angular.module('starter.controllers', [])
 
   Exercises.getAll().then(function(response){
       $scope.exercises = response;
-      console.log(response);
   });
 
   $scope.remove = function(ex) {
@@ -23,7 +22,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ExerciseCtrl', function($scope, $stateParams, Exercises, DroppedData) {
+.controller('ExerciseCtrl', function($scope, $stateParams, Exercises, DroppedData, $ionicPopup) {
   $scope.droppedObjects1 = [];
   $scope.droppedObjects2 = [];
 
@@ -68,7 +67,9 @@ angular.module('starter.controllers', [])
 
   $scope.onDragSuccess1 = function(data,evt){
     var n = $scope.slider.activeIndex;
-    DroppedData.create1(n);
+    if(!DroppedData.get1(n)){
+      DroppedData.create1(n);
+    }
     var index = DroppedData.get1(n).indexOf(data);
     if (index > -1) {
         DroppedData.get1(n).splice(index,1);
@@ -86,12 +87,14 @@ angular.module('starter.controllers', [])
       $scope.droppedObjects1[n] = DroppedData.get1(n);
     }
     console.log("onDropComplete1", "", index,"", evt);
-    // $scope.checkAnswer($scope.exercise,$scope.droppedObjects1,$scope.droppedObjects2);
+    $scope.checkAnswer(n);
   }
 
   $scope.onDragSuccess2 = function(data,evt){
     var n = $scope.slider.activeIndex;
-    DroppedData.create2(n);
+    if(!DroppedData.get2(n)){
+      DroppedData.create2(n);
+    }
     var index = DroppedData.get2(n).indexOf(data);
     if (index > -1) {
         DroppedData.get2(n).splice(index,1);
@@ -109,7 +112,29 @@ angular.module('starter.controllers', [])
       $scope.droppedObjects2[n] = DroppedData.get2(n);
     }
     console.log("onDropComplete2", "", index,"", evt);
-    // $scope.checkAnswer($scope.exercise,$scope.droppedObjects1,$scope.droppedObjects2);
+    $scope.checkAnswer(n);
+  }
+  $scope.checkAnswer = function(n){
+    var value1 = $scope.droppedObjects1[n];
+    var value2 = $scope.droppedObjects2[n];
+    console.log(value1+"-"+value2);
+
+    if(value1 == $scope.right1[n] && value2 == $scope.right2[n]){
+      var myPopup = $ionicPopup.alert({
+        template: 'Well  done!',
+        title: 'Correct Answer.'
+      });
+
+      myPopup.then(function(res){
+        //custom functionality
+      });
+    }
+    // else{
+    //   var errorPopup = $ionicPopup.alert({
+    //     template: 'Incorrect',
+    //     title: 'Try again'
+    //   });
+    // }
   }
 })
 
