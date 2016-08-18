@@ -122,6 +122,14 @@ angular.module('starter.services', [])
     dropObjects2[n] = [];
   }
 
+  var getAll1 = function(){
+    return dropObjects1;
+  }
+
+  var getAll2 = function(){
+    return dropObjects2;
+  }
+
   return {
     add1: add1,
     add2: add2,
@@ -130,6 +138,8 @@ angular.module('starter.services', [])
     empty1: empty1,
     empty2: empty2,
     create1: create1,
-    create2: create2
+    create2: create2,
+    getAll1: getAll1,
+    getAll2: getAll2
   };
 });

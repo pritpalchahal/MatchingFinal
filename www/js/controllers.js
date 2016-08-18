@@ -23,6 +23,10 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ExerciseCtrl', function($scope, $stateParams, Exercises, DroppedData, $ionicPopup) {
+  var exId = $stateParams.exId;
+  var oldRight1 = DroppedData.getAll1();
+  var oldRight2 = DroppedData.getAll2();
+
   $scope.droppedObjects1 = [];
   $scope.droppedObjects2 = [];
 
@@ -53,6 +57,11 @@ angular.module('starter.controllers', [])
   $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
     // data.slider is the instance of Swiper
     $scope.slider = data.slider;
+    var n = $scope.slider.activeIndex;
+    LoadState();
+    // var element = angular.element(document.querySelector('#r1'));
+    // element.text = "a";
+    // console.log(element);
   });
 
   $scope.$on("$ionicSlides.slideChangeStart", function(event, data){
@@ -68,7 +77,7 @@ angular.module('starter.controllers', [])
   $scope.onDragSuccess1 = function(data,evt){
     var n = $scope.slider.activeIndex;
     if(!DroppedData.get1(n)){
-      DroppedData.create1(n);
+      DroppedData.create1(n);return;
     }
     var index = DroppedData.get1(n).indexOf(data);
     if (index > -1) {
@@ -93,7 +102,7 @@ angular.module('starter.controllers', [])
   $scope.onDragSuccess2 = function(data,evt){
     var n = $scope.slider.activeIndex;
     if(!DroppedData.get2(n)){
-      DroppedData.create2(n);
+      DroppedData.create2(n);return;
     }
     var index = DroppedData.get2(n).indexOf(data);
     if (index > -1) {
@@ -135,6 +144,31 @@ angular.module('starter.controllers', [])
     //     title: 'Try again'
     //   });
     // }
+  }
+
+  var LoadState = function(){
+    if(oldRight1){
+      for(var i = 0;i<oldRight1.length;i++){
+        $scope.droppedObjects1[i] = [];
+        if(oldRight1[i]){
+          for(var j=0;j<oldRight1[i].length;j++){
+            $scope.droppedObjects1[i][j] = [];
+            $scope.droppedObjects1[i][j] = oldRight1[i][j];
+          }
+        }
+      }
+    }
+    if(oldRight2){
+      for(var i = 0;i<oldRight2.length;i++){
+        $scope.droppedObjects2[i] = [];
+        if(oldRight2[i]){
+          for(var j=0;j<oldRight2[i].length;j++){
+            $scope.droppedObjects2[i][j] = [];
+            $scope.droppedObjects2[i][j] = oldRight2[i][j];
+          }
+        }
+      }
+    }
   }
 })
 
