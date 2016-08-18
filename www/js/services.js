@@ -90,44 +90,60 @@ angular.module('starter.services', [])
   var dropObjects1 = [];
   var dropObjects2 = [];
 
-  var add1 = function(obj,n){
-    dropObjects1[n].push(obj);
+  var add1 = function(exId,obj,n){
+    dropObjects1[exId][n].push(obj);
   };
 
-  var add2 = function(obj,n){
-    dropObjects2[n].push(obj);
+  var add2 = function(exId,obj,n){
+    dropObjects2[exId][n].push(obj);
   };
 
-  var get1 = function(n){
-    return dropObjects1[n];
+  var get1 = function(exId,n){
+    return dropObjects1[exId][n];
   };
 
-  var get2 = function(n){
-    return dropObjects2[n];
+  var get2 = function(exId,n){
+    return dropObjects2[exId][n];
   };
 
-  var empty1 = function(n){
-    dropObjects1[n] = [];
+  var empty1 = function(exId,n){
+    dropObjects1[exId][n] = [];
   }
 
-  var empty2 = function(n){
-    dropObjects2[n] = [];
+  var empty2 = function(exId,n){
+    dropObjects2[exId][n] = [];
   }
 
-  var create1 = function(n){
-    dropObjects1[n] = [];
+  var create1 = function(exId,n){
+    dropObjects1[exId][n] = [];
   }
 
-  var create2 = function(n){
-    dropObjects2[n] = [];
+  var create2 = function(exId,n){
+    dropObjects2[exId][n] = [];
   }
 
-  var getAll1 = function(){
-    return dropObjects1;
+  var getAll1 = function(exId){
+    return dropObjects1[exId];
   }
 
-  var getAll2 = function(){
-    return dropObjects2;
+  var getAll2 = function(exId){
+    return dropObjects2[exId];
+  }
+
+  var createEx1 = function(exId){
+    dropObjects1[exId] = [];
+  }
+
+  var createEx2 = function(exId){
+    dropObjects2[exId] = [];
+  }
+
+  var getEx1 = function(exId){
+    return dropObjects1[exId];
+  }
+
+  var getEx2 = function(exId){
+    return dropObjects2[exId];
   }
 
   return {
@@ -140,6 +156,10 @@ angular.module('starter.services', [])
     create1: create1,
     create2: create2,
     getAll1: getAll1,
-    getAll2: getAll2
+    getAll2: getAll2,
+    createEx1: createEx1,
+    createEx2: createEx2,
+    getEx1: getEx1,
+    getEx2: getEx2
   };
 });

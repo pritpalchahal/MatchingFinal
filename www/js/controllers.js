@@ -11,21 +11,29 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ExsCtrl', function($scope, Exercises) {
+.controller('ExsCtrl', function($scope, Exercises, DroppedData) {
 
   Exercises.getAll().then(function(response){
-      $scope.exercises = response;
+    $scope.exercises = response;
   });
 
   $scope.remove = function(ex) {
     Exercises.remove(ex);
   };
+
+  $scope.state = "New";
 })
 
 .controller('ExerciseCtrl', function($scope, $stateParams, Exercises, DroppedData, $ionicPopup) {
   var exId = $stateParams.exId;
-  var oldRight1 = DroppedData.getAll1();
-  var oldRight2 = DroppedData.getAll2();
+  if(!DroppedData.getEx1(exId)){
+    DroppedData.createEx1(exId);
+  }
+  if(!DroppedData.getEx2(exId)){
+    DroppedData.createEx2(exId);
+  }
+  var oldRight1 = DroppedData.getAll1(exId);
+  var oldRight2 = DroppedData.getAll2(exId);
 
   $scope.droppedObjects1 = [];
   $scope.droppedObjects2 = [];
@@ -76,24 +84,24 @@ angular.module('starter.controllers', [])
 
   $scope.onDragSuccess1 = function(data,evt){
     var n = $scope.slider.activeIndex;
-    if(!DroppedData.get1(n)){
-      DroppedData.create1(n);return;
+    if(!DroppedData.get1(exId,n)){
+      DroppedData.create1(exId,n);return;
     }
-    var index = DroppedData.get1(n).indexOf(data);
+    var index = DroppedData.get1(exId,n).indexOf(data);
     if (index > -1) {
-        DroppedData.get1(n).splice(index,1);
+        DroppedData.get1(exId,n).splice(index,1);
     }
     console.log("onDragSuccess1", "",index,"", evt);
   }
   $scope.onDropComplete1 = function(data,evt){
     var n = $scope.slider.activeIndex;
-    DroppedData.create1(n);
-    var index = DroppedData.get1(n).indexOf(data);
+    DroppedData.create1(exId,n);
+    var index = DroppedData.get1(exId,n).indexOf(data);
     if (index == -1){
-      DroppedData.empty1(n);
-      DroppedData.add1(data,n);
+      DroppedData.empty1(exId,n);
+      DroppedData.add1(exId,data,n);
       $scope.droppedObjects1[n] = [];
-      $scope.droppedObjects1[n] = DroppedData.get1(n);
+      $scope.droppedObjects1[n] = DroppedData.get1(exId,n);
     }
     console.log("onDropComplete1", "", index,"", evt);
     $scope.checkAnswer(n);
@@ -101,24 +109,24 @@ angular.module('starter.controllers', [])
 
   $scope.onDragSuccess2 = function(data,evt){
     var n = $scope.slider.activeIndex;
-    if(!DroppedData.get2(n)){
-      DroppedData.create2(n);return;
+    if(!DroppedData.get2(exId,n)){
+      DroppedData.create2(exId,n);return;
     }
-    var index = DroppedData.get2(n).indexOf(data);
+    var index = DroppedData.get2(exId,n).indexOf(data);
     if (index > -1) {
-        DroppedData.get2(n).splice(index,1);
+        DroppedData.get2(exId,n).splice(index,1);
     }
     console.log("onDragSuccess2", "",index,"", evt);
   }
   $scope.onDropComplete2 = function(data,evt){
     var n = $scope.slider.activeIndex;
-    DroppedData.create2(n);
-    var index = DroppedData.get2(n).indexOf(data);
+    DroppedData.create2(exId,n);
+    var index = DroppedData.get2(exId,n).indexOf(data);
     if (index == -1){
-      DroppedData.empty2(n);
-      DroppedData.add2(data,n);
+      DroppedData.empty2(exId,n);
+      DroppedData.add2(exId,data,n);
       $scope.droppedObjects2[n] = [];
-      $scope.droppedObjects2[n] = DroppedData.get2(n);
+      $scope.droppedObjects2[n] = DroppedData.get2(exId,n);
     }
     console.log("onDropComplete2", "", index,"", evt);
     $scope.checkAnswer(n);
