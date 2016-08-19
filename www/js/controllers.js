@@ -11,10 +11,13 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('CustomBackController', function($scope,$ionicHistory,$stateParams,DroppedData){
+.controller('CustomBackController', function($scope,$ionicHistory,$stateParams,DroppedData,$filter){
   $scope.myGoBack = function(){
     var exId = $stateParams.exId;
     $ionicHistory.goBack();
+    var time = new Date();
+    var timeNow = $filter('date')(time,'medium');
+    DroppedData.updateSummaryEtime(exId,timeNow);
     if((DroppedData.getEx1(exId).length > 0) || (DroppedData.getEx2(exId).length > 0)){
       DroppedData.updateState(exId,"Incomplete");
     }
@@ -50,8 +53,21 @@ angular.module('starter.controllers', [])
   // });
 })
 
-.controller('ExerciseCtrl', function($scope, $stateParams, Exercises, DroppedData, $ionicPopup, $ionicPopover) {
+.controller('ExerciseCtrl', function($scope, $stateParams, Exercises, DroppedData, $ionicPopup, $ionicPopover,$filter) {
   var exId = $stateParams.exId;
+  if(!DroppedData.getValues(exId)){
+    DroppedData.createValue(exId);
+  }
+  if(!DroppedData.getSummary(exId)){
+    DroppedData.createSummary(exId);
+    var time = new Date();
+    var timeNow = $filter('date')(time,'medium');//angularjs date format
+    DroppedData.updateSummaryStime(exId,timeNow);
+  }
+
+  $scope.myValue = DroppedData.getValues(exId);
+  $scope.summary = DroppedData.getSummary(exId);
+
   if(!DroppedData.getEx1(exId)){
     DroppedData.createEx1(exId);
   }
@@ -165,7 +181,16 @@ angular.module('starter.controllers', [])
   });
 
   $scope.showSummary = function(){
-    console.log("summary");
+    var alertPopup = $ionicPopup.alert({
+      title: 'Summary',
+      subTitle: 'StartTime: '+$scope.summary.sTime+'\nEndTime: '+$scope.summary.eTime,
+      // templateUrl: 'templates/summary.html',
+      scope: $scope
+    });
+
+    alertPopup.then(function(response){
+      //custom functionality
+    });
   }
 
   $scope.restartGame = function(){
@@ -178,7 +203,9 @@ angular.module('starter.controllers', [])
       if(response){
         //clear model
         DroppedData.clear(exId);
+        DroppedData.clearValues(exId);
         //clear view
+        $scope.myValue = DroppedData.getValues(exId);
         $scope.droppedObjects1 = [];
         $scope.droppedObjects2 = [];
       }
@@ -215,6 +242,7 @@ angular.module('starter.controllers', [])
       myPopup.then(function(res){
         //custom functionality
       });
+      DroppedData.updateValue(exId,true,n);//update show/hide values
       return true;
     }
     return false;

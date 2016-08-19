@@ -90,6 +90,40 @@ angular.module('starter.services', [])
   var dropObjects1 = [];
   var dropObjects2 = [];
   var states = [];
+  var myValues = [];
+  var summary = ["sTime","eTime","completed","total"];
+
+  var updateSummaryStime = function(exId,sTime){
+    summary[exId].sTime = sTime;
+  }
+
+  var updateSummaryEtime = function(exId,eTime){
+    summary[exId].eTime = eTime;
+  }
+
+  var createSummary = function(exId){
+    summary[exId] = [];
+  }
+
+  var getSummary = function(exId){
+    return summary[exId];
+  }
+
+  var updateValue = function(exId,value,n){
+    myValues[exId][n] = value;
+  }
+
+  var createValue = function(exId){
+    myValues[exId] = [];
+  }
+
+  var getValues = function(exId){
+    return myValues[exId];
+  }
+
+  var clearValues = function(exId){
+    myValues[exId] = [];
+  }
 
   var updateState = function(exId,state){
     states[exId] = state;
@@ -167,6 +201,14 @@ angular.module('starter.services', [])
     getEx2: getEx2,
     updateState: updateState,
     getAllStates: getAllStates,
-    clear: clear
+    clear: clear,
+    updateValue: updateValue,
+    createValue: createValue,
+    getValues: getValues,
+    clearValues: clearValues,
+    updateSummaryStime: updateSummaryStime,
+    updateSummaryEtime: updateSummaryEtime,
+    createSummary: createSummary,
+    getSummary: getSummary
   };
 });
