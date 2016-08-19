@@ -3,6 +3,10 @@
     bottom: initial;
 }
 
+.div-button{
+    cursor: pointer;
+}
+
 .bar-footer{
     margin-bottom: 40px;
     width:100%;

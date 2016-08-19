@@ -5,6 +5,10 @@
   The Friends service returns an array of friend data
 -->
 <ion-view view-title="{{title}}">
+  <ion-nav-buttons side="right">
+      <button class="button button-icon ion-more" ng-click="openPopover($event)">
+      </button>
+  </ion-nav-buttons>
   <ion-content class="" scroll="false">
     <ion-slides  options="options" slider="data.slider">
       <ion-slide-page ng-repeat="collo in left1 track by $index" ng-init="slideIndex = $index">
@@ -51,7 +55,7 @@
           </div>
 
         <div class="bar bar-footer bar-balanced">
-          <div class="title" ng-click="checkAnswer(slideIndex)">
+          <div class="title" ng-click="checkAnswer(slideIndex)" style="cursor:pointer;">
             Check Answer
           </div>
         </div>

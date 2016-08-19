@@ -11,20 +11,46 @@ angular.module('starter.controllers', [])
 
 })
 
+.controller('CustomBackController', function($scope,$ionicHistory,$stateParams,DroppedData){
+  $scope.myGoBack = function(){
+    var exId = $stateParams.exId;
+    $ionicHistory.goBack();
+    if((DroppedData.getEx1(exId).length > 0) || (DroppedData.getEx2(exId).length > 0)){
+      DroppedData.updateState(exId,"Incomplete");
+    }
+    else{
+      DroppedData.updateState(exId,"New");
+    }
+    // $scope.$boradcast("myEvent",{state: "haha"});
+  }
+})
+
 .controller('ExsCtrl', function($scope, Exercises, DroppedData) {
 
   Exercises.getAll().then(function(response){
     $scope.exercises = response;
+    for(var i=0;i<$scope.exercises.length;i++){
+      DroppedData.updateState($scope.exercises[i]._id,"New");
+    }
+    $scope.states = DroppedData.getAllStates();
   });
 
   $scope.remove = function(ex) {
     Exercises.remove(ex);
   };
 
-  $scope.state = "New";
+  //use this method to refresh data
+  $scope.$on('$ionicView.enter',function(e){
+    $scope.states = DroppedData.getAllStates();//refresh states
+  });
+
+  // $scope.$on("myEvent",function(event,args){
+  //   $scope.state = args.state;
+  //   console.log($scope.state);
+  // });
 })
 
-.controller('ExerciseCtrl', function($scope, $stateParams, Exercises, DroppedData, $ionicPopup) {
+.controller('ExerciseCtrl', function($scope, $stateParams, Exercises, DroppedData, $ionicPopup, $ionicPopover) {
   var exId = $stateParams.exId;
   if(!DroppedData.getEx1(exId)){
     DroppedData.createEx1(exId);
@@ -32,8 +58,8 @@ angular.module('starter.controllers', [])
   if(!DroppedData.getEx2(exId)){
     DroppedData.createEx2(exId);
   }
-  var oldRight1 = DroppedData.getAll1(exId);
-  var oldRight2 = DroppedData.getAll2(exId);
+  var oldRight1 = DroppedData.getEx1(exId);
+  var oldRight2 = DroppedData.getEx2(exId);
 
   $scope.droppedObjects1 = [];
   $scope.droppedObjects2 = [];
@@ -104,7 +130,7 @@ angular.module('starter.controllers', [])
       $scope.droppedObjects1[n] = DroppedData.get1(exId,n);
     }
     console.log("onDropComplete1", "", index,"", evt);
-    $scope.checkAnswer(n);
+    Check(n);
   }
 
   $scope.onDragSuccess2 = function(data,evt){
@@ -129,9 +155,53 @@ angular.module('starter.controllers', [])
       $scope.droppedObjects2[n] = DroppedData.get2(exId,n);
     }
     console.log("onDropComplete2", "", index,"", evt);
-    $scope.checkAnswer(n);
+    Check(n);
   }
+
+  $ionicPopover.fromTemplateUrl("templates/ex-detail-popover.html",{
+    scope: $scope
+  }).then(function(popover){
+    $scope.popover = popover;
+  });
+
+  $scope.showSummary = function(){
+    console.log("summary");
+  }
+
+  $scope.restartGame = function(){
+    var confirmPopup = $ionicPopup.confirm({
+      title: 'Restart this Game!',
+      template: 'Are you sure?'
+    });
+
+    confirmPopup.then(function(response){
+      if(response){
+        //clear model
+        DroppedData.clear(exId);
+        //clear view
+        $scope.droppedObjects1 = [];
+        $scope.droppedObjects2 = [];
+      }
+      else{
+        // console.log("no");
+      }
+    });
+  }
+
+  $scope.openPopover = function($event){
+    $scope.popover.show($event);
+  }
+
   $scope.checkAnswer = function(n){
+    if(!Check(n)){
+      var errorPopup = $ionicPopup.alert({
+        template: 'Incorrect',
+        title: 'Try again'
+      });
+    }
+  }
+
+  var Check = function(n){
     var value1 = $scope.droppedObjects1[n];
     var value2 = $scope.droppedObjects2[n];
     console.log(value1+"-"+value2);
@@ -145,13 +215,9 @@ angular.module('starter.controllers', [])
       myPopup.then(function(res){
         //custom functionality
       });
+      return true;
     }
-    // else{
-    //   var errorPopup = $ionicPopup.alert({
-    //     template: 'Incorrect',
-    //     title: 'Try again'
-    //   });
-    // }
+    return false;
   }
 
   var LoadState = function(){

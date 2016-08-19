@@ -89,6 +89,15 @@ angular.module('starter.services', [])
 .factory('DroppedData', function(){
   var dropObjects1 = [];
   var dropObjects2 = [];
+  var states = [];
+
+  var updateState = function(exId,state){
+    states[exId] = state;
+  }
+
+  var getAllStates = function(){
+    return states;
+  }
 
   var add1 = function(exId,obj,n){
     dropObjects1[exId][n].push(obj);
@@ -122,14 +131,6 @@ angular.module('starter.services', [])
     dropObjects2[exId][n] = [];
   }
 
-  var getAll1 = function(exId){
-    return dropObjects1[exId];
-  }
-
-  var getAll2 = function(exId){
-    return dropObjects2[exId];
-  }
-
   var createEx1 = function(exId){
     dropObjects1[exId] = [];
   }
@@ -146,6 +147,11 @@ angular.module('starter.services', [])
     return dropObjects2[exId];
   }
 
+  var clear = function(exId){
+    dropObjects1[exId] = [];
+    dropObjects2[exId] = [];
+  }
+
   return {
     add1: add1,
     add2: add2,
@@ -155,11 +161,12 @@ angular.module('starter.services', [])
     empty2: empty2,
     create1: create1,
     create2: create2,
-    getAll1: getAll1,
-    getAll2: getAll2,
     createEx1: createEx1,
     createEx2: createEx2,
     getEx1: getEx1,
-    getEx2: getEx2
+    getEx2: getEx2,
+    updateState: updateState,
+    getAllStates: getAllStates,
+    clear: clear
   };
 });
