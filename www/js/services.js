@@ -3,6 +3,7 @@ angular.module('starter.services', [])
 .factory('Exercises', function ($http) {
   var data = [];
   var words = [];
+  var slides = 0;
   // var collos = [];
 
   //actual path does work in browser but in phone (via phonegap or ionicview, so always keep the $http.get path form index.html)
@@ -39,6 +40,7 @@ angular.module('starter.services', [])
             words = jsonData.response.player.word;
             for(var j=0; j<words.length; j++){
               var collo = words[j].collo;
+              slides = collo.length;
               for(var k=0; k<collo.length; k++){
                 var text = collo[k].__text;
                 collos[j].left.push(getLeft(text));
@@ -78,6 +80,10 @@ angular.module('starter.services', [])
         }
       }
       return null;
+    },
+
+    getSlidesCount: function(exId){
+      return slides;
     },
 
     remove: function(ex) {

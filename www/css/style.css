@@ -53,12 +53,37 @@ p,h2{
     margin: 10px;
 }
 
+.popover {
+  height: auto !important;
+}
+.popover ion-header-bar {
+  position: relative;
+}
+.popover ion-content {
+  top: 0;
+  position: relative;
+}
+.popover-inner-content {
+  width: 100%;
+  padding: 5px 20px;
+}
 
 *{
     -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
+ul{
+    display: flex;
+    justify-content: center;
+}
 li{
-    margin:0 10px;
+    margin:0px 10px;
+}
+popover-style{
+    max-height: 120px;
+    border: 1px solid red;
+    /*position: relative;
+    height: auto;
+    min-height: 100% !important;*/
 }
 [ng-drag]{
     -moz-user-select: -moz-none;

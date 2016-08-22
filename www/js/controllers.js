@@ -11,15 +11,29 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('CustomBackController', function($scope,$ionicHistory,$stateParams,DroppedData,$filter){
+.controller('CustomBackController', function($scope,$ionicHistory,$stateParams,DroppedData,$filter,Exercises){
   $scope.myGoBack = function(){
     var exId = $stateParams.exId;
     $ionicHistory.goBack();
+
+    var totalSlides = Exercises.getSlidesCount();
     var time = new Date();
     var timeNow = $filter('date')(time,'medium');
     DroppedData.updateSummaryEtime(exId,timeNow);
     if((DroppedData.getEx1(exId).length > 0) || (DroppedData.getEx2(exId).length > 0)){
-      DroppedData.updateState(exId,"Incomplete");
+      var j = 0;
+      var values = DroppedData.getValues(exId);
+      for(i=0;i<values.length;i++){
+        if(values[i]){
+          j++;
+        }
+      }
+      if(j == totalSlides){
+        DroppedData.updateState(exId,"Complete");
+      }
+      else{
+        DroppedData.updateState(exId,"Incomplete");
+      }
     }
     else{
       DroppedData.updateState(exId,"New");
@@ -231,7 +245,6 @@ angular.module('starter.controllers', [])
   var Check = function(n){
     var value1 = $scope.droppedObjects1[n];
     var value2 = $scope.droppedObjects2[n];
-    console.log(value1+"-"+value2);
 
     if(value1 == $scope.right1[n] && value2 == $scope.right2[n]){
       var myPopup = $ionicPopup.alert({
