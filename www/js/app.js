@@ -23,7 +23,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+
+  //to override default behaviors of specific platforms (android,ios etc)
+  //e.g. android align its titles to left by default, so needs to change it here
+  //refer to docs http://ionicframework.com/docs/api/provider/$ionicConfigProvider/
+  $ionicConfigProvider.navBar.alignTitle('center');
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
