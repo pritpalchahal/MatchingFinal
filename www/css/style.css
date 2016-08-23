@@ -25,6 +25,26 @@ table tr:nth-child(even) {
   background-color: #ffffff;
 }
 
+.aa {
+  position: absolute;
+  left:0px;
+}
+
+.tabs .tab-item .icon.about {
+  background-repeat: no-repeat;
+  background-position: 50%;
+  height: 70%;
+  background-image: url('../img/flaxImages/img_flax_launcher.png');
+  background-size:contain;
+}
+
+.tabs .tab-item .icon.howtoplay {
+  background-repeat: no-repeat;
+  background-position: 50%;
+  height: 70%;
+  background-image: url('../img/flaxImages/img_flax_help.png');
+  background-size:contain;
+}
 .home .scroll-content {
   display: table !important;
   width: 100% !important;
