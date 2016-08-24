@@ -42,7 +42,7 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('ExsCtrl', function($scope, Exercises, DroppedData) {
+.controller('ExsCtrl', function($scope, Exercises, DroppedData,$timeout) {
 
   Exercises.getAll().then(function(response){
     $scope.exercises = response;
@@ -65,10 +65,60 @@ angular.module('starter.controllers', [])
   //   $scope.state = args.state;
   //   console.log($scope.state);
   // });
+
+  $scope.doRefresh = function(){
+    // $timeout(function(){
+      Exercises.getAll().then(function(response){
+        $scope.exercises = response;
+        for(var i=0;i<$scope.exercises.length;i++){
+          var currentState = DroppedData.getSingleState($scope.exercises[i]._id);
+          if(currentState){
+            DroppedData.updateState($scope.exercises[i]._id,currentState);
+          }
+          else{
+            DroppedData.updateState($scope.exercises[i]._id,"New");
+          }
+        }
+        $scope.states = DroppedData.getAllStates();
+        $scope.$broadcast('scroll.refreshComplete');
+      });
+    // },1000);
+  };
 })
 
-.controller('ExerciseCtrl', function($scope, $stateParams, Exercises, DroppedData, $ionicPopup, $ionicPopover,$filter) {
+.controller('ExerciseCtrl', function($scope, $stateParams, Exercises, DroppedData, $ionicPopup, $ionicPopover,$filter,
+  $ionicPlatform,$timeout) {
   var exId = $stateParams.exId;
+
+  $ionicPlatform.onHardwareBackButton(function(){
+    // $ionicHistory.goBack();
+
+    console.log("in");
+    var totalSlides = Exercises.getSlidesCount();
+    console.log(totalSlides);
+    var time = new Date();
+    var timeNow = $filter('date')(time,'medium');
+    DroppedData.updateSummaryEtime(exId,timeNow);
+    if((DroppedData.getEx1(exId).length > 0) || (DroppedData.getEx2(exId).length > 0)){
+      var j = 0;
+      var values = DroppedData.getValues(exId);
+      for(i=0;i<values.length;i++){
+        if(values[i]){
+          j++;
+        }
+      }
+      if(j == totalSlides){
+        DroppedData.updateState(exId,"Complete");
+      }
+      else{
+        DroppedData.updateState(exId,"Incomplete");
+      }
+    }
+    else{
+      DroppedData.updateState(exId,"New");
+    }
+  });
+
   if(!DroppedData.getValues(exId)){
     DroppedData.createValue(exId);
   }
@@ -196,21 +246,25 @@ angular.module('starter.controllers', [])
 
   $scope.showSummary = function(){
     var alertPopup = $ionicPopup.alert({
+      scope: $scope,
       title: 'Summary',
-      subTitle: 'StartTime: '+$scope.summary.sTime+'\nEndTime: '+$scope.summary.eTime,
-      // templateUrl: 'templates/summary.html',
-      scope: $scope
+      templateUrl: 'templates/summary.html'
     });
 
     alertPopup.then(function(response){
       //custom functionality
     });
+
+    //close popup after 3 seconds
+    // $timeout(function(){
+    //   alertPopup.close();
+    // }, 3000);
   }
 
   $scope.restartGame = function(){
     var confirmPopup = $ionicPopup.confirm({
       title: 'Restart this Game!',
-      template: 'Are you sure?'
+      template: 'Are you sure!'
     });
 
     confirmPopup.then(function(response){

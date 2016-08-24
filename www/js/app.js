@@ -21,6 +21,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
       StatusBar.styleDefault();
     }
   });
+  
+  // Disable BACK button on home
+  // $ionicPlatform.registerBackButtonAction(function(event) {
+  //   if (true) { // your check here
+  //     $ionicPopup.confirm({
+  //       title: 'System warning',
+  //       template: 'are you sure you want to exit?'
+  //     }).then(function(res) {
+  //       if (res) {
+  //         ionic.Platform.exitApp();
+  //       }
+  //     })
+  //   }
+  // }, 100);
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {

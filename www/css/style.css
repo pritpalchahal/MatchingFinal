@@ -215,3 +215,39 @@ ul.draggable-objects:after{
   position: absolute;
   left:0px;
 }
+
+/*Ionic popup CSS */
+.popup{
+  background-color: #AEAEB5 !important;
+}
+
+.popup-head{
+  background-color: #A0CCA6  !important;/*
+  background-image: url('../img/flaxImages/flaxHeader_right.png');
+  background-repeat: no-repeat !important;
+  background-position: 90% !important;
+  height: 100% !important;
+  width:100% !important;
+  background-size:contain;*/
+}
+
+.popup-title {
+  /*color: black !important;*/
+}
+
+.popup-sub-title{
+}
+
+.popup-body{/*
+  background: blue !important;
+  color:#fff !important;
+  font-size:24px !important;*/
+}
+
+.popup-buttons {
+  /*height: 120px !important;*/
+}
+
+.popup-buttons .button{
+  /*height: 30px !important;*/
+}

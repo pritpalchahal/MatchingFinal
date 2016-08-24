@@ -135,6 +135,10 @@ angular.module('starter.services', [])
     states[exId] = state;
   }
 
+  var getSingleState = function(exId){
+    return states[exId];
+  }
+
   var getAllStates = function(){
     return states;
   }
@@ -206,6 +210,7 @@ angular.module('starter.services', [])
     getEx1: getEx1,
     getEx2: getEx2,
     updateState: updateState,
+    getSingleState: getSingleState,
     getAllStates: getAllStates,
     clear: clear,
     updateValue: updateValue,
