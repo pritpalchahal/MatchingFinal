@@ -91,33 +91,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ExerciseCtrl', function($scope, $stateParams, Exercises, DroppedData, $ionicPopup, $ionicPopover,$filter,
-  $ionicPlatform,$timeout) {
+  $timeout) {
   var exId = $stateParams.exId;
-
-  $ionicPlatform.onHardwareBackButton(function(){
-    var totalSlides = Exercises.getSlidesCount();
-    var time = new Date();
-    var timeNow = $filter('date')(time,'medium');
-    DroppedData.updateSummaryEtime(exId,timeNow);
-    if((DroppedData.getEx1(exId).length > 0) || (DroppedData.getEx2(exId).length > 0)){
-      var j = 0;
-      var values = DroppedData.getValues(exId);
-      for(i=0;i<values.length;i++){
-        if(values[i]){
-          j++;
-        }
-      }
-      if(j == totalSlides){
-        DroppedData.updateState(exId,"Complete");
-      }
-      else{
-        DroppedData.updateState(exId,"Incomplete");
-      }
-    }
-    else{
-      DroppedData.updateState(exId,"New");
-    }
-  });
 
   if(!DroppedData.getValues(exId)){
     DroppedData.createValue(exId);

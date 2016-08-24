@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngDraggable'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform,$ionicHistory,$stateParams,Exercises,DroppedData,$filter) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -20,8 +20,38 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+  })
+
+  //override default android back button behavior 
+  $ionicPlatform.onHardwareBackButton(function(){
+    // console.log($ionicHistory.currentStateName());
+    if($ionicHistory.currentStateName() == 'tab.exercise'){
+      var exId = $stateParams.exId;
+      var totalSlides = Exercises.getSlidesCount();
+      var time = new Date();
+      var timeNow = $filter('date')(time,'medium');
+      DroppedData.updateSummaryEtime(exId,timeNow);
+      if((DroppedData.getEx1(exId).length > 0) || (DroppedData.getEx2(exId).length > 0)){
+        var j = 0;
+        var values = DroppedData.getValues(exId);
+        for(i=0;i<values.length;i++){
+          if(values[i]){
+            j++;
+          }
+        }
+        if(j == totalSlides){
+          DroppedData.updateState(exId,"Complete");
+        }
+        else{
+          DroppedData.updateState(exId,"Incomplete");
+        }
+      }
+      else{
+        DroppedData.updateState(exId,"New");
+      }
+    }
   });
-  
+
   // Disable BACK button on home
   // $ionicPlatform.registerBackButtonAction(function(event) {
   //   if (true) { // your check here
