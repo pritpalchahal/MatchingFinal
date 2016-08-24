@@ -111,6 +111,10 @@ angular.module('starter.services', [])
     summary[exId] = [];
   }
 
+  var clearSummary = function(exId){
+    summary[exId] = null;
+  }
+
   var getSummary = function(exId){
     return summary[exId];
   }
@@ -220,6 +224,7 @@ angular.module('starter.services', [])
     updateSummaryStime: updateSummaryStime,
     updateSummaryEtime: updateSummaryEtime,
     createSummary: createSummary,
-    getSummary: getSummary
+    getSummary: getSummary,
+    clearSummary: clearSummary
   };
 });

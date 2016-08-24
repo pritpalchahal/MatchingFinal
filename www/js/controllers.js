@@ -16,10 +16,14 @@ angular.module('starter.controllers', [])
     var exId = $stateParams.exId;
     $ionicHistory.goBack();
 
+    //update end time
+    if(DroppedData.getSingleState(exId) != "Complete"){
+      var time = new Date();
+      var timeNow = $filter('date')(time,'medium');
+      DroppedData.updateSummaryEtime(exId,timeNow);
+    }
+
     var totalSlides = Exercises.getSlidesCount();
-    var time = new Date();
-    var timeNow = $filter('date')(time,'medium');
-    DroppedData.updateSummaryEtime(exId,timeNow);
     if((DroppedData.getEx1(exId).length > 0) || (DroppedData.getEx2(exId).length > 0)){
       var j = 0;
       var values = DroppedData.getValues(exId);
@@ -91,11 +95,7 @@ angular.module('starter.controllers', [])
   var exId = $stateParams.exId;
 
   $ionicPlatform.onHardwareBackButton(function(){
-    // $ionicHistory.goBack();
-
-    console.log("in");
     var totalSlides = Exercises.getSlidesCount();
-    console.log(totalSlides);
     var time = new Date();
     var timeNow = $filter('date')(time,'medium');
     DroppedData.updateSummaryEtime(exId,timeNow);
@@ -272,6 +272,7 @@ angular.module('starter.controllers', [])
         //clear model
         DroppedData.clear(exId);
         DroppedData.clearValues(exId);
+        DroppedData.clearSummary(exId);
         //clear view
         $scope.myValue = DroppedData.getValues(exId);
         $scope.droppedObjects1 = [];
