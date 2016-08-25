@@ -11,6 +11,7 @@
     margin-bottom: 40px;
     width:100%;
     border-bottom: 1px solid grey;
+    background-color: #A0CCA6;
 }
 
 table, th , td  {
@@ -226,7 +227,8 @@ ul.draggable-objects:after{
   background-color: #A0CCA6  !important;
   background-image: url('../img/flaxImages/ic_launcher-web.png') !important;
   background-repeat: no-repeat !important;
-  background-attachment: fixed !important;
+  background-attachment: relative !important;
+  /*"fixed" value in this property causes image not to display in iOS and browser, but it works in android*/
   background-position: left center !important;
   background-size: 50px 50px;
 }
