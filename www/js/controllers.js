@@ -91,7 +91,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ExerciseCtrl', function($scope, $stateParams, Exercises, DroppedData, $ionicPopup, $ionicPopover,$filter,
-  $timeout) {
+  $timeout,$cordovaToast) {
   var exId = $stateParams.exId;
 
   if(!DroppedData.getValues(exId)){
@@ -283,10 +283,15 @@ angular.module('starter.controllers', [])
 
   $scope.checkAnswer = function(n){
     if(!Check(n)){
-      var errorPopup = $ionicPopup.alert({
-        template: 'Incorrect',
-        title: 'Try again'
+      $cordovaToast.show('Answer Incorrect!','short','top').then(function(res){//short,long..top,center,bottom
+        console.log("Toast "+res);
+      },function(error){
+        console.log("Toast "+error);
       });
+      // var errorPopup = $ionicPopup.alert({
+      //   template: 'Incorrect',
+      //   title: 'Try again'
+      // });
     }
   }
 
@@ -295,14 +300,19 @@ angular.module('starter.controllers', [])
     var value2 = $scope.droppedObjects2[n];
 
     if(value1 == $scope.right1[n] && value2 == $scope.right2[n]){
-      var myPopup = $ionicPopup.alert({
-        template: 'Well  done!',
-        title: 'Correct Answer.'
+      $cordovaToast.show('Correct Answer.','short','top').then(function(res){//short,long..top,center,bottom
+        console.log("Toast "+res);
+      },function(error){
+        console.log("Toast "+error);
       });
+      // var myPopup = $ionicPopup.alert({
+      //   template: 'Well  done!',
+      //   title: 'Correct Answer.'
+      // });
 
-      myPopup.then(function(res){
-        //custom functionality
-      });
+      // myPopup.then(function(res){
+      //   //custom functionality
+      // });
       DroppedData.updateValue(exId,true,n);//update show/hide values
       return true;
     }
