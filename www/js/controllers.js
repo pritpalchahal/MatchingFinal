@@ -97,6 +97,7 @@ angular.module('starter.controllers', [])
   if(!DroppedData.getValues(exId)){
     DroppedData.createValue(exId);
   }
+
   if(!DroppedData.getSummary(exId)){
     DroppedData.createSummary(exId);
     var time = new Date();
@@ -126,6 +127,7 @@ angular.module('starter.controllers', [])
     $scope.left2 = response[1].left;
     $scope.right1 = response[0].right;
     $scope.right2 = response[1].right;
+    $scope.slides = Exercises.getSlidesCount();
 
     for(var i=0;i<$scope.right1.length;i++){
         $scope.draggableObjects[i] = new Array(2);
@@ -220,9 +222,17 @@ angular.module('starter.controllers', [])
   });
 
   $scope.showSummary = function(){
+    var values = DroppedData.getValues(exId);
+    var i = 0;
+    for(var j=0;j<values.length;j++){
+      if(values[j]){
+        i++;
+      }
+    }
+    DroppedData.updateSummaryScore(exId,i);
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
-      title: 'Summary',
+      title: 'Summary report',
       templateUrl: 'templates/summary.html'
     });
 
@@ -231,9 +241,9 @@ angular.module('starter.controllers', [])
     });
 
     //close popup after 3 seconds
-    // $timeout(function(){
-    //   alertPopup.close();
-    // }, 3000);
+    $timeout(function(){
+      alertPopup.close();
+    }, 5000);
   }
 
   $scope.restartGame = function(){
@@ -248,10 +258,18 @@ angular.module('starter.controllers', [])
         DroppedData.clear(exId);
         DroppedData.clearValues(exId);
         DroppedData.clearSummary(exId);
+        DroppedData.createSummary(exId);
+        var time = new Date();
+        var timeNow = $filter('date')(time,'medium');//angularjs date format
+        DroppedData.updateSummaryStime(exId,timeNow);
+
         //clear view
         $scope.myValue = DroppedData.getValues(exId);
         $scope.droppedObjects1 = [];
         $scope.droppedObjects2 = [];
+
+        //update summary
+        $scope.summary = DroppedData.getSummary(exId);
       }
       else{
         // console.log("no");

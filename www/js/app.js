@@ -27,6 +27,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     // console.log($ionicHistory.currentStateName());
     if($ionicHistory.currentStateName() == 'tab.exercise'){
       var exId = $stateParams.exId;
+
+      //update end time
+      if(DroppedData.getSingleState(exId) != "Complete"){
+        var time = new Date();
+        var timeNow = $filter('date')(time,'medium');
+        DroppedData.updateSummaryEtime(exId,timeNow);
+      }
+      
       var totalSlides = Exercises.getSlidesCount();
       var time = new Date();
       var timeNow = $filter('date')(time,'medium');
@@ -51,20 +59,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
       }
     }
   });
-
-  // Disable BACK button on home
-  // $ionicPlatform.registerBackButtonAction(function(event) {
-  //   if (true) { // your check here
-  //     $ionicPopup.confirm({
-  //       title: 'System warning',
-  //       template: 'are you sure you want to exit?'
-  //     }).then(function(res) {
-  //       if (res) {
-  //         ionic.Platform.exitApp();
-  //       }
-  //     })
-  //   }
-  // }, 100);
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {

@@ -97,22 +97,28 @@ angular.module('starter.services', [])
   var dropObjects2 = [];
   var states = [];
   var myValues = [];
-  var summary = ["sTime","eTime","completed","total"];
+  var summary = [];
 
-  var updateSummaryStime = function(exId,sTime){
-    summary[exId].sTime = sTime;
+  var updateSummaryStime = function(exId,s){
+    summary[exId].sTime = s;
   }
 
-  var updateSummaryEtime = function(exId,eTime){
-    summary[exId].eTime = eTime;
+  var updateSummaryEtime = function(exId,e){
+    summary[exId].eTime = e;
+  }
+
+  var updateSummaryScore = function(exId,score){
+    if(summary[exId]){
+      summary[exId].score = score;
+    }
   }
 
   var createSummary = function(exId){
-    summary[exId] = [];
+    summary[exId] = {sTime:"n/a",eTime:"n/a",score:"0"};
   }
 
   var clearSummary = function(exId){
-    summary[exId] = null;
+    summary.splice(exId,1);
   }
 
   var getSummary = function(exId){
@@ -223,6 +229,7 @@ angular.module('starter.services', [])
     clearValues: clearValues,
     updateSummaryStime: updateSummaryStime,
     updateSummaryEtime: updateSummaryEtime,
+    updateSummaryScore: updateSummaryScore,
     createSummary: createSummary,
     getSummary: getSummary,
     clearSummary: clearSummary
