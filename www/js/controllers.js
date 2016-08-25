@@ -91,7 +91,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ExerciseCtrl', function($scope, $stateParams, Exercises, DroppedData, $ionicPopup, $ionicPopover,$filter,
-  $timeout,$cordovaToast) {
+  $timeout,ionicToast) {
   var exId = $stateParams.exId;
 
   if(!DroppedData.getValues(exId)){
@@ -241,15 +241,15 @@ angular.module('starter.controllers', [])
     });
 
     //close popup after 3 seconds
-    $timeout(function(){
-      alertPopup.close();
-    }, 5000);
+    // $timeout(function(){
+    //   alertPopup.close();
+    // }, 5000);
   }
 
   $scope.restartGame = function(){
     var confirmPopup = $ionicPopup.confirm({
       title: 'Restart this Game!',
-      template: 'Are you sure!'
+      template: 'Would you like to restart this game?'
     });
 
     confirmPopup.then(function(response){
@@ -283,11 +283,7 @@ angular.module('starter.controllers', [])
 
   $scope.checkAnswer = function(n){
     if(!Check(n)){
-      $cordovaToast.show('Answer Incorrect!','short','top').then(function(res){//short,long..top,center,bottom
-        console.log("Toast "+res);
-      },function(error){
-        console.log("Toast "+error);
-      });
+      ionicToast.show('Answer Incorrect!','middle',false,2500);
       // var errorPopup = $ionicPopup.alert({
       //   template: 'Incorrect',
       //   title: 'Try again'
@@ -300,11 +296,7 @@ angular.module('starter.controllers', [])
     var value2 = $scope.droppedObjects2[n];
 
     if(value1 == $scope.right1[n] && value2 == $scope.right2[n]){
-      $cordovaToast.show('Correct Answer.','short','top').then(function(res){//short,long..top,center,bottom
-        console.log("Toast "+res);
-      },function(error){
-        console.log("Toast "+error);
-      });
+      ionicToast.show('Correct Answer.','middle',false,2500);
       // var myPopup = $ionicPopup.alert({
       //   template: 'Well  done!',
       //   title: 'Correct Answer.'

@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngDraggable','ngCordova'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngDraggable','ionic-toast'])
 
 .run(function($ionicPlatform,$ionicHistory,$stateParams,Exercises,DroppedData,$filter) {
   $ionicPlatform.ready(function() {

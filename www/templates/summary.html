@@ -1,7 +1,16 @@
-<div >
-  <div style="white-space:nowrap;overflow:hideen;">Start time: &nbsp; {{summary.sTime}}</div>
-  <p></p>
-  <div style="white-space:nowrap;overflow:hideen;">End time: &nbsp; &nbsp; {{summary.eTime}}</div>
-  <p></p>
-  <div style="white-space:nowrap;overflow:hideen;">Score: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{summary.score}}/{{slides}}</div>
+<div>
+    <table class="summary-table">
+        <tr>
+            <th>Start Time:</th>
+            <th>{{summary.sTime}}</th>
+        </tr>
+        <tr>
+            <th>End Time:</th>
+            <th>{{summary.eTime}}</th>
+        </tr>
+        <tr>
+            <th>Score:</th>
+            <th>{{summary.score}}/{{slides}}</th>
+        </tr>
+    </table>
 </div>

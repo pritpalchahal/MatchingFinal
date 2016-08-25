@@ -218,17 +218,17 @@ ul.draggable-objects:after{
 
 /*Ionic popup CSS */
 .popup{
-  background-color: #AEAEB5 !important;
+  /*background-color: #AEAEB5 !important;*/
+  width:90% !important;
 }
 
 .popup-head{
-  background-color: #A0CCA6  !important;/*
-  background-image: url('../img/flaxImages/flaxHeader_right.png');
+  background-color: #A0CCA6  !important;
+  background-image: url('../img/flaxImages/ic_launcher-web.png') !important;
   background-repeat: no-repeat !important;
-  background-position: 90% !important;
-  height: 100% !important;
-  width:100% !important;
-  background-size:contain;*/
+  background-attachment: fixed !important;
+  background-position: left center !important;
+  background-size: 50px 50px;
 }
 
 .popup-title {
@@ -238,16 +238,38 @@ ul.draggable-objects:after{
 .popup-sub-title{
 }
 
-.popup-body{/*
-  background: blue !important;
-  color:#fff !important;
-  font-size:24px !important;*/
+.popup-body {
+  background-color: white !important;
+  padding: 20px 10px !important;
 }
 
 .popup-buttons {
-  /*height: 120px !important;*/
+  background-color: #A0CCA6 !important;
 }
 
 .popup-buttons .button{
-  /*height: 30px !important;*/
+  font-style: italic !important;
+}
+/*
+.popup-buttons .button-positive{
+  font-style: italic !important;
+  margin-left: 0px !important;
+  border-radius: 0px !important;
+}
+
+.popup-buttons .button-default{
+  font-style: italic !important;
+  margin-right: 0px !important;
+  border-radius: 0px !important;
+}*/
+
+.summary-table th{
+  text-align: left;
+  border: none;
+  background-color: white;
+}
+
+.summary-table{
+  width:100%;
+  border: none;
 }
