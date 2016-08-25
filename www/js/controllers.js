@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('collocationsmatching.controllers', [])
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -296,7 +296,7 @@ angular.module('starter.controllers', [])
     var value2 = $scope.droppedObjects2[n];
 
     if(value1 == $scope.right1[n] && value2 == $scope.right2[n]){
-      ionicToast.show('Correct Answer.','middle',false,2500);
+      //ionicToast.show('Correct Answer.','middle',false,2500);
       // var myPopup = $ionicPopup.alert({
       //   template: 'Well  done!',
       //   title: 'Correct Answer.'

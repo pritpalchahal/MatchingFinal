@@ -1,4 +1,4 @@
-angular.module('starter.services', [])
+angular.module('collocationsmatching.services', [])
 
 .factory('Exercises', function ($http) {
   var data = [];

@@ -68,6 +68,14 @@ table tr:nth-child(even) {
 p,h2{
     margin: 10px;
 }
+.pop-image{
+  padding-left: 50px;
+  background-repeat: no-repeat;
+  background-attachment: relative;
+  /*"fixed" value in this property causes image not to display in iOS and browser, but it works in android*/
+  background-position: left center;
+  background-size: 40px 40px;
+}
 
 .popover {
   height: auto !important;
@@ -112,7 +120,7 @@ popover-style{
   display: block;
   background: rgba(210,210,210,0.5);
   padding:4px;
-  border-top: 1px solid #000000;
+  /*border-top: 1px solid #000000;*/
 
 }
 [ng-drag]{
