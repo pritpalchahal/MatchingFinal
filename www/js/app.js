@@ -5,7 +5,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('collocationsmatching', ['ionic', 'collocationsmatching.controllers', 'collocationsmatching.services','ngDraggable','ionic-toast'])
 
-.run(function($ionicPlatform,$ionicHistory,$stateParams,Exercises,DroppedData,$filter) {
+.run(function($ionicPlatform,$ionicHistory,$stateParams,Exercises,StateData,SummaryData,DropData,AnswerData,$filter) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -27,33 +27,29 @@ angular.module('collocationsmatching', ['ionic', 'collocationsmatching.controlle
       var exId = $stateParams.exId;
 
       //update end time
-      if(DroppedData.getSingleState(exId) != "Complete"){
+      if(StateData.getSingleState(exId) != "Complete"){
         var time = new Date();
         var timeNow = $filter('date')(time,'medium');
-        DroppedData.updateSummaryEtime(exId,timeNow);
+        SummaryData.updateEndTime(exId,timeNow);
       }
       
-      var totalSlides = Exercises.getSlidesCount();
       var time = new Date();
       var timeNow = $filter('date')(time,'medium');
-      DroppedData.updateSummaryEtime(exId,timeNow);
-      if((DroppedData.getEx1(exId).length > 0) || (DroppedData.getEx2(exId).length > 0)){
-        var j = 0;
-        var values = DroppedData.getValues(exId);
-        for(i=0;i<values.length;i++){
-          if(values[i]){
-            j++;
-          }
-        }
-        if(j == totalSlides){
-          DroppedData.updateState(exId,"Complete");
-        }
-        else{
-          DroppedData.updateState(exId,"Incomplete");
+      SummaryData.updateEndTime(exId,timeNow);
+      
+      var totalSlides = Exercises.getSlidesCount();
+      var j = 0;
+      var values = AnswerData.getValues(exId);
+      for(i=0;i<values.length;i++){
+        if(values[i]){
+          j++;
         }
       }
+      if(j == totalSlides){
+        StateData.updateState(exId,"Complete");
+      }
       else{
-        DroppedData.updateState(exId,"New");
+        StateData.updateState(exId,"Incomplete");
       }
     }
   });

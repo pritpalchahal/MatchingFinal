@@ -11,49 +11,44 @@ angular.module('collocationsmatching.controllers', [])
 
 })
 
-.controller('CustomBackController', function($scope,$ionicHistory,$stateParams,DroppedData,$filter,Exercises){
+.controller('CustomBackController', function($scope,$ionicHistory,$stateParams,$filter,Exercises,StateData,SummaryData,AnswerData,DropData){
   $scope.myGoBack = function(){
     var exId = $stateParams.exId;
     $ionicHistory.goBack();
 
     //update end time
-    if(DroppedData.getSingleState(exId) != "Complete"){
+    if(StateData.getSingleState(exId) != "Complete"){
       var time = new Date();
       var timeNow = $filter('date')(time,'medium');
-      DroppedData.updateSummaryEtime(exId,timeNow);
+      SummaryData.updateEndTime(exId,timeNow);
     }
 
     var totalSlides = Exercises.getSlidesCount();
-    if((DroppedData.getEx1(exId).length > 0) || (DroppedData.getEx2(exId).length > 0)){
-      var j = 0;
-      var values = DroppedData.getValues(exId);
-      for(i=0;i<values.length;i++){
-        if(values[i]){
-          j++;
-        }
+
+    var j = 0;
+    var values = AnswerData.getValues(exId);
+    for(i=0;i<values.length;i++){
+      if(values[i]){
+        j++;
       }
-      if(j == totalSlides){
-        DroppedData.updateState(exId,"Complete");
-      }
-      else{
-        DroppedData.updateState(exId,"Incomplete");
-      }
+    }
+    if(j == totalSlides){
+      StateData.updateState(exId,"Complete");
     }
     else{
-      DroppedData.updateState(exId,"New");
+      StateData.updateState(exId,"Incomplete");
     }
-    // $scope.$boradcast("myEvent",{state: "haha"});
   }
 })
 
-.controller('ExsCtrl', function($scope, Exercises, DroppedData,$timeout) {
+.controller('ExsCtrl', function($scope, Exercises, StateData,$timeout) {
 
   Exercises.getAll().then(function(response){
     $scope.exercises = response;
     for(var i=0;i<$scope.exercises.length;i++){
-      DroppedData.updateState($scope.exercises[i]._id,"New");
+      StateData.updateState($scope.exercises[i]._id,"New");
     }
-    $scope.states = DroppedData.getAllStates();
+    $scope.states = StateData.getAllStates();
   });
 
   $scope.remove = function(ex) {
@@ -62,7 +57,7 @@ angular.module('collocationsmatching.controllers', [])
 
   //use this method to refresh data
   $scope.$on('$ionicView.enter',function(e){
-    $scope.states = DroppedData.getAllStates();//refresh states
+    $scope.states = StateData.getAllStates();//refresh states
   });
 
   // $scope.$on("myEvent",function(event,args){
@@ -75,64 +70,61 @@ angular.module('collocationsmatching.controllers', [])
       Exercises.getAll().then(function(response){
         $scope.exercises = response;
         for(var i=0;i<$scope.exercises.length;i++){
-          var currentState = DroppedData.getSingleState($scope.exercises[i]._id);
+          var currentState = StateData.getSingleState($scope.exercises[i]._id);
           if(currentState){
-            DroppedData.updateState($scope.exercises[i]._id,currentState);
+            StateData.updateState($scope.exercises[i]._id,currentState);
           }
           else{
-            DroppedData.updateState($scope.exercises[i]._id,"New");
+            StateData.updateState($scope.exercises[i]._id,"New");
           }
         }
-        $scope.states = DroppedData.getAllStates();
+        $scope.states = StateData.getAllStates();
         $scope.$broadcast('scroll.refreshComplete');
       });
     // },1000);
   };
 })
 
-.controller('ExerciseCtrl', function($scope, $stateParams, Exercises, DroppedData, $ionicPopup, $ionicPopover,$filter,
-  $timeout,ionicToast) {
+.controller('ExerciseCtrl', function($scope, $stateParams, Exercises, $ionicPopup, $ionicPopover,$filter,
+  $timeout,ionicToast,DropData,AnswerData,SummaryData) {
   var exId = $stateParams.exId;
 
-  if(!DroppedData.getValues(exId)){
-    DroppedData.createValue(exId);
+  if(!AnswerData.getValues(exId)){
+    AnswerData.createValue(exId);
   }
 
-  if(!DroppedData.getSummary(exId)){
-    DroppedData.createSummary(exId);
+  if(!SummaryData.getSummary(exId)){
+    SummaryData.createSummary(exId);
     var time = new Date();
     var timeNow = $filter('date')(time,'medium');//angularjs date format
-    DroppedData.updateSummaryStime(exId,timeNow);
+    SummaryData.updateStartTime(exId,timeNow);
   }
 
-  $scope.myValue = DroppedData.getValues(exId);
-  $scope.summary = DroppedData.getSummary(exId);
+  $scope.myValue = AnswerData.getValues(exId);
+  $scope.summary = SummaryData.getSummary(exId);
 
-  if(!DroppedData.getEx1(exId)){
-    DroppedData.createEx1(exId);
-  }
-  if(!DroppedData.getEx2(exId)){
-    DroppedData.createEx2(exId);
-  }
-  var oldRight1 = DroppedData.getEx1(exId);
-  var oldRight2 = DroppedData.getEx2(exId);
-
-  $scope.droppedObjects1 = [];
-  $scope.droppedObjects2 = [];
+  var oldData = DropData.getWord(exId);
 
   $scope.draggableObjects = [];
+  $scope.dropped = [];
 
   Exercises.getSingleEx($stateParams.exId).then(function(response){
-    $scope.left1 = response[0].left;
-    $scope.left2 = response[1].left;
-    $scope.right1 = response[0].right;
-    $scope.right2 = response[1].right;
+    $scope.words = response;
     $scope.slides = Exercises.getSlidesCount();
+    $scope.slideCount = new Array($scope.slides);
 
-    for(var i=0;i<$scope.right1.length;i++){
-        $scope.draggableObjects[i] = new Array(2);
-        $scope.draggableObjects[i][0] = $scope.right1[i];
-        $scope.draggableObjects[i][1] = $scope.right2[i];
+    for(var i=0;i<$scope.slides;i++){
+        $scope.draggableObjects[i] = new Array($scope.words.length);
+        for(var j=0 ; j<$scope.words.length; j++){
+          $scope.draggableObjects[i][j] = $scope.words[j][i].right;
+        }
+    }
+
+    if(!oldData){
+      DropData.createEx(exId);
+      for(var i=0;i<$scope.words.length;i++){
+        DropData.createWord(exId,i);
+      }
     }
   });
 
@@ -165,54 +157,20 @@ angular.module('collocationsmatching.controllers', [])
     $scope.previousIndex = data.previousIndex;
   });
 
-  $scope.onDragSuccess1 = function(data,evt){
-    var n = $scope.slider.activeIndex;
-    if(!DroppedData.get1(exId,n)){
-      DroppedData.create1(exId,n);return;
-    }
-    var index = DroppedData.get1(exId,n).indexOf(data);
-    if (index > -1) {
-        DroppedData.get1(exId,n).splice(index,1);
-    }
-    console.log("onDragSuccess1", "",index,"", evt);
+  $scope.onDragSuccess = function(data,evt,wordIndex){
+    var slideId = $scope.slider.activeIndex;
+    DropData.clearValue(exId,wordIndex,slideId);
+    console.log("onDragSuccess", "",wordIndex,"", data);
   }
-  $scope.onDropComplete1 = function(data,evt){
-    var n = $scope.slider.activeIndex;
-    DroppedData.create1(exId,n);
-    var index = DroppedData.get1(exId,n).indexOf(data);
-    if (index == -1){
-      DroppedData.empty1(exId,n);
-      DroppedData.add1(exId,data,n);
-      $scope.droppedObjects1[n] = [];
-      $scope.droppedObjects1[n] = DroppedData.get1(exId,n);
+  $scope.onDropComplete = function(data,evt,wordIndex){
+    var slideId = $scope.slider.activeIndex;
+    var value = DropData.getValue(exId,wordIndex,slideId);
+    if(value != data){
+      DropData.add(exId,wordIndex,slideId,data);
+      $scope.dropped = DropData.getWord(exId);
     }
-    console.log("onDropComplete1", "", index,"", evt);
-    Check(n);
-  }
-
-  $scope.onDragSuccess2 = function(data,evt){
-    var n = $scope.slider.activeIndex;
-    if(!DroppedData.get2(exId,n)){
-      DroppedData.create2(exId,n);return;
-    }
-    var index = DroppedData.get2(exId,n).indexOf(data);
-    if (index > -1) {
-        DroppedData.get2(exId,n).splice(index,1);
-    }
-    console.log("onDragSuccess2", "",index,"", evt);
-  }
-  $scope.onDropComplete2 = function(data,evt){
-    var n = $scope.slider.activeIndex;
-    DroppedData.create2(exId,n);
-    var index = DroppedData.get2(exId,n).indexOf(data);
-    if (index == -1){
-      DroppedData.empty2(exId,n);
-      DroppedData.add2(exId,data,n);
-      $scope.droppedObjects2[n] = [];
-      $scope.droppedObjects2[n] = DroppedData.get2(exId,n);
-    }
-    console.log("onDropComplete2", "", index,"", evt);
-    Check(n);
+    console.log("onDropComplete", "", wordIndex,"", data);
+    Check(slideId);
   }
 
   $ionicPopover.fromTemplateUrl("templates/ex-detail-popover.html",{
@@ -222,14 +180,14 @@ angular.module('collocationsmatching.controllers', [])
   });
 
   $scope.showSummary = function(){
-    var values = DroppedData.getValues(exId);
+    var values = AnswerData.getValues(exId);
     var i = 0;
     for(var j=0;j<values.length;j++){
       if(values[j]){
         i++;
       }
     }
-    DroppedData.updateSummaryScore(exId,i);
+    SummaryData.updateScore(exId,i);
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
       title: 'Summary report',
@@ -255,21 +213,20 @@ angular.module('collocationsmatching.controllers', [])
     confirmPopup.then(function(response){
       if(response){
         //clear model
-        DroppedData.clear(exId);
-        DroppedData.clearValues(exId);
-        DroppedData.clearSummary(exId);
-        DroppedData.createSummary(exId);
+        DropData.clear(exId);
+        AnswerData.clearValues(exId);
+        SummaryData.clearSummary(exId);
+        SummaryData.createSummary(exId);
         var time = new Date();
         var timeNow = $filter('date')(time,'medium');//angularjs date format
-        DroppedData.updateSummaryStime(exId,timeNow);
+        SummaryData.updateEndTime(exId,timeNow);
 
         //clear view
-        $scope.myValue = DroppedData.getValues(exId);
-        $scope.droppedObjects1 = [];
-        $scope.droppedObjects2 = [];
+        $scope.myValue = AnswerData.getValues(exId);
+        $scope.dropped = [];
 
         //update summary
-        $scope.summary = DroppedData.getSummary(exId);
+        $scope.summary = SummaryData.getSummary(exId);
       }
       else{
         // console.log("no");
@@ -291,48 +248,26 @@ angular.module('collocationsmatching.controllers', [])
     }
   }
 
-  var Check = function(n){
-    var value1 = $scope.droppedObjects1[n];
-    var value2 = $scope.droppedObjects2[n];
+  var Check = function(slideId){
+    var count = 0;
+    var wordsCount = $scope.words.length;
 
-    if(value1 == $scope.right1[n] && value2 == $scope.right2[n]){
-      //ionicToast.show('Correct Answer.','middle',false,2500);
-      // var myPopup = $ionicPopup.alert({
-      //   template: 'Well  done!',
-      //   title: 'Correct Answer.'
-      // });
+    for(var i=0;i<wordsCount;i++){
+      if($scope.dropped[i][slideId] == $scope.words[i][slideId].right){
+        count++;
+      }
+    }
 
-      // myPopup.then(function(res){
-      //   //custom functionality
-      // });
-      DroppedData.updateValue(exId,true,n);//update show/hide values
+    if(count == wordsCount){
+      AnswerData.updateValue(exId,true,slideId);//update show/hide values
       return true;
     }
     return false;
   }
 
   var LoadState = function(){
-    if(oldRight1){
-      for(var i = 0;i<oldRight1.length;i++){
-        $scope.droppedObjects1[i] = [];
-        if(oldRight1[i]){
-          for(var j=0;j<oldRight1[i].length;j++){
-            $scope.droppedObjects1[i][j] = [];
-            $scope.droppedObjects1[i][j] = oldRight1[i][j];
-          }
-        }
-      }
-    }
-    if(oldRight2){
-      for(var i = 0;i<oldRight2.length;i++){
-        $scope.droppedObjects2[i] = [];
-        if(oldRight2[i]){
-          for(var j=0;j<oldRight2[i].length;j++){
-            $scope.droppedObjects2[i][j] = [];
-            $scope.droppedObjects2[i][j] = oldRight2[i][j];
-          }
-        }
-      }
+    if(oldData){
+      $scope.dropped = oldData;
     }
   }
 })

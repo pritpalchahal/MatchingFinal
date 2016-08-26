@@ -1,12 +1,19 @@
 angular.module('collocationsmatching.services', [])
 
 .factory('Exercises', function ($http) {
+  var permanentUrl = "http://collections.flax.nzdl.org/greenstone3/flax?a=pr&o=xml&ro=1&rt=r&s=SSSS&c=CCCC&s1.service=11";
+  //to get url replace CCCC with collection name (e.g. collocations) & SSSS with activity name (e.g. CollocationMatching)
+  var thisCollection = "collocations";
+  var thisActivity = "CollocationMatching";
+
+  permanentUrl = permanentUrl.replace("SSSS",thisActivity);
+  permanentUrl = permanentUrl.replace("CCCC",thisCollection);
+
   var data = [];
   var words = [];
   var slides = 0;
-  // var collos = [];
 
-  //actual path does work in browser but in phone (via phonegap or ionicview, so always keep the $http.get path form index.html)
+  //actual path does work in browser but not in phone (via phonegap or ionicview, so always keep the $http.get path form index.html)
   var url = "templates/default_exercises/default_exercise_list.xml";
 
   var getLeft = function(word){
@@ -29,9 +36,7 @@ angular.module('collocationsmatching.services', [])
     },
 
     getSingleEx: function(exId){
-      var collos = [{"left":[],"right":[]},{"left":[],"right":[]}];
-      var array = {"l1":[],"r1":[],"l2":[],"r2":[]};
-      var coll = ["l1","l2","r1","r2"];
+      var collos = [];
       for(var i= 0 ; i<data.length; i++){
         if(data[i]._id == parseInt(exId)){
           return $http.get("templates/"+data[i].url).then(function(response){
@@ -40,32 +45,16 @@ angular.module('collocationsmatching.services', [])
             words = jsonData.response.player.word;
             for(var j=0; j<words.length; j++){
               var collo = words[j].collo;
+              collos[j] = [];
               slides = collo.length;
               for(var k=0; k<collo.length; k++){
                 var text = collo[k].__text;
-                collos[j].left.push(getLeft(text));
-                collos[j].right.push(getRight(text));
-
-                // if(j==0){
-
-                //   array.l1.push(getLeft(text));
-                //   array.r1.push(getRight(text));
-                // }
-                // else{
-                //   array.l2.push(getLeft(text));
-                //   array.r2.push(getRight(text));
-                // }
+                var left = getLeft(text);
+                var right = getRight(text);
+                var obj = {"left":left,"right":right};
+                collos[j].push(obj);
               };
             };
-            // console.log(array);
-            // for(var j=0 ; j<collos.length; j++){
-            //   for(var k=0; k<collos[j].left.length; k++){
-            //     console.log(collos[j].left[k]);
-            //   }
-            //   for(var k=0; k<collos[j].right.length; k++){
-            //     console.log(collos[j].right[k]);
-            //   }
-            // };
             return collos;
           });
         }
@@ -92,38 +81,50 @@ angular.module('collocationsmatching.services', [])
   };
 })
 
-.factory('DroppedData', function(){
-  var dropObjects1 = [];
-  var dropObjects2 = [];
-  var states = [];
+.factory('DropData',function(){
+  var dropped = [];
+
+  var createEx = function(exId){
+    dropped[exId] = [];
+  }
+
+  var createWord = function(exId,wordId){
+    dropped[exId][wordId] = [];
+  }
+
+  var add = function(exId,wordId,slideId,value){
+    dropped[exId][wordId][slideId] = value;
+  }
+
+  var clearValue = function(exId,wordId,slideId){
+    dropped[exId][wordId][slideId] = null;
+  }
+
+  var getWord = function(exId){
+    return dropped[exId];
+  }
+
+  var getValue = function(exId,wordId,slideId){
+    return dropped[exId][wordId][slideId];
+  }
+
+  var clear = function(exId){
+    dropped[exId] = [];
+  }
+
+  return{
+    createEx: createEx,
+    createWord: createWord,
+    add: add,
+    clearValue: clearValue,
+    getWord: getWord,
+    getValue: getValue,
+    clear: clear
+  };
+})
+
+.factory('AnswerData', function () {
   var myValues = [];
-  var summary = [];
-
-  var updateSummaryStime = function(exId,s){
-    summary[exId].sTime = s;
-  }
-
-  var updateSummaryEtime = function(exId,e){
-    summary[exId].eTime = e;
-  }
-
-  var updateSummaryScore = function(exId,score){
-    if(summary[exId]){
-      summary[exId].score = score;
-    }
-  }
-
-  var createSummary = function(exId){
-    summary[exId] = {sTime:"n/a",eTime:"n/a",score:"0"};
-  }
-
-  var clearSummary = function(exId){
-    summary.splice(exId,1);
-  }
-
-  var getSummary = function(exId){
-    return summary[exId];
-  }
 
   var updateValue = function(exId,value,n){
     myValues[exId][n] = value;
@@ -141,6 +142,57 @@ angular.module('collocationsmatching.services', [])
     myValues[exId] = [];
   }
 
+  return {
+    updateValue: updateValue,
+    createValue: createValue,
+    getValues: getValues,
+    clearValues: clearValues
+  };
+})
+
+.factory('SummaryData', function () {
+  var summary = [];
+
+  var updateStartTime = function(exId,s){
+    summary[exId].sTime = s;
+  }
+
+  var updateEndTime = function(exId,e){
+    summary[exId].eTime = e;
+  }
+
+  var updateScore = function(exId,score){
+    if(summary[exId]){
+      summary[exId].score = score;
+    }
+  }
+
+  var createSummary = function(exId){
+    summary[exId] = {sTime:"n/a",eTime:"n/a",score:"0"};
+  }
+
+  var clearSummary = function(exId){
+    summary.splice(exId,1);
+  }
+
+  var getSummary = function(exId){
+    return summary[exId];
+  }
+  
+
+  return {
+    updateStartTime: updateStartTime,
+    updateEndTime: updateEndTime,
+    updateScore: updateScore,
+    createSummary: createSummary,
+    getSummary: getSummary,
+    clearSummary: clearSummary
+  };
+})
+
+.factory('StateData', function () {
+  var states = [];
+
   var updateState = function(exId,state){
     states[exId] = state;
   }
@@ -152,86 +204,10 @@ angular.module('collocationsmatching.services', [])
   var getAllStates = function(){
     return states;
   }
-
-  var add1 = function(exId,obj,n){
-    dropObjects1[exId][n].push(obj);
-  };
-
-  var add2 = function(exId,obj,n){
-    dropObjects2[exId][n].push(obj);
-  };
-
-  var get1 = function(exId,n){
-    return dropObjects1[exId][n];
-  };
-
-  var get2 = function(exId,n){
-    return dropObjects2[exId][n];
-  };
-
-  var empty1 = function(exId,n){
-    dropObjects1[exId][n] = [];
-  }
-
-  var empty2 = function(exId,n){
-    dropObjects2[exId][n] = [];
-  }
-
-  var create1 = function(exId,n){
-    dropObjects1[exId][n] = [];
-  }
-
-  var create2 = function(exId,n){
-    dropObjects2[exId][n] = [];
-  }
-
-  var createEx1 = function(exId){
-    dropObjects1[exId] = [];
-  }
-
-  var createEx2 = function(exId){
-    dropObjects2[exId] = [];
-  }
-
-  var getEx1 = function(exId){
-    return dropObjects1[exId];
-  }
-
-  var getEx2 = function(exId){
-    return dropObjects2[exId];
-  }
-
-  var clear = function(exId){
-    dropObjects1[exId] = [];
-    dropObjects2[exId] = [];
-  }
-
+  
   return {
-    add1: add1,
-    add2: add2,
-    get1: get1,
-    get2: get2,
-    empty1: empty1,
-    empty2: empty2,
-    create1: create1,
-    create2: create2,
-    createEx1: createEx1,
-    createEx2: createEx2,
-    getEx1: getEx1,
-    getEx2: getEx2,
     updateState: updateState,
     getSingleState: getSingleState,
-    getAllStates: getAllStates,
-    clear: clear,
-    updateValue: updateValue,
-    createValue: createValue,
-    getValues: getValues,
-    clearValues: clearValues,
-    updateSummaryStime: updateSummaryStime,
-    updateSummaryEtime: updateSummaryEtime,
-    updateSummaryScore: updateSummaryScore,
-    createSummary: createSummary,
-    getSummary: getSummary,
-    clearSummary: clearSummary
+    getAllStates: getAllStates
   };
 });
