@@ -1,4 +1,4 @@
-angular.module('collocationsmatching.controllers', [])
+angular.module('collocationmatching.controllers', [])
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -24,7 +24,6 @@ angular.module('collocationsmatching.controllers', [])
     }
 
     var totalSlides = Exercises.getSlidesCount();
-
     var j = 0;
     var values = AnswerData.getValues(exId);
     for(i=0;i<values.length;i++){
@@ -217,6 +216,7 @@ angular.module('collocationsmatching.controllers', [])
         AnswerData.clearValues(exId);
         SummaryData.clearSummary(exId);
         SummaryData.createSummary(exId);
+
         var time = new Date();
         var timeNow = $filter('date')(time,'medium');//angularjs date format
         SummaryData.updateEndTime(exId,timeNow);
@@ -274,6 +274,6 @@ angular.module('collocationsmatching.controllers', [])
 
 .controller('HowToPlayCtrl', function($scope) {
   $scope.settings = {
-    enableFriends: true
+    enableHelp: true
   };
 });

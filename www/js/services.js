@@ -1,4 +1,4 @@
-angular.module('collocationsmatching.services', [])
+angular.module('collocationmatching.services', [])
 
 .factory('Exercises', function ($http) {
   var permanentUrl = "http://collections.flax.nzdl.org/greenstone3/flax?a=pr&o=xml&ro=1&rt=r&s=SSSS&c=CCCC&s1.service=11";

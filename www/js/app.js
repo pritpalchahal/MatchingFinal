@@ -3,7 +3,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('collocationsmatching', ['ionic', 'collocationsmatching.controllers', 'collocationsmatching.services','ngDraggable','ionic-toast'])
+angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers', 'collocationmatching.services','ngDraggable','ionic-toast'])
 
 .run(function($ionicPlatform,$ionicHistory,$stateParams,Exercises,StateData,SummaryData,DropData,AnswerData,$filter) {
   $ionicPlatform.ready(function() {
@@ -32,11 +32,7 @@ angular.module('collocationsmatching', ['ionic', 'collocationsmatching.controlle
         var timeNow = $filter('date')(time,'medium');
         SummaryData.updateEndTime(exId,timeNow);
       }
-      
-      var time = new Date();
-      var timeNow = $filter('date')(time,'medium');
-      SummaryData.updateEndTime(exId,timeNow);
-      
+
       var totalSlides = Exercises.getSlidesCount();
       var j = 0;
       var values = AnswerData.getValues(exId);
