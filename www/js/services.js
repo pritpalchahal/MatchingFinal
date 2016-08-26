@@ -1,13 +1,18 @@
 angular.module('collocationmatching.services', [])
 
 .factory('Exercises', function ($http) {
-  var permanentUrl = "http://collections.flax.nzdl.org/greenstone3/flax?a=pr&o=xml&ro=1&rt=r&s=SSSS&c=CCCC&s1.service=11";
+  var mainUrl = "http://collections.flax.nzdl.org/greenstone3/flax";
+  var subUrl = "?a=pr&o=xml&ro=1&rt=r&s=SSSS&c=CCCC&s1.service=11";
+  var service = 100;
+  var collname = "&s1.collname=collocations";
   //to get url replace CCCC with collection name (e.g. collocations) & SSSS with activity name (e.g. CollocationMatching)
   var thisCollection = "collocations";
   var thisActivity = "CollocationMatching";
 
-  permanentUrl = permanentUrl.replace("SSSS",thisActivity);
-  permanentUrl = permanentUrl.replace("CCCC",thisCollection);
+  subUrl = subUrl.replace("SSSS",thisActivity);
+  subUrl = subUrl.replace("CCCC",thisCollection);
+  var singleSubUrl = subUrl.replace("11",service) + collname;
+  var exUrl = mainUrl + subUrl;
 
   var data = [];
   var words = [];
@@ -27,7 +32,7 @@ angular.module('collocationmatching.services', [])
 
   return {
     getAll: function(){
-      return $http.get(url).then(function(response){
+      return $http.get(exUrl).then(function(response){
         var x2js = new X2JS();
         var jsonData = x2js.xml_str2json(response.data);
         data = jsonData.response.categoryList.category.exercise;
@@ -39,7 +44,11 @@ angular.module('collocationmatching.services', [])
       var collos = [];
       for(var i= 0 ; i<data.length; i++){
         if(data[i]._id == parseInt(exId)){
-          return $http.get("templates/"+data[i].url).then(function(response){
+          var thisUrl = data[i].url;
+          var newUrl = thisUrl.substr(thisUrl.indexOf("&s1.params"));
+          newUrl = mainUrl + singleSubUrl + newUrl;
+          // return $http.get("templates/"+data[i].url).then(function(response){
+          return $http.get(newUrl).then(function(response){
             var x2js = new X2JS();
             var jsonData = x2js.xml_str2json(response.data);
             words = jsonData.response.player.word;
