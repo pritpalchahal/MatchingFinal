@@ -1,7 +1,7 @@
 {
-  "name": "demotabs",
+  "name": "Collocation Matching",
   "version": "1.1.1",
-  "description": "DemoTabs: An Ionic project",
+  "description": "Collocation Matching: An Ionic project for flax language learning system",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^2.0.4",
