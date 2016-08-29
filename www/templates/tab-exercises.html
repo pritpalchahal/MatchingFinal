@@ -10,8 +10,8 @@
     <ion-list>
       <ion-item class="item-remove-animate item-icon-right" ng-repeat="ex in exercises" type="item-text-wrap" href="#/tab/exs/{{ex._id}}">
         <!-- <img ng-src="{{chat.face}}"> -->
-        <h2>{{ex._name}}</h2>
-        <div><span class="badge">{{states[ex._id]}}</span></div>
+        <div style="font-size:14px;">{{ex._name}}</div>
+        <div style="font-size:12px;font-style:italic">{{states[ex._id]}}</div>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
         <ion-option-button class="button-assertive" ng-click="remove(ex)">

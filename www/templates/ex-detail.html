@@ -9,19 +9,19 @@
       <button class="button button-icon ion-more" ng-click="openPopover($event)">
       </button>
   </ion-nav-buttons>
-  <ion-content class="" scroll="false">
+  <ion-content class="" scroll="true">
     <ion-slides  options="options" slider="data.slider">
       <ion-slide-page ng-repeat="collo in slideCount track by $index" ng-init="slideIndex = $index">
 
         <div class="draggables container-fluid sub-header"> 
           <ul class="draggable-objects">
-            <li  ng-repeat="obj in draggableObjects[slideIndex]">
+            <li  ng-repeat="obj in draggableObjects[slideIndex] track by $index">
               <div ng-drag="true" ng-drag-data="obj" data-allow-transform="true"> {{obj}} </div>
             </li>
           </ul>
         </div>
 
-        <div ng-repeat="word in words track by $index" ng-init="wordIndex = $index">
+        <div ng-repeat="word in words track by $index" ng-init="wordIndex = $index" ng-if="word[slideIndex]">
           <div class="row" style="margin-top:30px;">
 
             <div class="fixed-value col col-xs-4" ng-show="myValue[slideIndex]">

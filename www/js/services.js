@@ -1,14 +1,18 @@
 angular.module('collocationmatching.services', [])
 
 .factory('Exercises', function ($http) {
+  var AllUrl = "http://collections.flax.nzdl.org/greenstone3/flax?a=fp&sa=library&o=xml";
   var mainUrl = "http://collections.flax.nzdl.org/greenstone3/flax";
   var subUrl = "?a=pr&o=xml&ro=1&rt=r&s=SSSS&c=CCCC&s1.service=11";
   var service = 100;
-  var collname = "&s1.collname=collocations";
+  var collname = "&s1.collname=CCCC";
   //to get url replace CCCC with collection name (e.g. collocations) & SSSS with activity name (e.g. CollocationMatching)
-  var thisCollection = "collocations";
+  //flaxc252,flaxc408,flaxc407 returns error
+  //lawcorpus empty
+  var thisCollection = "flaxc383";//"collocations",flaxc383,flaxc158,flaxc404
   var thisActivity = "CollocationMatching";
 
+  collname = collname.replace("CCCC",thisCollection);
   subUrl = subUrl.replace("SSSS",thisActivity);
   subUrl = subUrl.replace("CCCC",thisCollection);
   var singleSubUrl = subUrl.replace("11",service) + collname;
@@ -17,9 +21,19 @@ angular.module('collocationmatching.services', [])
   var data = [];
   var words = [];
   var slides = 0;
+  var slidesCount = [];
 
   //actual path does work in browser but not in phone (via phonegap or ionicview, so always keep the $http.get path form index.html)
   var url = "templates/default_exercises/default_exercise_list.xml";
+
+  var getAllColls = function(){
+    return $http.get(AllUrl).then(function(response){
+      var x2js = new X2JS();
+      var jsonData = x2js.xml_str2json(response.data);
+      // console.log(jsonData);
+      return jsonData;
+    });
+  };
 
   var getLeft = function(word){
     // return word.split(" ")[0];
@@ -31,22 +45,28 @@ angular.module('collocationmatching.services', [])
   };
 
   return {
+    getAllColls: getAllColls,
     getAll: function(){
+      console.log(exUrl);
       return $http.get(exUrl).then(function(response){
         var x2js = new X2JS();
         var jsonData = x2js.xml_str2json(response.data);
-        data = jsonData.response.categoryList.category.exercise;
+        // console.log(jsonData);
+        data = [].concat(jsonData.response.categoryList.category.exercise);
+        // console.log(data);
         return data;
       });
     },
 
     getSingleEx: function(exId){
+      slidesCount = [];
       var collos = [];
       for(var i= 0 ; i<data.length; i++){
         if(data[i]._id == parseInt(exId)){
           var thisUrl = data[i].url;
           var newUrl = thisUrl.substr(thisUrl.indexOf("&s1.params"));
           newUrl = mainUrl + singleSubUrl + newUrl;
+          console.log(newUrl);
           // return $http.get("templates/"+data[i].url).then(function(response){
           return $http.get(newUrl).then(function(response){
             var x2js = new X2JS();
@@ -55,7 +75,8 @@ angular.module('collocationmatching.services', [])
             for(var j=0; j<words.length; j++){
               var collo = words[j].collo;
               collos[j] = [];
-              slides = collo.length;
+              slidesCount.push(collo.length);
+              // slides = collo.length;
               for(var k=0; k<collo.length; k++){
                 var text = collo[k].__text;
                 var left = getLeft(text);
@@ -80,8 +101,11 @@ angular.module('collocationmatching.services', [])
       return null;
     },
 
-    getSlidesCount: function(exId){
-      return slides;
+    getSlidesCount: function(){
+      console.log(slidesCount);
+      // return slides;
+      // return Math.min.apply(Math,slidesCount);
+      return Math.max.apply(Math,slidesCount);
     },
 
     remove: function(ex) {

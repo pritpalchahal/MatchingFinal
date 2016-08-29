@@ -42,8 +42,17 @@ angular.module('collocationmatching.controllers', [])
 
 .controller('ExsCtrl', function($scope, Exercises, StateData,$timeout) {
 
+  Exercises.getAllColls().then(function(response){
+    //
+  });
+
   Exercises.getAll().then(function(response){
     $scope.exercises = response;
+    // if($scope.exercises.length == 0){
+    //   $scope.exercises = [];
+    //   $scope.exercises.push(response);
+    // }
+    console.log($scope.exercises);
     for(var i=0;i<$scope.exercises.length;i++){
       StateData.updateState($scope.exercises[i]._id,"New");
     }
@@ -115,7 +124,9 @@ angular.module('collocationmatching.controllers', [])
     for(var i=0;i<$scope.slides;i++){
         $scope.draggableObjects[i] = new Array($scope.words.length);
         for(var j=0 ; j<$scope.words.length; j++){
-          $scope.draggableObjects[i][j] = $scope.words[j][i].right;
+          if($scope.words[j][i]){
+            $scope.draggableObjects[i][j] = $scope.words[j][i].right;
+          }
         }
     }
 
@@ -250,17 +261,21 @@ angular.module('collocationmatching.controllers', [])
 
   var Check = function(slideId){
     var count = 0;
+    var countSet = 0;
     var wordsCount = $scope.words.length;
 
     for(var i=0;i<wordsCount;i++){
       if($scope.dropped[i]){
-        if($scope.dropped[i][slideId] == $scope.words[i][slideId].right){
-          count++;
+        if($scope.words[i][slideId]){
+          countSet++;
+          if($scope.dropped[i][slideId] == $scope.words[i][slideId].right){
+            count++;
+          }
         }
       }
     }
 
-    if(count == wordsCount){
+    if(count == countSet){
       AnswerData.updateValue(exId,true,slideId);//update show/hide values
       return true;
     }
