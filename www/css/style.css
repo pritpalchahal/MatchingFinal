@@ -183,11 +183,11 @@ ul.draggable-objects:after{
 .draggable-objects li{
     float:left;
     /*display: block;*/
-    /*width: 120px;
-    height:100px;*/
+    width: 120px;
+    /*height:100px;*/
 }
 [ng-drag].drag-over{
-    border:solid 1px red;
+    /*border:solid 1px red;*/
 }
 [ng-drag].dragging{
     opacity: 0.5;

@@ -253,8 +253,10 @@ angular.module('collocationmatching.controllers', [])
     var wordsCount = $scope.words.length;
 
     for(var i=0;i<wordsCount;i++){
-      if($scope.dropped[i][slideId] == $scope.words[i][slideId].right){
-        count++;
+      if($scope.dropped[i]){
+        if($scope.dropped[i][slideId] == $scope.words[i][slideId].right){
+          count++;
+        }
       }
     }
 
