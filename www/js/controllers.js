@@ -40,19 +40,25 @@ angular.module('collocationmatching.controllers', [])
   }
 })
 
-.controller('ExsCtrl', function($scope, Exercises, StateData,$timeout) {
+.controller('CollectionsCtrl', function($scope,Exercises){
 
   Exercises.getAllColls().then(function(response){
-    //
+    $scope.collections = response;
+    console.log(response);
   });
+})
 
-  Exercises.getAll().then(function(response){
+.controller('ExsCtrl', function($scope, Exercises, StateData,$timeout,$stateParams) {
+  $scope.collectionName = $stateParams.collectionName;
+
+  Exercises.getAll($scope.collectionName).then(function(response){
     $scope.exercises = response;
+    console.log(response);
     // if($scope.exercises.length == 0){
     //   $scope.exercises = [];
     //   $scope.exercises.push(response);
     // }
-    console.log($scope.exercises);
+    // console.log($scope.exercises);
     for(var i=0;i<$scope.exercises.length;i++){
       StateData.updateState($scope.exercises[i]._id,"New");
     }
@@ -158,7 +164,7 @@ angular.module('collocationmatching.controllers', [])
   });
 
   $scope.$on("$ionicSlides.slideChangeStart", function(event, data){
-    console.log('Slide change is beginning');
+    // console.log('Slide change is beginning');
   });
 
   $scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
@@ -170,7 +176,7 @@ angular.module('collocationmatching.controllers', [])
   $scope.onDragSuccess = function(data,evt,wordIndex){
     var slideId = $scope.slider.activeIndex;
     DropData.clearValue(exId,wordIndex,slideId);
-    console.log("onDragSuccess", "",wordIndex,"", data);
+    // console.log("onDragSuccess", "",wordIndex,"", data);
   }
   $scope.onDropComplete = function(data,evt,wordIndex){
     var slideId = $scope.slider.activeIndex;
@@ -179,7 +185,7 @@ angular.module('collocationmatching.controllers', [])
       DropData.add(exId,wordIndex,slideId,data);
       $scope.dropped = DropData.getWord(exId);
     }
-    console.log("onDropComplete", "", wordIndex,"", data);
+    // console.log("onDropComplete", "", wordIndex,"", data);
     Check(slideId);
   }
 

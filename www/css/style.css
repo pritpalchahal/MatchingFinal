@@ -186,6 +186,9 @@ ul.draggable-objects:after{
     /*width: 120px;*/
     /*height:100px;*/
 }
+.text{
+    font-size:12px;
+}
 [ng-drag].drag-over{
     /*border:solid 1px red;*/
 }

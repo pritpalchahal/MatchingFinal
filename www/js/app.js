@@ -83,24 +83,35 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
     }
   })
 
+  .state('tab.collections',{
+    url: '/collections',
+    views: {
+      'tab-collections':{
+        templateUrl: 'templates/tab-collections.html',
+        controller: 'CollectionsCtrl'
+      }
+    }
+  })
+
   .state('tab.exs', {
-      url: '/exs',
-      views: {
-        'tab-exs': {
-          templateUrl: 'templates/tab-exercises.html',
-          controller: 'ExsCtrl'
-        }
+    url: '/collections/:collectionName',
+    views: {
+      'tab-collections': {
+        templateUrl: 'templates/tab-exercises.html',
+        controller: 'ExsCtrl'
       }
-    })
-    .state('tab.exercise', {
-      url: '/exs/:exId',
-      views: {
-        'tab-exs': {
-          templateUrl: 'templates/ex-detail.html',
-          controller: 'ExerciseCtrl'
-        }
+    }
+  })
+
+  .state('tab.exercise', {
+    url: '/collections/collectionName/:exId',
+    views: {
+      'tab-collections': {
+        templateUrl: 'templates/ex-detail.html',
+        controller: 'ExerciseCtrl'
       }
-    })
+    }
+  })
 
   .state('tab.howtoplay', {
     url: '/howtoplay',
@@ -113,6 +124,6 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/exs');
+  $urlRouterProvider.otherwise('/tab/collections');
 
 });
