@@ -186,32 +186,43 @@ angular.module('collocationmatching.services', [])
 .factory('DropData',function(){
   var dropped = [];
 
-  var createEx = function(exId){
-    dropped[exId] = [];
+  var createEx = function(collId,exId){
+    dropped[collId][exId] = [];
   }
 
-  var createWord = function(exId,wordId){
-    dropped[exId][wordId] = [];
+  var createWord = function(collId,exId,wordId){
+    dropped[collId][exId][wordId] = [];
   }
 
-  var add = function(exId,wordId,slideId,value){
-    dropped[exId][wordId][slideId] = value;
+  var add = function(collId,exId,wordId,slideId,value){
+    dropped[collId][exId][wordId][slideId] = value;
   }
 
-  var clearValue = function(exId,wordId,slideId){
-    dropped[exId][wordId][slideId] = null;
+  var clearValue = function(collId,exId,wordId,slideId){
+    dropped[collId][exId][wordId][slideId] = null;
   }
 
-  var getWord = function(exId){
-    return dropped[exId];
+  var getWord = function(collId,exId){
+    return dropped[collId][exId];
   }
 
-  var getValue = function(exId,wordId,slideId){
-    return dropped[exId][wordId][slideId];
+  var getValue = function(collId,exId,wordId,slideId){
+    return dropped[collId][exId][wordId][slideId];
   }
 
-  var clear = function(exId){
-    dropped[exId] = [];
+  var clear = function(collId,exId){
+    dropped[collId][exId] = [];
+  }
+
+  var createColl = function(collId){
+    dropped[collId] = [];
+  }
+
+  var isCreated = function(collId){
+    if(dropped[collId]){
+      return true;
+    }
+    return false;
   }
 
   return{
@@ -221,96 +232,136 @@ angular.module('collocationmatching.services', [])
     clearValue: clearValue,
     getWord: getWord,
     getValue: getValue,
-    clear: clear
+    clear: clear,
+    createColl: createColl,
+    isCreated: isCreated
   };
 })
 
 .factory('AnswerData', function () {
   var myValues = [];
 
-  var updateValue = function(exId,value,n){
-    myValues[exId][n] = value;
+  var updateValue = function(collId,exId,value,n){
+    myValues[collId][exId][n] = value;
   }
 
-  var createValue = function(exId){
-    myValues[exId] = [];
+  var createValue = function(collId,exId){
+    myValues[collId][exId] = [];
   }
 
-  var getValues = function(exId){
-    return myValues[exId];
+  var getValues = function(collId,exId){
+    return myValues[collId][exId];
   }
 
-  var clearValues = function(exId){
-    myValues[exId] = [];
+  var clearValues = function(collId,exId){
+    myValues[collId][exId] = [];
+  }
+
+  var createColl = function(collId){
+    myValues[collId] = [];
+  }
+
+  var isCreated = function(collId){
+    if(myValues[collId]){
+      return true;
+    }
+    return false;
   }
 
   return {
     updateValue: updateValue,
     createValue: createValue,
     getValues: getValues,
-    clearValues: clearValues
+    clearValues: clearValues,
+    createColl: createColl,
+    isCreated: isCreated
   };
 })
 
 .factory('SummaryData', function () {
   var summary = [];
 
-  var updateStartTime = function(exId,s){
-    summary[exId].sTime = s;
+  var updateStartTime = function(collId,exId,s){
+    summary[collId][exId].sTime = s;
   }
 
-  var updateEndTime = function(exId,e){
-    summary[exId].eTime = e;
+  var updateEndTime = function(collId,exId,e){
+    summary[collId][exId].eTime = e;
   }
 
-  var updateScore = function(exId,score){
-    if(summary[exId]){
-      summary[exId].score = score;
+  var updateScore = function(collId,exId,score){
+    if(summary[collId][exId]){
+      summary[collId][exId].score = score;
     }
   }
 
-  var createSummary = function(exId){
-    summary[exId] = {sTime:"n/a",eTime:"n/a",score:"0"};
+  var createSummary = function(collId,exId){
+    summary[collId][exId] = {sTime:"n/a",eTime:"n/a",score:"0"};
   }
 
-  var clearSummary = function(exId){
-    summary.splice(exId,1);
+  var clearSummary = function(collId,exId){
+    summary[collId].splice(exId,1);
   }
 
-  var getSummary = function(exId){
-    return summary[exId];
+  var getSummary = function(collId,exId){
+    return summary[collId][exId];
+  }
+
+  var createColl = function(collId){
+    summary[collId] = [];
+  }
+
+  var isCreated = function(collId){
+    if(summary[collId]){
+      return true;
+    }
+    return false;
   }
   
-
   return {
     updateStartTime: updateStartTime,
     updateEndTime: updateEndTime,
     updateScore: updateScore,
     createSummary: createSummary,
     getSummary: getSummary,
-    clearSummary: clearSummary
+    clearSummary: clearSummary,
+    createColl: createColl,
+    isCreated: isCreated
   };
 })
 
 .factory('StateData', function () {
   var states = [];
 
-  var updateState = function(exId,state){
-    states[exId] = state;
+  var updateState = function(collId,exId,state){
+    states[collId][exId] = state;
   }
 
-  var getSingleState = function(exId){
-    return states[exId];
+  var getSingleState = function(collId,exId){
+    return states[collId][exId];
   }
 
-  var getAllStates = function(){
-    return states;
+  var getAllStates = function(collId){
+    return states[collId];
+  }
+
+  var createColl = function(collId){
+    states[collId] = [];
+  }
+
+  var isCreated = function(collId){
+    if(states[collId]){
+      return true;
+    }
+    return false;
   }
   
   return {
     updateState: updateState,
     getSingleState: getSingleState,
-    getAllStates: getAllStates
+    getAllStates: getAllStates,
+    createColl: createColl,
+    isCreated: isCreated
   };
 })
 

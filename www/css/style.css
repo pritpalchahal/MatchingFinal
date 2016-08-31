@@ -1,6 +1,26 @@
-.slider-pager {
+/*.slider-pager {
     top: 0;
     bottom: initial;
+}
+
+.slider-pager-page{
+  color: white !important;
+}
+
+.slider-pager-page.active{
+  color: blue !important;
+}*/
+
+.swiper-pagination-bullet {
+    width: 5px;
+    height: 5px;
+    color:#000;
+    opacity: 1;
+    background: rgba(0,0,0,0.2);
+}
+.swiper-pagination-bullet-active {
+    color:#fff;
+    background: #007aff;
 }
 
 .div-button{
@@ -207,7 +227,7 @@ ul.draggable-objects:after{
     width: 200px;
     height: 20px;
     margin-left: -100px;
-    marg*/in-top: -10px;
+    margin-top: -10px;*/
 }
 [ng-drop] div{
     /*position: relative;
@@ -217,7 +237,7 @@ ul.draggable-objects:after{
 .navbar{
   background-color: #A0CCA6  !important; /*#B8EBBF,A0CCA6,76967A,3F9200,AEAEB5*/
   border-bottom: 2px solid #3F9200 !important;
-  border-top: 2px solid #3F9200 !important;
+  border-top: 1px solid #3F9200 !important;
 }
 
 .navbar-title {
@@ -226,6 +246,13 @@ ul.draggable-objects:after{
   height: 100%;
   position: absolute;
   left:0px;
+  top:0px;
+}
+
+.bar-subheader{
+  background-color: #AEAEB5 !important;
+  border-bottom: 2px solid #3F9200 !important;
+  border-top: 1px solid #3F9200 !important;
 }
 
 /*Ionic popup CSS */

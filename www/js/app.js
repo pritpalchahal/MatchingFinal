@@ -5,7 +5,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers', 'collocationmatching.services','ngDraggable','ionic-toast'])
 
-.run(function($ionicPlatform,$ionicHistory,$stateParams,Exercises,StateData,SummaryData,DropData,AnswerData,$filter) {
+.run(function($ionicPlatform,$ionicHistory,$stateParams,Exercises,StateData,SummaryData,DropData,AnswerData,Ids,$filter) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -22,32 +22,37 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
 
   //override default android back button behavior 
   $ionicPlatform.onHardwareBackButton(function(){
-    // console.log($ionicHistory.currentStateName());
-    if($ionicHistory.currentStateName() == 'tab.exercise'){
+      var currentState = $ionicHistory.currentStateName();
+
+      if(currentState != "exercise"){
+        return;
+      }
+      
       var exId = $stateParams.exId;
+      var name = $stateParams.collectionName;
+      var id = Ids.get(name);
 
       //update end time
-      if(StateData.getSingleState(exId) != "Complete"){
+      if(StateData.getSingleState(id,exId) != "Complete"){
         var time = new Date();
         var timeNow = $filter('date')(time,'medium');
-        SummaryData.updateEndTime(exId,timeNow);
+        SummaryData.updateEndTime(id,exId,timeNow);
       }
 
       var totalSlides = Exercises.getSlidesCount();
       var j = 0;
-      var values = AnswerData.getValues(exId);
+      var values = AnswerData.getValues(id,exId);
       for(i=0;i<values.length;i++){
         if(values[i]){
           j++;
         }
       }
       if(j == totalSlides){
-        StateData.updateState(exId,"Complete");
+        StateData.updateState(id,exId,"Complete");
       }
       else{
-        StateData.updateState(exId,"Incomplete");
+        StateData.updateState(id,exId,"Incomplete");
       }
-    }
   });
 })
 
@@ -66,13 +71,13 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
 
   .state('collections',{
     url: '/collections',
-        templateUrl: 'templates/tab-collections.html',
+        templateUrl: 'templates/collections.html',
         controller: 'CollectionsCtrl'
   })
 
   .state('exs', {
     url: '/collections/:collectionName',
-        templateUrl: 'templates/tab-exercises.html',
+        templateUrl: 'templates/exercises.html',
         controller: 'ExsCtrl'
   })
 

@@ -1,14 +1,24 @@
-<ion-view>
-    <ion-nav-title >
+<ion-view view-title="Collocation Matching">
+    <ion-nav-buttons side="left">
+      <img src="img/flaxImages/ic_launcher-web.png" class="navbar-title">
+    </ion-nav-buttons>
+    <!-- <ion-nav-title>
       <img src="img/flaxImages/ic_launcher-web.png" class="navbar-title">Collocation Matching
-    </ion-nav-title>
+    </ion-nav-title> -->
+    <ion-header-bar class="bar-subheader">
+      <h2 class="title">Collections</h2>
+    </ion-header-bar>
+    <ion-nav-buttons side="right">
+        <button class="button button-icon ion-more" ng-click="openPopover($event)">
+        </button>
+    </ion-nav-buttons>
   <ion-content>
     <ion-refresher
       pulling-text="Pull to refresh..."
       on-refresh="doRefresh()">
     </ion-refresher>
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right" ng-repeat="coll in collections" type="item-text-wrap" ng-click="click(coll)" href="#/collections/{{coll}}">
+      <ion-item class="item-remove-animate item-icon-right" ng-repeat="coll in collections" type="item-text-wrap" href="#/collections/{{coll}}">
         <!-- <img ng-src="{{chat.face}}"> -->
         <div style="font-size:12px;">{{coll}}</div>
         <!-- <div style="font-size:10px;font-style:italic">{{states[ex._id]}}</div> -->
