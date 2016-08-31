@@ -151,6 +151,11 @@ angular.module('collocationmatching.controllers', [])
     }
   });
 
+  if(!$scope.collDesc){
+    $scope.collDesc = "n/a";
+    $scope.collName = "n/a";
+  }
+
   //create new data for this collection
   if(!StateData.isCreated(id)){
     StateData.createColl(id);
@@ -218,8 +223,7 @@ angular.module('collocationmatching.controllers', [])
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
       title: 'About '+name,
-      template: $scope.collName + '</br>' + $scope.collDesc
-      // templateUrl: 'templates/aboutCollection.html'
+      templateUrl: 'templates/aboutCollection.html'
     });
 
     alertPopup.then(function(response){
