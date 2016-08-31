@@ -47,15 +47,36 @@ angular.module('collocationmatching.controllers', [])
 
 .controller('CollectionsCtrl', function($scope,Exercises,$timeout,$ionicLoading,$state,$ionicPopover,$ionicPopup){
 
-  Exercises.getAllColls().then(function(response){
+  // Exercises.getAllColls().then(function(response){
+  //   $scope.collections = [];
+  //   $ionicLoading.show();
+
+  //   //wait untill all data is received
+  //   $timeout(function(){
+  //     $ionicLoading.hide();
+  //     $scope.collections = response;
+  //     console.log($scope.collections); 
+  //   }, 500);
+  // });
+  Exercises.getA().then(function(response){
     $scope.collections = [];
     $ionicLoading.show();
+    var data = [];
 
     //wait untill all data is received
     $timeout(function(){
       $ionicLoading.hide();
-      $scope.collections = response;
-      console.log($scope.collections); 
+      data = response;
+      console.log(data);
+
+      data.forEach(function(value){
+        Exercises.check(value).then(function(res){
+
+          $timeout(function(){
+            $scope.collections = res;
+          }, 400);
+        });
+      });
     }, 200);
   });
 
@@ -121,6 +142,14 @@ angular.module('collocationmatching.controllers', [])
   Ids.create($scope.collectionName);
   var id = Ids.get($scope.collectionName);
   console.log("id: "+id);
+
+  var desc = Exercises.getDesc();
+  desc.forEach(function(val){
+    if(val.key == name){
+      $scope.collDesc = val.desc;
+      $scope.collName = val.name;
+    }
+  });
 
   //create new data for this collection
   if(!StateData.isCreated(id)){
@@ -188,8 +217,9 @@ angular.module('collocationmatching.controllers', [])
   $scope.showAbout = function(){
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
-      title: 'About Flax',
-      templateUrl: 'templates/aboutFlax.html'
+      title: 'About '+name,
+      template: $scope.collName + '</br>' + $scope.collDesc
+      // templateUrl: 'templates/aboutCollection.html'
     });
 
     alertPopup.then(function(response){
@@ -356,7 +386,7 @@ angular.module('collocationmatching.controllers', [])
 
         var time = new Date();
         var timeNow = $filter('date')(time,'medium');//angularjs date format
-        SummaryData.updateEndTime(id,exId,timeNow);
+        SummaryData.updateStartTime(id,exId,timeNow);
 
         //clear view
         $scope.myValue = AnswerData.getValues(id,exId);

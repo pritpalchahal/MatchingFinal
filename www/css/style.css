@@ -12,15 +12,15 @@
 }*/
 
 .swiper-pagination-bullet {
-    width: 5px;
-    height: 5px;
+    /*width: 15px;
+    height: 15px;*/
     color:#000;
     opacity: 1;
     background: rgba(0,0,0,0.2);
 }
 .swiper-pagination-bullet-active {
     color:#fff;
-    background: #007aff;
+    background: #3F9200;
 }
 
 .div-button{
@@ -50,7 +50,7 @@ table tr:nth-child(even) {
   background-repeat: no-repeat;
   background-position: 50%;
   height: 70%;
-  background-image: url('../img/flaxImages/img_flax_launcher.png');
+  background-image: url('../img/img_flax_launcher.png');
   background-size:contain;
 }
 
@@ -58,7 +58,7 @@ table tr:nth-child(even) {
   background-repeat: no-repeat;
   background-position: 50%;
   height: 70%;
-  background-image: url('../img/flaxImages/img_flax_help.png');
+  background-image: url('../img/img_flax_help.png');
   background-size:contain;
 }
 .home .scroll-content {
@@ -263,7 +263,7 @@ ul.draggable-objects:after{
 
 .popup-head{
   background-color: #A0CCA6  !important;
-  background-image: url('../img/flaxImages/ic_launcher-web.png') !important;
+  background-image: url('../img/ic_launcher-web.png') !important;
   background-repeat: no-repeat !important;
   background-attachment: relative !important;
   /*"fixed" value in this property causes image not to display in iOS and browser, but it works in android*/

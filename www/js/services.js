@@ -1,6 +1,6 @@
 angular.module('collocationmatching.services', [])
 
-.factory('Exercises', function ($http) {
+.factory('Exercises', function ($http,$q) {
   const AllCollectionsUrl = "http://collections.flax.nzdl.org/greenstone3/flax?a=fp&sa=library&o=xml";
 
   const url_part_1 = "http://collections.flax.nzdl.org/greenstone3/flax";
@@ -10,10 +10,7 @@ angular.module('collocationmatching.services', [])
   var collname = "&s1.collname=CCCC";
 
   //to get url replace CCCC with collection name (e.g. collocations) & SSSS with activity name (e.g. CollocationMatching)
-  //flaxc252,flaxc408,flaxc407 returns error
-  //lawcorpus empty
-  // var thisCollection = "flaxc383";//"collocations",flaxc383,flaxc158,flaxc404
-  const thisActivity = "CollocationMatching";
+  const thisActivity = "CollocationGuessing";
 
   // collname = collname.replace("CCCC",thisCollection);
   url_part_2 = url_part_2.replace("SSSS",thisActivity);
@@ -30,7 +27,7 @@ angular.module('collocationmatching.services', [])
   var names = [];
 
   //actual path does work in browser but not in phone (via phonegap or ionicview, so always keep the $http.get path form index.html)
-  var url = "templates/default_exercises/default_exercise_list.xml";
+  // var url = "templates/default_exercises/default_exercise_list.xml";
 
   var newList = function(){
     collections = [];
@@ -43,7 +40,6 @@ angular.module('collocationmatching.services', [])
       var x2js = new X2JS();
       var jsonData = x2js.xml_str2json(response.data);
       var collectionList = jsonData.page.pageResponse.collectionList.collection;
-      // console.log(collectionList);
       for(var i=0; i<collectionList.length;i++){
         var serviceList = collectionList[i].serviceList.service;
         var metadataList = collectionList[i].metadataList.metadata;
@@ -54,15 +50,18 @@ angular.module('collocationmatching.services', [])
             var sObj = serviceList[k];
             if(obj._name == "flaxmobile" && obj.__text == "true" && sObj._name == thisActivity){
               var name = collectionList[i]._name;
+              var description = collectionList[i].displayItem;
               var url_part_2_2 = url_part_2.replace("CCCC",name);
               var url = url_part_1 + url_part_2_2;
               check(url).then(function(res){
+                // console.log(url);
+                if(res == null){return;}
                 var n = res.response._from;
 
                 //only "password" has more than one category
                 var ex = res.response.categoryList.category;
                 if(ex.length > 0 || ex.exercise){
-                  collections.push(n);
+                  collections.push(name);
                 }
               });
             }
@@ -72,12 +71,89 @@ angular.module('collocationmatching.services', [])
       return collections;
     });
   };
+  var cc = [];
+  var desc = [];
+  var getA = function(){
+    cc.push("collocations");
+    return $http.get(AllCollectionsUrl).then(function(response){
+      var x2js = new X2JS();
+      var jsonData = x2js.xml_str2json(response.data);
+      var collectionList = jsonData.page.pageResponse.collectionList.collection;
+      for(var i=0; i<collectionList.length;i++){
+        var serviceList = collectionList[i].serviceList.service;
+        var metadataList = collectionList[i].metadataList.metadata;
+        // console.log(metadataList);
+        for(var j=0 ; j<metadataList.length; j++){
+          var obj = metadataList[j];
+          for(var k=0;k<serviceList.length;k++){
+            var sObj = serviceList[k];
+            if(obj._name == "flaxmobile" && obj.__text == "true" && sObj._name == thisActivity){
+              var coll = collectionList[i];
+              var name = coll._name;
+              cc.push(name);
+              var d = coll.displayItem[0].__text;
+              if(!d){
+                d = "";
+                var arr = coll.displayItem[0].p;
+                arr.forEach(function(val){
+                  d += val;
+                });
+              }
+              var n = coll.displayItem[1].__text;
+              var obj = {key:name,name:n,desc:d};
+              // console.log(coll);
+              // console.log(obj);
+              desc.push(obj);
+            }
+          }
+        }
+      }
+      // console.log(desc);
+      return cc;
+    });
+  };
+  var getActual = function(array){
+    var result = [];
+    return array.forEach(function(element){
+      // console.log(element);
+      var url_part_2_2 = url_part_2.replace("CCCC",element);
+      var url = url_part_1 + url_part_2_2;
+      return $http.get(url).then(function(res){
+        if(res == null){return;}
+        var x2js = new X2JS();
+        var data = x2js.xml_str2json(res.data);
+        var n = data.response._from;
 
+        //only "password" has more than one category
+        var ex = res.response.categoryList.category;
+        if(ex.length > 0 || ex.exercise){
+          results.push(name);
+        }
+        return results;
+      });
+    });
+  }
+
+  var getDesc = function(){
+    return desc;
+  }
+
+  var results = [];
   var check = function(url){
-    return $http.get(url).then(function(res){
+    var url_part_2_2 = url_part_2.replace("CCCC",url);
+    var a = url_part_1 + url_part_2_2;
+    return $http.get(a).then(function(res){
       var x2js = new X2JS();
       var data = x2js.xml_str2json(res.data);
-      return data;
+      if(!data || !data.response){return;}
+      var n = data.response._from;
+
+      //only "password" has more than one category
+      var ex = data.response.categoryList.category;
+      if(ex.length > 0 || ex.exercise){
+        results.push(n);
+      }
+      return results;
     });
   }
 
@@ -91,6 +167,10 @@ angular.module('collocationmatching.services', [])
   };
 
   return {
+    getDesc: getDesc,
+    getA: getA,
+    getActual: getActual,
+    check: check,
     newList: newList,
     getAllColls: getAllColls,
     getAll: function(collectionName){
@@ -100,15 +180,18 @@ angular.module('collocationmatching.services', [])
       return $http.get(url).then(function(response){
         var x2js = new X2JS();
         var jsonData = x2js.xml_str2json(response.data);
+        // if(!jsonData.response){return;}
         var category = jsonData.response.categoryList.category;
         if(category.length > 0){
           for(var i=0; i<category.length; i++){
             var array = category[i].exercise;
-            if(array.length > 0){
-              data = [].concat(array);
-            }
-            else{
-              data.push(array);
+            if(array){//check if array is defined or not
+              if(array.length > 0){
+                data = [].concat(array);
+              }
+              else{
+                data.push(array);
+              }
             }
           }
         }
