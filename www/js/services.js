@@ -32,6 +32,10 @@ angular.module('collocationmatching.services', [])
   //actual path does work in browser but not in phone (via phonegap or ionicview, so always keep the $http.get path form index.html)
   var url = "templates/default_exercises/default_exercise_list.xml";
 
+  var newList = function(){
+    collections = [];
+  }
+
   var getAllColls = function(){
     //for "collocations", it does not have "flaxmobile","true" in metadataList, so manually add it
     collections.push("collocations");
@@ -87,6 +91,7 @@ angular.module('collocationmatching.services', [])
   };
 
   return {
+    newList: newList,
     getAllColls: getAllColls,
     getAll: function(collectionName){
       var url_part_2_2 = url_part_2.replace("CCCC",collectionName);
@@ -114,14 +119,17 @@ angular.module('collocationmatching.services', [])
       });
     },
 
-    getSingleEx: function(exId){
+    getSingleEx: function(exId,collectionName){
+      var url_part_2_2 = url_part_2.replace("CCCC",collectionName);
+      var url_part_3 = collname.replace("CCCC",collectionName);
+      const url_2 = url_part_2_2.replace("11",service) + url_part_3;
       slidesCount = [];
       var collos = [];
       for(var i= 0 ; i<data.length; i++){
         if(data[i]._id == parseInt(exId)){
           var thisUrl = data[i].url;
           var paramsUrl = thisUrl.substr(thisUrl.indexOf("&s1.params"));
-          paramsUrl = url_part_1 + singleExerciseUrl + paramsUrl;
+          paramsUrl = url_part_1 + url_2 + paramsUrl;
           // console.log(paramsUrl);
           // return $http.get("templates/"+data[i].url).then(function(response){
           return $http.get(paramsUrl).then(function(response){
@@ -167,6 +175,10 @@ angular.module('collocationmatching.services', [])
 
     remove: function(ex) {
       data.splice(data.indexOf(ex), 1);
+    },
+
+    removeColl: function(coll){
+      collections.splice(collections.indexOf(coll),1);
     }
   };
 })
@@ -299,5 +311,25 @@ angular.module('collocationmatching.services', [])
     updateState: updateState,
     getSingleState: getSingleState,
     getAllStates: getAllStates
+  };
+})
+
+.factory('Ids',function(){
+  var ids = [];
+
+  var create = function(name){
+    var index = ids.indexOf(name);
+    if(index == -1){
+      ids.push(name);
+    }
+  }
+
+  var get = function(name){
+    return ids.indexOf(name);
+  }
+
+  return{
+    create: create,
+    get: get
   };
 });

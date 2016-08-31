@@ -16,6 +16,10 @@ angular.module('collocationmatching.controllers', [])
     var exId = $stateParams.exId;
     $ionicHistory.goBack();
 
+    if($ionicHistory.currentStateName != "tab.exercise"){
+      return;
+    }
+
     //update end time
     if(StateData.getSingleState(exId) != "Complete"){
       var time = new Date();
@@ -40,25 +44,52 @@ angular.module('collocationmatching.controllers', [])
   }
 })
 
-.controller('CollectionsCtrl', function($scope,Exercises){
+.controller('CollectionsCtrl', function($scope,Exercises,$timeout,$ionicLoading,$state){
 
   Exercises.getAllColls().then(function(response){
-    $scope.collections = response;
-    console.log(response);
+    $scope.collections = [];
+    $ionicLoading.show();
+
+    //wait untill all data is received
+    $timeout(function(){
+      $ionicLoading.hide();
+      $scope.collections = response;
+      console.log($scope.collections); 
+    }, 200);
   });
+
+  $scope.doRefresh = function(){
+    //to remove duplicacy always remember to empty previous data before refreshing
+    Exercises.newList();
+    Exercises.getAllColls().then(function(response){
+
+      //wait untill all data is received
+      $timeout(function(){
+        $scope.collections = response;
+        console.log($scope.collections); 
+        $scope.$broadcast('scroll.refreshComplete');
+      }, 200);
+    });
+  };
+
+  $scope.remove = function(ex) {
+    Exercises.removeColl(ex);
+  };
+
+  // $scope.click = function(coll){
+  //   $state.go('collections-exs',{collectionName: coll});
+  // }
 })
 
-.controller('ExsCtrl', function($scope, Exercises, StateData,$timeout,$stateParams) {
-  $scope.collectionName = $stateParams.collectionName;
+.controller('ExsCtrl', function($scope, Exercises, $timeout,$stateParams,Ids, StateData) {
+  var name = $stateParams.collectionName;
+  $scope.collectionName = name;
+  Ids.create($scope.collectionName);
+  var id = Ids.get($scope.collectionName);
+  console.log("id: "+id);
 
-  Exercises.getAll($scope.collectionName).then(function(response){
+  Exercises.getAll(name).then(function(response){
     $scope.exercises = response;
-    console.log(response);
-    // if($scope.exercises.length == 0){
-    //   $scope.exercises = [];
-    //   $scope.exercises.push(response);
-    // }
-    // console.log($scope.exercises);
     for(var i=0;i<$scope.exercises.length;i++){
       StateData.updateState($scope.exercises[i]._id,"New");
     }
@@ -81,7 +112,7 @@ angular.module('collocationmatching.controllers', [])
 
   $scope.doRefresh = function(){
     // $timeout(function(){
-      Exercises.getAll().then(function(response){
+      Exercises.getAll(name).then(function(response){
         $scope.exercises = response;
         for(var i=0;i<$scope.exercises.length;i++){
           var currentState = StateData.getSingleState($scope.exercises[i]._id);
@@ -100,8 +131,10 @@ angular.module('collocationmatching.controllers', [])
 })
 
 .controller('ExerciseCtrl', function($scope, $stateParams, Exercises, $ionicPopup, $ionicPopover,$filter,
-  $timeout,ionicToast,DropData,AnswerData,SummaryData) {
+  $timeout,ionicToast,Ids,AnswerData,DropData,SummaryData) {
   var exId = $stateParams.exId;
+  var collectionName = $stateParams.collectionName;
+  var id = Ids.get(collectionName);
 
   if(!AnswerData.getValues(exId)){
     AnswerData.createValue(exId);
@@ -119,10 +152,16 @@ angular.module('collocationmatching.controllers', [])
 
   var oldData = DropData.getWord(exId);
 
-  $scope.draggableObjects = [];
-  $scope.dropped = [];
+  var drags = [];
+  var drops = [];
 
-  Exercises.getSingleEx($stateParams.exId).then(function(response){
+  drags[id] = [];
+  drops[id] = [];
+
+  $scope.draggableObjects = drags[id];
+  $scope.dropped = drops[id];
+
+  Exercises.getSingleEx(exId,collectionName).then(function(response){
     $scope.words = response;
     $scope.slides = Exercises.getSlidesCount();
     $scope.slideCount = new Array($scope.slides);

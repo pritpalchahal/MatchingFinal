@@ -64,66 +64,25 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-  // setup an abstract state for the tabs directive
-    .state('tab', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
-  })
-
-  // Each tab has its own nav history stack:
-
-  .state('tab.about', {
-    url: '/about',
-    views: {
-      'tab-about': {
-        templateUrl: 'templates/tab-about.html',
-        controller: 'SummaryCtrl'
-      }
-    }
-  })
-
-  .state('tab.collections',{
+  .state('collections',{
     url: '/collections',
-    views: {
-      'tab-collections':{
         templateUrl: 'templates/tab-collections.html',
         controller: 'CollectionsCtrl'
-      }
-    }
   })
 
-  .state('tab.exs', {
+  .state('exs', {
     url: '/collections/:collectionName',
-    views: {
-      'tab-collections': {
         templateUrl: 'templates/tab-exercises.html',
         controller: 'ExsCtrl'
-      }
-    }
   })
 
-  .state('tab.exercise', {
-    url: '/collections/collectionName/:exId',
-    views: {
-      'tab-collections': {
+  .state('exercise', {
+    url: '/collections/:collectionName/:exId',
         templateUrl: 'templates/ex-detail.html',
         controller: 'ExerciseCtrl'
-      }
-    }
-  })
-
-  .state('tab.howtoplay', {
-    url: '/howtoplay',
-    views: {
-      'tab-howtoplay': {
-        templateUrl: 'templates/tab-howtoplay.html',
-        controller: 'HowToPlayCtrl'
-      }
-    }
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/collections');
+  $urlRouterProvider.otherwise('/collections');
 
 });
