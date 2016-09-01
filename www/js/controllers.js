@@ -12,7 +12,7 @@ angular.module('collocationmatching.controllers', [])
   $scope.customGoBack = function(){
     var exId = $stateParams.exId;
     var name = $stateParams.collectionName;
-    var id = Ids.get(name);
+    var collId = Ids.getId(name);
 
     $ionicHistory.goBack();
     var currentState = $ionicHistory.currentStateName();
@@ -22,34 +22,50 @@ angular.module('collocationmatching.controllers', [])
     }
 
     //update end time
-    if(StateData.getSingleState(id,exId) != "Complete"){
+    if(StateData.getSingleState(collId,exId) != "Complete"){
       var time = new Date();
       var timeNow = $filter('date')(time,'medium');
-      SummaryData.updateEndTime(id,exId,timeNow);
+      SummaryData.updateEndTime(collId,exId,timeNow);
     }
 
     var totalSlides = Exercises.getSlidesCount();
     var j = 0;
-    var values = AnswerData.getValues(id,exId);
+    var values = AnswerData.getValues(collId,exId);
     for(i=0;i<values.length;i++){
       if(values[i]){
         j++;
       }
     }
     if(j == totalSlides){
-      StateData.updateState(id,exId,"Complete");
+      StateData.updateState(collId,exId,"Complete");
     }
     else{
-      StateData.updateState(id,exId,"Incomplete");
+      StateData.updateState(collId,exId,"Incomplete");
     }
   }
 })
 
-.controller('CollectionsCtrl', function($scope, $timeout, $ionicLoading, $state, $ionicPopover, $ionicPopup, Exercises, Monitor){
+.controller('CollectionsCtrl', function($scope, $timeout, $ionicLoading, $state, $ionicPopover, $ionicPopup, Exercises, 
+  $cordovaNetwork, $rootScope){
 
-  if(Monitor.isOnline()){
-    console.log("yes");
-  }
+  document.addEventListener("deviceready", function () {
+      $scope.online = $cordovaNetwork.isOnline();
+      $scope.$apply();
+
+      // listen for Online event
+      $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
+          $scope.online = true;
+          $scope.$apply();
+      })
+
+      // listen for Offline event
+      $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
+          $scope.online = false;
+          $scope.$apply();
+      })
+
+  }, false);
+
   Exercises.getAllColls().then(function(response){
     $ionicLoading.show();
 
@@ -125,9 +141,9 @@ angular.module('collocationmatching.controllers', [])
   $scope.collectionName = name;
 
   //create a unique id for each collection
-  Ids.create($scope.collectionName);
-  var id = Ids.get($scope.collectionName);
-  console.log("id: "+id);
+  Ids.createId($scope.collectionName);
+  var collId = Ids.getId($scope.collectionName);
+  console.log("collId: "+collId);
 
   var desc = Exercises.getDesc();
   desc.forEach(function(val){
@@ -143,37 +159,37 @@ angular.module('collocationmatching.controllers', [])
   }
 
   //create new data for this collection
-  if(!StateData.isCreated(id)){
-    StateData.createColl(id);
+  if(!StateData.isCreated(collId)){
+    StateData.createColl(collId);
   }
-  if(!DropData.isCreated(id)){
-    DropData.createColl(id);
+  if(!DropData.isCreated(collId)){
+    DropData.createColl(collId);
   }
-  if(!AnswerData.isCreated(id)){
-    AnswerData.createColl(id);
+  if(!AnswerData.isCreated(collId)){
+    AnswerData.createColl(collId);
   }
-  if(!SummaryData.isCreated(id)){
-    SummaryData.createColl(id);
+  if(!SummaryData.isCreated(collId)){
+    SummaryData.createColl(collId);
   }
 
-  Exercises.getAllEx(name).then(function(response){
+  Exercises.getAllEx(collId).then(function(response){
     $scope.exercises = response;
     for(var i=0;i<$scope.exercises.length;i++){
       var exId = $scope.exercises[i]._id;
-      if(!StateData.getSingleState(id,exId)){
-        StateData.updateState(id,exId,"New");
+      if(!StateData.getSingleState(collId,exId)){
+        StateData.updateState(collId,exId,"New");
       }
     }
-    $scope.states = StateData.getAllStates(id);
+    $scope.states = StateData.getAllStates(collId);
   });
 
-  $scope.remove = function(ex) {
-    Exercises.removeEx(ex);
+  $scope.remove = function(collId,ex) {
+    Exercises.removeEx(collId,ex);
   };
 
   //use this method to refresh data
   $scope.$on('$ionicView.enter',function(e){
-    $scope.states = StateData.getAllStates(id);//refresh states
+    $scope.states = StateData.getAllStates(collId);//refresh states
   });
 
   $scope.doRefresh = function(){
@@ -181,15 +197,15 @@ angular.module('collocationmatching.controllers', [])
       Exercises.getAllEx(name).then(function(response){
         $scope.exercises = response;
         for(var i=0;i<$scope.exercises.length;i++){
-          var currentState = StateData.getSingleState(id,$scope.exercises[i]._id);
+          var currentState = StateData.getSingleState(collId,$scope.exercises[i]._id);
           if(currentState){
-            StateData.updateState(id,$scope.exercises[i]._id,currentState);
+            StateData.updateState(collId,$scope.exercises[i]._id,currentState);
           }
           else{
-            StateData.updateState(id,$scope.exercises[i]._id,"New");
+            StateData.updateState(collId,$scope.exercises[i]._id,"New");
           }
         }
-        $scope.states = StateData.getAllStates(id);
+        $scope.states = StateData.getAllStates(collId);
         $scope.$broadcast('scroll.refreshComplete');
       });
     // },1000);
@@ -235,28 +251,28 @@ angular.module('collocationmatching.controllers', [])
   $ionicLoading.show();
   var exId = $stateParams.exId;
   var collectionName = $stateParams.collectionName;
-  var id = Ids.get(collectionName);
+  var collId = Ids.getId(collectionName);
 
-  if(!AnswerData.getValues(id,exId)){
-    AnswerData.createValue(id,exId);
+  if(!AnswerData.getValues(collId,exId)){
+    AnswerData.createValue(collId,exId);
   }
 
-  if(!SummaryData.getSummary(id,exId)){
-    SummaryData.createSummary(id,exId);
+  if(!SummaryData.getSummary(collId,exId)){
+    SummaryData.createSummary(collId,exId);
     var time = new Date();
     var timeNow = $filter('date')(time,'medium');//angularjs date format
-    SummaryData.updateStartTime(id,exId,timeNow);
+    SummaryData.updateStartTime(collId,exId,timeNow);
   }
 
-  $scope.myValue = AnswerData.getValues(id,exId);
-  $scope.summary = SummaryData.getSummary(id,exId);
+  $scope.myValue = AnswerData.getValues(collId,exId);
+  $scope.summary = SummaryData.getSummary(collId,exId);
 
-  var oldData = DropData.getWord(id,exId);
+  var oldData = DropData.getWord(collId,exId);
 
   $scope.draggableObjects = [];
   $scope.dropped = [];
 
-  Exercises.getSingleEx(exId,collectionName).then(function(response){
+  Exercises.getSingleEx(collId,exId).then(function(response){
     $scope.words = response;
     $scope.slides = Exercises.getSlidesCount();
     $scope.slideCount = new Array($scope.slides);
@@ -273,9 +289,9 @@ angular.module('collocationmatching.controllers', [])
     }
 
     if(!oldData){
-      DropData.createEx(id,exId);
+      DropData.createEx(collId,exId);
       for(var i=0;i<$scope.words.length;i++){
-        DropData.createWord(id,exId,i);
+        DropData.createWord(collId,exId,i);
       }
     }
     $ionicLoading.hide();
@@ -298,7 +314,7 @@ angular.module('collocationmatching.controllers', [])
     return array;
   }
 
-  $scope.title = Exercises.getExTitle($stateParams.exId);
+  $scope.title = Exercises.getExTitle(collId,$stateParams.exId);
 
   $scope.options = {
     pagination: '.swiper-pagination',
@@ -332,15 +348,15 @@ angular.module('collocationmatching.controllers', [])
 
   $scope.onDragSuccess = function(data,evt,wordIndex){
     var slideId = $scope.slider.activeIndex;
-    DropData.clearValue(id,exId,wordIndex,slideId);
+    DropData.clearValue(collId,exId,wordIndex,slideId);
     // console.log("onDragSuccess", "",wordIndex,"", data);
   }
   $scope.onDropComplete = function(data,evt,wordIndex){
     var slideId = $scope.slider.activeIndex;
-    var value = DropData.getValue(id,exId,wordIndex,slideId);
+    var value = DropData.getValue(collId,exId,wordIndex,slideId);
     if(value != data){
-      DropData.add(id,exId,wordIndex,slideId,data);
-      $scope.dropped = DropData.getWord(id,exId);
+      DropData.add(collId,exId,wordIndex,slideId,data);
+      $scope.dropped = DropData.getWord(collId,exId);
     }
     // console.log("onDropComplete", "", wordIndex,"", data);
     Check(slideId);
@@ -357,14 +373,14 @@ angular.module('collocationmatching.controllers', [])
   }
 
   $scope.showSummary = function(){
-    var values = AnswerData.getValues(id,exId);
+    var values = AnswerData.getValues(collId,exId);
     var i = 0;
     for(var j=0;j<values.length;j++){
       if(values[j]){
         i++;
       }
     }
-    SummaryData.updateScore(id,exId,i);
+    SummaryData.updateScore(collId,exId,i);
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
       title: 'Summary report',
@@ -390,21 +406,21 @@ angular.module('collocationmatching.controllers', [])
     confirmPopup.then(function(response){
       if(response){
         //clear model
-        DropData.clear(id,exId);
-        AnswerData.clearValues(id,exId);
-        SummaryData.clearSummary(id,exId);
-        SummaryData.createSummary(id,exId);
+        DropData.clear(collId,exId);
+        AnswerData.clearValues(collId,exId);
+        SummaryData.clearSummary(collId,exId);
+        SummaryData.createSummary(collId,exId);
 
         var time = new Date();
         var timeNow = $filter('date')(time,'medium');//angularjs date format
-        SummaryData.updateStartTime(id,exId,timeNow);
+        SummaryData.updateStartTime(collId,exId,timeNow);
 
         //clear view
-        $scope.myValue = AnswerData.getValues(id,exId);
+        $scope.myValue = AnswerData.getValues(collId,exId);
         $scope.dropped = [];
 
         //update summary
-        $scope.summary = SummaryData.getSummary(id,exId);
+        $scope.summary = SummaryData.getSummary(collId,exId);
       }
       else{
         // console.log("no");
@@ -439,7 +455,7 @@ angular.module('collocationmatching.controllers', [])
     }
 
     if(count == countSet){
-      AnswerData.updateValue(id,exId,true,slideId);//update show/hide values
+      AnswerData.updateValue(collId,exId,true,slideId);//update show/hide values
       return true;
     }
     return false;
