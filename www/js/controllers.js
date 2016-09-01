@@ -7,8 +7,8 @@ angular.module('collocationmatching.controllers', [])
   //$scope.$on('$ionicView.enter', function(e) {
   //});
 
-.controller('BackButtonController', function($scope,$ionicHistory,$stateParams,$filter,
-  Exercises,StateData,SummaryData,AnswerData,DropData,Ids){
+.controller('BackButtonController', function($scope, $ionicHistory, $stateParams, $filter,
+  Exercises, StateData, SummaryData, AnswerData, DropData, Ids){
   $scope.customGoBack = function(){
     var exId = $stateParams.exId;
     var name = $stateParams.collectionName;
@@ -45,8 +45,11 @@ angular.module('collocationmatching.controllers', [])
   }
 })
 
-.controller('CollectionsCtrl', function($scope,Exercises,$timeout,$ionicLoading,$state,$ionicPopover,$ionicPopup){
+.controller('CollectionsCtrl', function($scope, $timeout, $ionicLoading, $state, $ionicPopover, $ionicPopup, Exercises, Monitor){
 
+  if(Monitor.isOnline()){
+    console.log("yes");
+  }
   Exercises.getAllColls().then(function(response){
     $ionicLoading.show();
 
@@ -116,8 +119,8 @@ angular.module('collocationmatching.controllers', [])
   }
 })
 
-.controller('ExsCtrl', function($scope, Exercises, $timeout,$stateParams,Ids, StateData,
-  DropData, AnswerData, SummaryData, $ionicPopup, $ionicPopover) {
+.controller('ExsCtrl', function($scope, $timeout, $stateParams, $ionicPopup, $ionicPopover, 
+  Ids, StateData, DropData, AnswerData, SummaryData, Exercises) {
   var name = $stateParams.collectionName;
   $scope.collectionName = name;
 

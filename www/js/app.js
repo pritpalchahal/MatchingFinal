@@ -1,11 +1,12 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// 'collocationmatching' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
-angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers', 'collocationmatching.services','ngDraggable','ionic-toast'])
+// 'collocationmatching.services' is found in services.js
+// 'collocationmatching.controllers' is found in controllers.js
+angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers', 'collocationmatching.services',
+  'ngDraggable', 'ngCordova','ionic-toast'])
 
-.run(function($ionicPlatform,$ionicHistory,$stateParams,Exercises,StateData,SummaryData,DropData,AnswerData,Ids,$filter) {
+.run(function($ionicPlatform,$ionicHistory,$stateParams,$filter,Exercises,StateData,SummaryData,DropData,AnswerData,Ids) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)

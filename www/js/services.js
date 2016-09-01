@@ -1,6 +1,6 @@
 angular.module('collocationmatching.services', [])
 
-.factory('Exercises', function ($http) {
+.factory('Exercises', function ($http,$cordovaNetwork,$rootScope,ionicToast,Monitor) {
   const THIS_ACTIVITY = "CollocationMatching";
 
   const ALL_COLLECTIONS_URL = "http://collections.flax.nzdl.org/greenstone3/flax?a=fp&sa=library&o=xml";
@@ -25,6 +25,9 @@ angular.module('collocationmatching.services', [])
   // var url = "templates/default_exercises/default_exercise_list.xml";
 
   var getAllColls = function(){
+    if(Monitor.isOffline()){
+      return collections;
+    }
     return $http.get(ALL_COLLECTIONS_URL).then(function(response){
       var x2js = new X2JS();
       var jsonData = x2js.xml_str2json(response.data);
@@ -404,4 +407,47 @@ angular.module('collocationmatching.services', [])
     create: create,
     get: get
   };
+})
+
+.factory('Monitor', function($rootScope, $cordovaNetwork){
+ 
+  return {
+    isOnline: function(){
+      if(ionic.Platform.android){
+        return $cordovaNetwork.isOnline();    
+      } else {
+        return navigator.onLine;
+      }
+    },
+    isOffline: function(){
+      if(ionic.Platform.isWebView()){
+        return !$cordovaNetwork.isOnline();    
+      } else {
+        return !navigator.onLine;
+      }
+    },
+    startWatching: function(){
+        if(ionic.Platform.isWebView()){
+ 
+          $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
+            console.log("went online");
+          });
+ 
+          $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
+            console.log("went offline");
+          });
+ 
+        }
+        else {
+ 
+          window.addEventListener("online", function(e) {
+            console.log("went online");
+          }, false);    
+ 
+          window.addEventListener("offline", function(e) {
+            console.log("went offline");
+          }, false);  
+        }       
+    }
+  }
 });
