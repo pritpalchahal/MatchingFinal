@@ -1,42 +1,31 @@
 angular.module('collocationmatching.services', [])
 
-.factory('Exercises', function ($http,$q) {
-  const AllCollectionsUrl = "http://collections.flax.nzdl.org/greenstone3/flax?a=fp&sa=library&o=xml";
+.factory('Exercises', function ($http) {
+  const THIS_ACTIVITY = "CollocationMatching";
 
-  const url_part_1 = "http://collections.flax.nzdl.org/greenstone3/flax";
-  var url_part_2 = "?a=pr&o=xml&ro=1&rt=r&s=SSSS&c=CCCC&s1.service=11";
+  const ALL_COLLECTIONS_URL = "http://collections.flax.nzdl.org/greenstone3/flax?a=fp&sa=library&o=xml";
 
-  const service = 100;
-  var collname = "&s1.collname=CCCC";
+  const PREFIX_URL = "http://collections.flax.nzdl.org/greenstone3/flax";
+  const TEMPLATE_URL = "?a=pr&o=xml&ro=1&rt=r&s=SSSS&c=CCCC&s1.service=11";
 
   //to get url replace CCCC with collection name (e.g. collocations) & SSSS with activity name (e.g. CollocationMatching)
-  const thisActivity = "CollocationGuessing";
+  const TEMPLATE_URL_WITH_ACTIVITY = TEMPLATE_URL.replace("SSSS",THIS_ACTIVITY);
 
-  // collname = collname.replace("CCCC",thisCollection);
-  url_part_2 = url_part_2.replace("SSSS",thisActivity);
-  // url_part_2 = url_part_2.replace("CCCC",thisCollection);
+  const SERVICE_NUMBER = 100;
+  const TEMPLATE_COLLNAME = "&s1.collname=CCCC";
 
-  const exercisesUrl = url_part_1 + url_part_2;
-  const singleExerciseUrl = url_part_2.replace("11",service) + collname;
+  var temp_collections = [];
+  var collections = [];//list of possible collections for this activity
+  var descriptions = [];//list of name,description for each collection
 
-  var data = [];
-  var words = [];
-  var slides = 0;
+  var exercises = [];//list of possible exercises for this activity
   var slidesCount = [];
-  var collections = [];
-  var names = [];
 
   //actual path does work in browser but not in phone (via phonegap or ionicview, so always keep the $http.get path form index.html)
   // var url = "templates/default_exercises/default_exercise_list.xml";
 
-  var newList = function(){
-    collections = [];
-  }
-
   var getAllColls = function(){
-    //for "collocations", it does not have "flaxmobile","true" in metadataList, so manually add it
-    collections.push("collocations");
-    return $http.get(AllCollectionsUrl).then(function(response){
+    return $http.get(ALL_COLLECTIONS_URL).then(function(response){
       var x2js = new X2JS();
       var jsonData = x2js.xml_str2json(response.data);
       var collectionList = jsonData.page.pageResponse.collectionList.collection;
@@ -48,49 +37,10 @@ angular.module('collocationmatching.services', [])
           var obj = metadataList[j];
           for(var k=0;k<serviceList.length;k++){
             var sObj = serviceList[k];
-            if(obj._name == "flaxmobile" && obj.__text == "true" && sObj._name == thisActivity){
-              var name = collectionList[i]._name;
-              var description = collectionList[i].displayItem;
-              var url_part_2_2 = url_part_2.replace("CCCC",name);
-              var url = url_part_1 + url_part_2_2;
-              check(url).then(function(res){
-                // console.log(url);
-                if(res == null){return;}
-                var n = res.response._from;
-
-                //only "password" has more than one category
-                var ex = res.response.categoryList.category;
-                if(ex.length > 0 || ex.exercise){
-                  collections.push(name);
-                }
-              });
-            }
-          }
-        }
-      }
-      return collections;
-    });
-  };
-  var cc = [];
-  var desc = [];
-  var getA = function(){
-    cc.push("collocations");
-    return $http.get(AllCollectionsUrl).then(function(response){
-      var x2js = new X2JS();
-      var jsonData = x2js.xml_str2json(response.data);
-      var collectionList = jsonData.page.pageResponse.collectionList.collection;
-      for(var i=0; i<collectionList.length;i++){
-        var serviceList = collectionList[i].serviceList.service;
-        var metadataList = collectionList[i].metadataList.metadata;
-        // console.log(metadataList);
-        for(var j=0 ; j<metadataList.length; j++){
-          var obj = metadataList[j];
-          for(var k=0;k<serviceList.length;k++){
-            var sObj = serviceList[k];
-            if(obj._name == "flaxmobile" && obj.__text == "true" && sObj._name == thisActivity){
+            if(obj._name == "flaxmobile" && obj.__text == "true" && sObj._name == THIS_ACTIVITY){
               var coll = collectionList[i];
               var name = coll._name;
-              cc.push(name);
+              temp_collections.push(name);
               var d = coll.displayItem[0].__text;
               if(!d){
                 d = "";
@@ -101,61 +51,131 @@ angular.module('collocationmatching.services', [])
               }
               var n = coll.displayItem[1].__text;
               var obj = {key:name,name:n,desc:d};
-              // console.log(coll);
-              // console.log(obj);
-              desc.push(obj);
+              descriptions.push(obj);
             }
           }
         }
       }
-      // console.log(desc);
-      return cc;
+      return temp_collections;
     });
   };
-  var getActual = function(array){
-    var result = [];
-    return array.forEach(function(element){
-      // console.log(element);
-      var url_part_2_2 = url_part_2.replace("CCCC",element);
-      var url = url_part_1 + url_part_2_2;
-      return $http.get(url).then(function(res){
-        if(res == null){return;}
-        var x2js = new X2JS();
-        var data = x2js.xml_str2json(res.data);
-        var n = data.response._from;
 
-        //only "password" has more than one category
-        var ex = res.response.categoryList.category;
-        if(ex.length > 0 || ex.exercise){
-          results.push(name);
-        }
-        return results;
-      });
-    });
-  }
+  var check = function(collectionName){
+    var suffix_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
+    var coll_url = PREFIX_URL + suffix_url;
 
-  var getDesc = function(){
-    return desc;
-  }
-
-  var results = [];
-  var check = function(url){
-    var url_part_2_2 = url_part_2.replace("CCCC",url);
-    var a = url_part_1 + url_part_2_2;
-    return $http.get(a).then(function(res){
+    return $http.get(coll_url).then(function(res){
       var x2js = new X2JS();
       var data = x2js.xml_str2json(res.data);
       if(!data || !data.response){return;}
-      var n = data.response._from;
+      var collection_name = data.response._from;
 
       //only "password" has more than one category
       var ex = data.response.categoryList.category;
       if(ex.length > 0 || ex.exercise){
-        results.push(n);
+        collections.push(collection_name);
       }
-      return results;
+      return collections;
     });
-  }
+  };
+
+  var getAllEx = function(collectionName){
+    var suffix_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
+    var coll_url = PREFIX_URL + suffix_url;
+
+    return $http.get(coll_url).then(function(response){
+      var x2js = new X2JS();
+      var jsonData = x2js.xml_str2json(response.data);
+      // if(!jsonData.response){return;}
+      var category = jsonData.response.categoryList.category;
+      if(category.length > 0){
+        for(var i=0; i<category.length; i++){
+          var array = category[i].exercise;
+          if(array){//check if array is defined or not
+            if(array.length > 0){
+              exercises = [].concat(array);
+            }
+            else{
+              exercises.push(array);
+            }
+          }
+        }
+      }
+      else{
+        exercises = [].concat(jsonData.response.categoryList.category.exercise);
+      }
+      return exercises;
+    });
+  };
+
+  getSingleEx = function(exId,collectionName){
+    var temp_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
+    var collname_url= TEMPLATE_COLLNAME.replace("CCCC",collectionName);
+    var middle_url = temp_url.replace("11",SERVICE_NUMBER) + collname_url;
+
+    slidesCount = [];
+    var words = [];
+    var temp_words = [];
+
+    for(var i= 0 ; i<exercises.length; i++){
+      if(exercises[i]._id == parseInt(exId)){
+        var contained_url = exercises[i].url;
+        var params_url = contained_url.substr(contained_url.indexOf("&s1.params"));
+        var final_url = PREFIX_URL + middle_url + params_url;
+
+        return $http.get(final_url).then(function(response){
+          var x2js = new X2JS();
+          var jsonData = x2js.xml_str2json(response.data);
+          temp_words = jsonData.response.player.word;
+          for(var j=0; j<temp_words.length; j++){
+            var collo = temp_words[j].collo;
+            words[j] = [];
+            slidesCount.push(collo.length);
+            for(var k=0; k<collo.length; k++){
+              var text = collo[k].__text;
+              var left = getLeft(text);
+              var right = getRight(text);
+              var obj = {"left":left,"right":right};
+              words[j].push(obj);
+            };
+          };
+          return words;
+        });
+      }
+    }
+  };
+
+  getExTitle = function(exId){
+    for(var i= 0 ; i<exercises.length; i++){
+      if(exercises[i]._id == parseInt(exId)){
+        return exercises[i]._name;
+      }
+    }
+    return null;
+  };
+
+  getSlidesCount = function(){
+    // return Math.min.apply(Math,slidesCount);
+    return Math.max.apply(Math,slidesCount);
+  };
+
+  removeEx = function(ex) {
+    exercises.splice(exercises.indexOf(ex), 1);
+  };
+
+  removeColl = function(coll){
+    collections.splice(collections.indexOf(coll),1);
+  };
+
+  var getDesc = function(){
+    return descriptions;
+  };
+
+  var newList = function(){
+    temp_collections = [];
+    collections = [];
+    descriptions = [];
+  };
 
   var getLeft = function(word){
     // return word.split(" ")[0];
@@ -167,102 +187,20 @@ angular.module('collocationmatching.services', [])
   };
 
   return {
-    getDesc: getDesc,
-    getA: getA,
-    getActual: getActual,
-    check: check,
-    newList: newList,
     getAllColls: getAllColls,
-    getAll: function(collectionName){
-      var url_part_2_2 = url_part_2.replace("CCCC",collectionName);
-      var url = url_part_1 + url_part_2_2;
-      // console.log(url);
-      return $http.get(url).then(function(response){
-        var x2js = new X2JS();
-        var jsonData = x2js.xml_str2json(response.data);
-        // if(!jsonData.response){return;}
-        var category = jsonData.response.categoryList.category;
-        if(category.length > 0){
-          for(var i=0; i<category.length; i++){
-            var array = category[i].exercise;
-            if(array){//check if array is defined or not
-              if(array.length > 0){
-                data = [].concat(array);
-              }
-              else{
-                data.push(array);
-              }
-            }
-          }
-        }
-        else{
-          data = [].concat(jsonData.response.categoryList.category.exercise);
-        }
-        return data;
-      });
-    },
+    check: check,
 
-    getSingleEx: function(exId,collectionName){
-      var url_part_2_2 = url_part_2.replace("CCCC",collectionName);
-      var url_part_3 = collname.replace("CCCC",collectionName);
-      const url_2 = url_part_2_2.replace("11",service) + url_part_3;
-      slidesCount = [];
-      var collos = [];
-      for(var i= 0 ; i<data.length; i++){
-        if(data[i]._id == parseInt(exId)){
-          var thisUrl = data[i].url;
-          var paramsUrl = thisUrl.substr(thisUrl.indexOf("&s1.params"));
-          paramsUrl = url_part_1 + url_2 + paramsUrl;
-          // console.log(paramsUrl);
-          // return $http.get("templates/"+data[i].url).then(function(response){
-          return $http.get(paramsUrl).then(function(response){
-            var x2js = new X2JS();
-            var jsonData = x2js.xml_str2json(response.data);
-            // console.log(jsonData);
-            words = jsonData.response.player.word;
-            for(var j=0; j<words.length; j++){
-              var collo = words[j].collo;
-              collos[j] = [];
-              slidesCount.push(collo.length);
-              // slides = collo.length;
-              for(var k=0; k<collo.length; k++){
-                var text = collo[k].__text;
-                var left = getLeft(text);
-                var right = getRight(text);
-                var obj = {"left":left,"right":right};
-                collos[j].push(obj);
-              };
-            };
-            return collos;
-          });
-        }
-      }
-      return null;
-    },
+    getDesc: getDesc,
+    newList: newList,
 
-    getExTitle: function(exId){
-      for(var i= 0 ; i<data.length; i++){
-        if(data[i]._id == parseInt(exId)){
-          return data[i]._name;
-        }
-      }
-      return null;
-    },
+    getAllEx: getAllEx,
+    getSingleEx: getSingleEx,
 
-    getSlidesCount: function(){
-      // console.log(slidesCount);
-      // return slides;
-      // return Math.min.apply(Math,slidesCount);
-      return Math.max.apply(Math,slidesCount);
-    },
+    getExTitle: getExTitle,
+    getSlidesCount: getSlidesCount,
 
-    remove: function(ex) {
-      data.splice(data.indexOf(ex), 1);
-    },
-
-    removeColl: function(coll){
-      collections.splice(collections.indexOf(coll),1);
-    }
+    removeEx: removeEx,
+    removeColl: removeColl
   };
 })
 

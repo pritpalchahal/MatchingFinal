@@ -47,50 +47,33 @@ angular.module('collocationmatching.controllers', [])
 
 .controller('CollectionsCtrl', function($scope,Exercises,$timeout,$ionicLoading,$state,$ionicPopover,$ionicPopup){
 
-  // Exercises.getAllColls().then(function(response){
-  //   $scope.collections = [];
-  //   $ionicLoading.show();
-
-  //   //wait untill all data is received
-  //   $timeout(function(){
-  //     $ionicLoading.hide();
-  //     $scope.collections = response;
-  //     console.log($scope.collections); 
-  //   }, 500);
-  // });
-  Exercises.getA().then(function(response){
-    $scope.collections = [];
+  Exercises.getAllColls().then(function(response){
     $ionicLoading.show();
-    var data = [];
 
-    //wait untill all data is received
-    $timeout(function(){
-      $ionicLoading.hide();
-      data = response;
-      console.log(data);
+    response.forEach(function(collectionName){
+      Exercises.check(collectionName).then(function(res){
 
-      data.forEach(function(value){
-        Exercises.check(value).then(function(res){
-
-          $timeout(function(){
-            $scope.collections = res;
-          }, 400);
-        });
+        // $timeout(function(){
+          $scope.collections = res;
+          $ionicLoading.hide();
+        // }, 400);
       });
-    }, 200);
+    });
   });
 
   $scope.doRefresh = function(){
     //to remove duplicacy always remember to empty previous data before refreshing
     Exercises.newList();
     Exercises.getAllColls().then(function(response){
+      response.forEach(function(collectionName){
+        Exercises.check(collectionName).then(function(res){
 
-      //wait untill all data is received
-      $timeout(function(){
-        $scope.collections = response;
-        console.log($scope.collections); 
-        $scope.$broadcast('scroll.refreshComplete');
-      }, 200);
+          // $timeout(function(){
+            $scope.collections = res; 
+          // }, 400);
+        });
+      });
+      $scope.$broadcast('scroll.refreshComplete'); 
     });
   };
 
@@ -170,7 +153,7 @@ angular.module('collocationmatching.controllers', [])
     SummaryData.createColl(id);
   }
 
-  Exercises.getAll(name).then(function(response){
+  Exercises.getAllEx(name).then(function(response){
     $scope.exercises = response;
     for(var i=0;i<$scope.exercises.length;i++){
       var exId = $scope.exercises[i]._id;
@@ -182,7 +165,7 @@ angular.module('collocationmatching.controllers', [])
   });
 
   $scope.remove = function(ex) {
-    Exercises.remove(ex);
+    Exercises.removeEx(ex);
   };
 
   //use this method to refresh data
@@ -192,7 +175,7 @@ angular.module('collocationmatching.controllers', [])
 
   $scope.doRefresh = function(){
     // $timeout(function(){
-      Exercises.getAll(name).then(function(response){
+      Exercises.getAllEx(name).then(function(response){
         $scope.exercises = response;
         for(var i=0;i<$scope.exercises.length;i++){
           var currentState = StateData.getSingleState(id,$scope.exercises[i]._id);
@@ -244,8 +227,9 @@ angular.module('collocationmatching.controllers', [])
   }
 })
 
-.controller('ExerciseCtrl', function($scope, $stateParams, Exercises, $ionicPopup, $ionicPopover,$filter,
-  $timeout,ionicToast,Ids,AnswerData,DropData,SummaryData) {
+.controller('ExerciseCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, $ionicPopover,$filter, $timeout,
+  ionicToast, Ids, AnswerData, DropData, SummaryData, Exercises) {
+  $ionicLoading.show();
   var exId = $stateParams.exId;
   var collectionName = $stateParams.collectionName;
   var id = Ids.get(collectionName);
@@ -281,6 +265,8 @@ angular.module('collocationmatching.controllers', [])
             $scope.draggableObjects[i][j] = $scope.words[j][i].right;
           }
         }
+        //shuffle words
+        $scope.draggableObjects[i] = shuffle($scope.draggableObjects[i]);
     }
 
     if(!oldData){
@@ -289,7 +275,25 @@ angular.module('collocationmatching.controllers', [])
         DropData.createWord(id,exId,i);
       }
     }
+    $ionicLoading.hide();
   });
+
+  var shuffle = function(array) {
+    var m = array.length, t, i;
+
+    // While there remain elements to shuffle…
+    while (m) {
+
+      // Pick a remaining element…
+      i = Math.floor(Math.random() * m--);
+
+      // And swap it with the current element.
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+    }
+    return array;
+  }
 
   $scope.title = Exercises.getExTitle($stateParams.exId);
 
