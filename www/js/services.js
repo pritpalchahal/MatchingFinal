@@ -85,6 +85,7 @@ angular.module('collocationmatching.services', [])
   };
 
   var getAllEx = function(collId){
+    alert("online: "+Ids.getStatus());
     if(exercises[collId]){
       return new Promise((resolve,reject) => resolve(exercises[collId]));
     }
@@ -120,6 +121,7 @@ angular.module('collocationmatching.services', [])
   };
 
   getSingleEx = function(collId,exId){
+    alert("online: "+Ids.getStatus());
     if(words[collId][exId]){
       return new Promise((resolve,reject) => resolve(words[collId][exId]));
     }
@@ -402,8 +404,9 @@ angular.module('collocationmatching.services', [])
   };
 })
 
-.factory('Ids',function(){
+.factory('Ids',function($cordovaNetwork,$rootScope){
   var ids = [];
+  var online = true;
 
   var createId = function(name){
     var index = ids.indexOf(name);
@@ -420,9 +423,32 @@ angular.module('collocationmatching.services', [])
     return ids[collId];
   }
 
+  var getStatus = function(){
+    return online;
+  }
+
+  var setStatus = function(value){
+    online = value;
+  }
+
+  var watchStatus = function(){
+    // online = $cordovaNetwork.isOnline();
+    document.addEventListener("deviceready",function(){
+      $rootScope.$on('$cordovaNetwork:online',function(event,state){
+        online = true;
+      })
+      $rootScope.$on('$cordovaNetwork:offline',function(event,state){
+        online = false;
+      })
+    });
+  }
+
   return{
     createId: createId,
     getId: getId,
-    getName: getName
+    getName: getName,
+    getStatus: getStatus,
+    setStatus: setStatus,
+    watchStatus: watchStatus
   };
 });

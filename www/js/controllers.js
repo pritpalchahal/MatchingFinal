@@ -46,25 +46,25 @@ angular.module('collocationmatching.controllers', [])
 })
 
 .controller('CollectionsCtrl', function($scope, $timeout, $ionicLoading, $state, $ionicPopover, $ionicPopup, Exercises, 
-  $cordovaNetwork, $rootScope){
+  $cordovaNetwork, $rootScope, Ids){
 
-  document.addEventListener("deviceready", function () {
-      $scope.online = $cordovaNetwork.isOnline();
-      $scope.$apply();
+  // document.addEventListener("deviceready", function () {
+  //     $scope.online = $cordovaNetwork.isOnline();
+  //     $scope.$apply();
 
-      // listen for Online event
-      $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
-          $scope.online = true;
-          $scope.$apply();
-      })
+  //     // listen for Online event
+  //     $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
+  //         $scope.online = true;
+  //         $scope.$apply();
+  //     })
 
-      // listen for Offline event
-      $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
-          $scope.online = false;
-          $scope.$apply();
-      })
+  //     // listen for Offline event
+  //     $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
+  //         $scope.online = false;
+  //         $scope.$apply();
+  //     })
 
-  }, false);
+  // }, false);
 
   Exercises.getAllColls().then(function(response){
     $ionicLoading.show();
@@ -137,6 +137,17 @@ angular.module('collocationmatching.controllers', [])
 
 .controller('ExsCtrl', function($scope, $timeout, $stateParams, $ionicPopup, $ionicPopover, 
   Ids, StateData, DropData, AnswerData, SummaryData, Exercises) {
+  Ids.watchStatus();
+  // $scope.online = Ids.getStatus();
+
+  // $scope.get = function(){
+  //   var alertPopup = $ionicPopup.alert({
+  //     scope: $scope,
+  //     title:  'online',
+  //     templateUrl: 'templates/online.html'
+  //   });
+  // }
+  
   var name = $stateParams.collectionName;
   $scope.collectionName = name;
 
