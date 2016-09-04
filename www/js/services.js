@@ -30,6 +30,10 @@ angular.module('collocationmatching.services', [])
     if(collections.length > 0){
       return new Promise((resolve,reject) => resolve(collections));
     }
+    if(!Ids.getStatus()){
+      ionicToast.show(Ids.getErrorMsg(),'middle',false,3000);
+      return new Promise((resolve,reject) => resolve(collections));
+    }
     return $http.get(ALL_COLLECTIONS_URL).then(function(response){
       var x2js = new X2JS();
       var jsonData = x2js.xml_str2json(response.data);
@@ -89,8 +93,8 @@ angular.module('collocationmatching.services', [])
       return new Promise((resolve,reject) => resolve(exercises[collId]));
     }
     if(!Ids.getStatus()){
-      ionicToast.show("all - "+Ids.getStatus(),'middle',false,2500);
-      return new Promise((resolve,reject) => resolve([]));
+      ionicToast.show(Ids.getErrorMsg(),'middle',false,3000);
+      return new Promise((resolve,reject) => resolve(exercises[collId]));
     }
     //initiate all sub arrays
     exercises[collId] = [];
@@ -131,8 +135,8 @@ angular.module('collocationmatching.services', [])
       return new Promise((resolve,reject) => resolve(words[collId][exId]));
     }
     if(!Ids.getStatus()){
-      ionicToast.show("single - "+Ids.getStatus(),'middle',false,2500);
-      return new Promise((resolve,reject) => resolve([]));
+      ionicToast.show(Ids.getErrorMsg(),'middle',false,3000);
+      return new Promise((resolve,reject) => resolve(words[collId][exId]));
     }
     //initiate
     words[collId][exId] = [];
@@ -186,7 +190,7 @@ angular.module('collocationmatching.services', [])
   };
 
   getSlidesCount = function(collId,exId){
-    if(!Ids.getStatus()){
+    if(!slidesCount[collId][exId]){
       return 0;
     }
     // return Math.min.apply(Math,slidesCount);
@@ -477,6 +481,11 @@ angular.module('collocationmatching.services', [])
     });
   }
 
+  var msg = "No Internet connection available!";
+  var getErrorMsg = function(){
+    return msg;
+  }
+
   return{
     createId: createId,
     getId: getId,
@@ -484,6 +493,7 @@ angular.module('collocationmatching.services', [])
 
     getStatus: getStatus,
     watchStatus: watchStatus,
+    getErrorMsg: getErrorMsg,
 
     createExId: createExId,
     getExId: getExId,

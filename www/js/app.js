@@ -6,10 +6,22 @@
 angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers', 'collocationmatching.services',
   'ngDraggable', 'ngCordova','ionic-toast'])
 
-.run(function($ionicPlatform,$ionicHistory,$stateParams,$filter,Exercises,StateData,SummaryData,DropData,AnswerData,Ids,ionicToast) {
+.run(function($ionicPlatform,$ionicHistory,$stateParams,$filter, $ionicPopup,
+  Exercises,StateData,SummaryData,DropData,AnswerData,Ids,ionicToast) {
   $ionicPlatform.ready(function() {
     Ids.watchStatus();
-    ionicToast.show("App.js - "+Ids.getStatus(),'middle',false,2500);
+    if(!Ids.getStatus()){
+      // ionicToast.show(Ids.getErrorMsg(),'middle',true);
+      $ionicPopup.alert({
+        title: 'Connection error',
+        subTitle: 'No internet connection detected',
+        buttons: [
+          {
+            text: 'Close',
+            type: 'button-negative'
+          }]
+      });
+    }
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -34,37 +46,40 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
 
   //override default android back button behavior 
   $ionicPlatform.onHardwareBackButton(function(){
-      var currentState = $ionicHistory.currentStateName();
+    var exerciseId = $stateParams.exerciseId;
+    var name = $stateParams.collectionName;
+    var collId = Ids.getId(name);
+    var exId = Ids.getExId(collId,exerciseId);
 
-      if(currentState != "exercise"){
-        return;
-      }
-      
-      var exId = $stateParams.exId;
-      var name = $stateParams.collectionName;
-      var id = Ids.get(name);
+    var currentState = $ionicHistory.currentStateName();
 
-      //update end time
-      if(StateData.getSingleState(id,exId) != "Complete"){
-        var time = new Date();
-        var timeNow = $filter('date')(time,'medium');
-        SummaryData.updateEndTime(id,exId,timeNow);
-      }
+    if(currentState != "exercise"){
+      return;
+    }
 
-      var totalSlides = Exercises.getSlidesCount();
-      var j = 0;
-      var values = AnswerData.getValues(id,exId);
-      for(i=0;i<values.length;i++){
-        if(values[i]){
-          j++;
-        }
+    //update end time
+    if(StateData.getSingleState(collId,exId) != "Complete"){
+      var time = new Date();
+      var timeNow = $filter('date')(time,'medium');
+      SummaryData.updateEndTime(collId,exId,timeNow);
+    }
+
+    var totalSlides = Exercises.getSlidesCount(collId,exId);
+    if(totalSlides == 0){return;}
+
+    var j = 0;
+    var values = AnswerData.getValues(collId,exId);
+    for(i=0;i<values.length;i++){
+      if(values[i]){
+        j++;
       }
-      if(j == totalSlides){
-        StateData.updateState(id,exId,"Complete");
-      }
-      else{
-        StateData.updateState(id,exId,"Incomplete");
-      }
+    }
+    if(j == totalSlides){
+      StateData.updateState(collId,exId,"Complete");
+    }
+    else{
+      StateData.updateState(collId,exId,"Incomplete");
+    }
   });
 })
 

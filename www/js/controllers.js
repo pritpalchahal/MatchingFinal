@@ -30,6 +30,8 @@ angular.module('collocationmatching.controllers', [])
     }
 
     var totalSlides = Exercises.getSlidesCount(collId,exId);
+    if(totalSlides == 0){return;}
+
     var j = 0;
     var values = AnswerData.getValues(collId,exId);
     for(i=0;i<values.length;i++){
@@ -184,15 +186,17 @@ angular.module('collocationmatching.controllers', [])
 
   $scope.doRefresh = function(){
     // $timeout(function(){
-      Exercises.getAllEx(name).then(function(response){
+      Exercises.getAllEx(collId).then(function(response){
         $scope.exercises = response;
         for(var i=0;i<$scope.exercises.length;i++){
-          var currentState = StateData.getSingleState(collId,$scope.exercises[i]._id);
+          var exerciseId = $scope.exercises[i]._id;
+          var exId = Ids.getExId(collId,exerciseId);
+          var currentState = StateData.getSingleState(collId,exId);
           if(currentState){
-            StateData.updateState(collId,$scope.exercises[i]._id,currentState);
+            StateData.updateState(collId,exId,currentState);
           }
           else{
-            StateData.updateState(collId,$scope.exercises[i]._id,"New");
+            StateData.updateState(collId,exId,"New");
           }
         }
         $scope.states = StateData.getAllStates(collId);
@@ -266,9 +270,19 @@ angular.module('collocationmatching.controllers', [])
   $scope.dropped = [];
 
   Exercises.getSingleEx(collId,exId).then(function(response){
+    $ionicLoading.hide();
     $scope.words = response;
     $scope.slides = Exercises.getSlidesCount(collId,exId);
     $scope.slideCount = new Array($scope.slides);
+    $scope.slideCount = shuffle($scope.slideCount);
+    // console.log($scope.words);
+    // // $scope.words = shuffle($scope.words);
+    // // console.log($scope.words);
+    // var shuffled = [];
+    // for(var j=0 ; j<$scope.words.length; j++){
+    //   shuffled[j] = shuffle($scope.words[j]);
+    // }
+    // console.log(shuffled);
 
     for(var i=0;i<$scope.slides;i++){
         $scope.draggableObjects[i] = new Array($scope.words.length);
@@ -280,6 +294,7 @@ angular.module('collocationmatching.controllers', [])
         //shuffle words
         $scope.draggableObjects[i] = shuffle($scope.draggableObjects[i]);
     }
+    // console.log($scope.words);
 
     if(!oldData){
       DropData.createEx(collId,exId);
@@ -287,7 +302,6 @@ angular.module('collocationmatching.controllers', [])
         DropData.createWord(collId,exId,i);
       }
     }
-    $ionicLoading.hide();
   });
 
   var shuffle = function(array) {
