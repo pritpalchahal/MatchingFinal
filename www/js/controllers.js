@@ -28,7 +28,7 @@ angular.module('collocationmatching.controllers', [])
       SummaryData.updateEndTime(collId,exId,timeNow);
     }
 
-    var totalSlides = Exercises.getSlidesCount();
+    var totalSlides = Exercises.getSlidesCount(collId,exId);
     var j = 0;
     var values = AnswerData.getValues(collId,exId);
     for(i=0;i<values.length;i++){
@@ -48,24 +48,6 @@ angular.module('collocationmatching.controllers', [])
 .controller('CollectionsCtrl', function($scope, $timeout, $ionicLoading, $state, $ionicPopover, $ionicPopup, Exercises, 
   $cordovaNetwork, $rootScope, Ids){
 
-  // document.addEventListener("deviceready", function () {
-  //     $scope.online = $cordovaNetwork.isOnline();
-  //     $scope.$apply();
-
-  //     // listen for Online event
-  //     $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
-  //         $scope.online = true;
-  //         $scope.$apply();
-  //     })
-
-  //     // listen for Offline event
-  //     $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
-  //         $scope.online = false;
-  //         $scope.$apply();
-  //     })
-
-  // }, false);
-
   Exercises.getAllColls().then(function(response){
     $ionicLoading.show();
 
@@ -81,6 +63,11 @@ angular.module('collocationmatching.controllers', [])
   });
 
   $scope.doRefresh = function(){
+    if(!Ids.getStatus()){
+      $scope.$broadcast('scroll.refreshComplete');
+      alert("No connection! (CollectionsCtrl)");
+      return;
+    }
     //to remove duplicacy always remember to empty previous data before refreshing
     Exercises.newList();
     Exercises.getAllColls().then(function(response){
@@ -135,19 +122,9 @@ angular.module('collocationmatching.controllers', [])
   }
 })
 
-.controller('ExsCtrl', function($scope, $timeout, $stateParams, $ionicPopup, $ionicPopover, 
+.controller('ExsCtrl', function($scope, $timeout, $stateParams, $ionicPopup, $ionicPopover, $ionicHistory,
   Ids, StateData, DropData, AnswerData, SummaryData, Exercises) {
-  Ids.watchStatus();
-  // $scope.online = Ids.getStatus();
 
-  // $scope.get = function(){
-  //   var alertPopup = $ionicPopup.alert({
-  //     scope: $scope,
-  //     title:  'online',
-  //     templateUrl: 'templates/online.html'
-  //   });
-  // }
-  
   var name = $stateParams.collectionName;
   $scope.collectionName = name;
 
@@ -204,8 +181,13 @@ angular.module('collocationmatching.controllers', [])
   });
 
   $scope.doRefresh = function(){
+    if(!Ids.getStatus()){
+      $scope.$broadcast('scroll.refreshComplete');  
+      alert("No connection! (ExsCtrl)");
+      return;
+    }
     // $timeout(function(){
-      Exercises.getAllEx(name).then(function(response){
+      Exercises.getAllEx(collId).then(function(response){
         $scope.exercises = response;
         for(var i=0;i<$scope.exercises.length;i++){
           var currentState = StateData.getSingleState(collId,$scope.exercises[i]._id);
@@ -258,11 +240,16 @@ angular.module('collocationmatching.controllers', [])
 })
 
 .controller('ExerciseCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, $ionicPopover,$filter, $timeout,
-  ionicToast, Ids, AnswerData, DropData, SummaryData, Exercises) {
-  $ionicLoading.show();
-  var exId = $stateParams.exId;
+  $ionicHistory, ionicToast, Ids, AnswerData, DropData, SummaryData, Exercises) {
+  var exerciseId = $stateParams.exId;
+
   var collectionName = $stateParams.collectionName;
   var collId = Ids.getId(collectionName);
+
+  //create a unique id for each exercise
+  Ids.createId(collId,exerciseId);
+  var exId = Ids.getId(collId,exerciseId);
+  console.log("exId: "+exId);
 
   if(!AnswerData.getValues(collId,exId)){
     AnswerData.createValue(collId,exId);
@@ -284,8 +271,9 @@ angular.module('collocationmatching.controllers', [])
   $scope.dropped = [];
 
   Exercises.getSingleEx(collId,exId).then(function(response){
+    $ionicLoading.show();
     $scope.words = response;
-    $scope.slides = Exercises.getSlidesCount();
+    $scope.slides = Exercises.getSlidesCount(collId,exId);
     $scope.slideCount = new Array($scope.slides);
 
     for(var i=0;i<$scope.slides;i++){

@@ -85,12 +85,16 @@ angular.module('collocationmatching.services', [])
   };
 
   var getAllEx = function(collId){
-    alert("online: "+Ids.getStatus());
     if(exercises[collId]){
       return new Promise((resolve,reject) => resolve(exercises[collId]));
     }
     exercises[collId] = [];
     words[collId] = [];
+    slidesCount[collId] = [];
+
+    if(!Ids.getStatus()){
+      return new Promise((resolve,reject) => resolve([]));
+    }
     var collectionName = Ids.getName(collId);
     var suffix_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
     var coll_url = PREFIX_URL + suffix_url;
@@ -121,22 +125,28 @@ angular.module('collocationmatching.services', [])
   };
 
   getSingleEx = function(collId,exId){
-    alert("online: "+Ids.getStatus());
     if(words[collId][exId]){
       return new Promise((resolve,reject) => resolve(words[collId][exId]));
     }
-    words[collId][exId] = [];
+    //create unique id for this exercise
+    Ids.createExIndex(collId,exId);
+    var exIndex = Ids.getExIndex(collId,exId);
+    words[collId][exIndex] = [];
+    slidesCount[collId][exIndex] = [];
+
+    if(!Ids.getStatus()){
+      return new Promise((resolve,reject) => resolve([]));
+    }
+    var exerciseId = Ids.getExId(exId);
     var collectionName = Ids.getName(collId);
     var temp_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
     var collname_url= TEMPLATE_COLLNAME.replace("CCCC",collectionName);
     var middle_url = temp_url.replace("11",SERVICE_NUMBER) + collname_url;
 
-    slidesCount = [];
-    // var words = [];
     var temp_words = [];
 
     for(var i= 0 ; i<exercises[collId].length; i++){
-      if(exercises[collId][i]._id == parseInt(exId)){
+      if(exercises[collId][i]._id == parseInt(exerciseId)){
         var contained_url = exercises[collId][i].url;
         var params_url = contained_url.substr(contained_url.indexOf("&s1.params"));
         var final_url = PREFIX_URL + middle_url + params_url;
@@ -147,17 +157,17 @@ angular.module('collocationmatching.services', [])
           temp_words = jsonData.response.player.word;
           for(var j=0; j<temp_words.length; j++){
             var collo = temp_words[j].collo;
-            words[collId][exId][j] = [];
-            slidesCount.push(collo.length);
+            words[collId][exIndex][j] = [];
+            slidesCount[collId][exIndex].push(collo.length);
             for(var k=0; k<collo.length; k++){
               var text = collo[k].__text;
               var left = getLeft(text);
               var right = getRight(text);
               var obj = {"left":left,"right":right};
-              words[collId][exId][j].push(obj);
+              words[collId][exIndex][j].push(obj);
             };
           };
-          return words[collId][exId];
+          return words[collId][exIndex];
         });
       }
     }
@@ -172,9 +182,13 @@ angular.module('collocationmatching.services', [])
     return null;
   };
 
-  getSlidesCount = function(){
+  getSlidesCount = function(collId,exId){
+    var exIndex = Ids.getExIndex(collId,exId);
+    if(slidesCount[collId][exIndex].length == 0){
+      return 0;
+    }
     // return Math.min.apply(Math,slidesCount);
-    return Math.max.apply(Math,slidesCount);
+    return Math.max.apply(Math,slidesCount[collId][exIndex]);
   };
 
   removeEx = function(collId,ex) {
@@ -405,35 +419,52 @@ angular.module('collocationmatching.services', [])
 })
 
 .factory('Ids',function($cordovaNetwork,$rootScope){
-  var ids = [];
+  var collIndexes = [];
+  var exIndexes = [];
   var online = true;
 
-  var createId = function(name){
-    var index = ids.indexOf(name);
+  var createExIndex = function(collId,exId){
+    if(!exIndexes[collId]){
+      exIndexes[collId] = [];
+    }
+    var index = exIndexes[collId].indexOf(exId);
     if(index == -1){
-      ids.push(name);
+      exIndexes[collId].push(exId);
+    }
+  }
+
+  var getExIndex = function(collId,exId){
+    return exIndexes[collId].indexOf(exId);
+  }
+
+  var getExId = function(collId,exId){
+    return exIndexes[collId][exId];
+  }
+
+  var createId = function(name){
+    var index = collIndexes.indexOf(name);
+    if(index == -1){
+      collIndexes.push(name);
     }
   }
 
   var getId = function(name){
-    return ids.indexOf(name);
+    return collIndexes.indexOf(name);
   }
 
   var getName = function(collId){
-    return ids[collId];
+    return collIndexes[collId];
   }
 
   var getStatus = function(){
     return online;
   }
 
-  var setStatus = function(value){
-    online = value;
-  }
-
   var watchStatus = function(){
     // online = $cordovaNetwork.isOnline();
     document.addEventListener("deviceready",function(){
+      online = $cordovaNetwork.isOnline();
+
       $rootScope.$on('$cordovaNetwork:online',function(event,state){
         online = true;
       })
@@ -448,7 +479,9 @@ angular.module('collocationmatching.services', [])
     getId: getId,
     getName: getName,
     getStatus: getStatus,
-    setStatus: setStatus,
-    watchStatus: watchStatus
+    watchStatus: watchStatus,
+    createExIndex: createExIndex,
+    getExIndex: getExIndex,
+    getExId: getExId
   };
 });

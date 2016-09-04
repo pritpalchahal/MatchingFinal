@@ -8,6 +8,10 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
 
 .run(function($ionicPlatform,$ionicHistory,$stateParams,$filter,Exercises,StateData,SummaryData,DropData,AnswerData,Ids) {
   $ionicPlatform.ready(function() {
+    Ids.watchStatus();
+    if(!Ids.getStatus()){
+      alert("No connection! (app.js)");
+    }
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -49,7 +53,7 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
         SummaryData.updateEndTime(id,exId,timeNow);
       }
 
-      var totalSlides = Exercises.getSlidesCount();
+      var totalSlides = Exercises.getSlidesCount(id,exId);
       var j = 0;
       var values = AnswerData.getValues(id,exId);
       for(i=0;i<values.length;i++){
