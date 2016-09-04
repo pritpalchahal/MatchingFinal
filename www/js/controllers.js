@@ -156,14 +156,11 @@ angular.module('collocationmatching.controllers', [])
     SummaryData.createColl(collId);
   }
 
-  $scope.getId = function(exerciseId){
-    return Ids.getExId(collId,exerciseId);
-  }
-
   Exercises.getAllEx(collId).then(function(response){
     $scope.exercises = response;
     for(var i=0;i<$scope.exercises.length;i++){
       var exerciseId = $scope.exercises[i]._id;
+      Ids.createExId(collId,exerciseId);
       var exId = Ids.getExId(collId,exerciseId);
       if(!StateData.getSingleState(collId,exId)){
         StateData.updateState(collId,exId,"New");
@@ -171,6 +168,10 @@ angular.module('collocationmatching.controllers', [])
     }
     $scope.states = StateData.getAllStates(collId);
   });
+
+  $scope.getId = function(exerciseId){
+    return Ids.getExId(collId,exerciseId);
+  }
 
   $scope.remove = function(collId,ex) {
     Exercises.removeEx(collId,ex);
@@ -242,7 +243,7 @@ angular.module('collocationmatching.controllers', [])
   var collectionName = $stateParams.collectionName;
   var collId = Ids.getId(collectionName);
 
-  Ids.createExId(collId,exerciseId);
+  //exIds already created in 'ExsCtrl'
   var exId = Ids.getExId(collId,exerciseId);
 
   if(!AnswerData.getValues(collId,exId)){

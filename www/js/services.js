@@ -88,6 +88,10 @@ angular.module('collocationmatching.services', [])
     if(exercises[collId]){
       return new Promise((resolve,reject) => resolve(exercises[collId]));
     }
+    if(!Ids.getStatus()){
+      ionicToast.show("all - "+Ids.getStatus(),'middle',false,2500);
+      return new Promise((resolve,reject) => resolve([]));
+    }
     //initiate all sub arrays
     exercises[collId] = [];
     words[collId] = [];
@@ -125,6 +129,10 @@ angular.module('collocationmatching.services', [])
   getSingleEx = function(collId,exId){
     if(words[collId][exId]){
       return new Promise((resolve,reject) => resolve(words[collId][exId]));
+    }
+    if(!Ids.getStatus()){
+      ionicToast.show("single - "+Ids.getStatus(),'middle',false,2500);
+      return new Promise((resolve,reject) => resolve([]));
     }
     //initiate
     words[collId][exId] = [];
@@ -178,6 +186,9 @@ angular.module('collocationmatching.services', [])
   };
 
   getSlidesCount = function(collId,exId){
+    if(!Ids.getStatus()){
+      return 0;
+    }
     // return Math.min.apply(Math,slidesCount);
     return Math.max.apply(Math,slidesCount[collId][exId]);
   };
