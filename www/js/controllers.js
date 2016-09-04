@@ -10,9 +10,10 @@ angular.module('collocationmatching.controllers', [])
 .controller('BackButtonController', function($scope, $ionicHistory, $stateParams, $filter,
   Exercises, StateData, SummaryData, AnswerData, DropData, Ids){
   $scope.customGoBack = function(){
-    var exId = $stateParams.exId;
+    var exerciseId = $stateParams.exerciseId;
     var name = $stateParams.collectionName;
     var collId = Ids.getId(name);
+    var exId = Ids.getExId(collId,exerciseId);
 
     $ionicHistory.goBack();
     var currentState = $ionicHistory.currentStateName();
@@ -28,7 +29,7 @@ angular.module('collocationmatching.controllers', [])
       SummaryData.updateEndTime(collId,exId,timeNow);
     }
 
-    var totalSlides = Exercises.getSlidesCount();
+    var totalSlides = Exercises.getSlidesCount(collId,exId);
     var j = 0;
     var values = AnswerData.getValues(collId,exId);
     for(i=0;i<values.length;i++){
@@ -47,24 +48,6 @@ angular.module('collocationmatching.controllers', [])
 
 .controller('CollectionsCtrl', function($scope, $timeout, $ionicLoading, $state, $ionicPopover, $ionicPopup, Exercises, 
   $cordovaNetwork, $rootScope, Ids){
-
-  // document.addEventListener("deviceready", function () {
-  //     $scope.online = $cordovaNetwork.isOnline();
-  //     $scope.$apply();
-
-  //     // listen for Online event
-  //     $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
-  //         $scope.online = true;
-  //         $scope.$apply();
-  //     })
-
-  //     // listen for Offline event
-  //     $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
-  //         $scope.online = false;
-  //         $scope.$apply();
-  //     })
-
-  // }, false);
 
   Exercises.getAllColls().then(function(response){
     $ionicLoading.show();
@@ -137,16 +120,6 @@ angular.module('collocationmatching.controllers', [])
 
 .controller('ExsCtrl', function($scope, $timeout, $stateParams, $ionicPopup, $ionicPopover, 
   Ids, StateData, DropData, AnswerData, SummaryData, Exercises) {
-  Ids.watchStatus();
-  // $scope.online = Ids.getStatus();
-
-  // $scope.get = function(){
-  //   var alertPopup = $ionicPopup.alert({
-  //     scope: $scope,
-  //     title:  'online',
-  //     templateUrl: 'templates/online.html'
-  //   });
-  // }
   
   var name = $stateParams.collectionName;
   $scope.collectionName = name;
@@ -183,10 +156,15 @@ angular.module('collocationmatching.controllers', [])
     SummaryData.createColl(collId);
   }
 
+  $scope.getId = function(exerciseId){
+    return Ids.getExId(collId,exerciseId);
+  }
+
   Exercises.getAllEx(collId).then(function(response){
     $scope.exercises = response;
     for(var i=0;i<$scope.exercises.length;i++){
-      var exId = $scope.exercises[i]._id;
+      var exerciseId = $scope.exercises[i]._id;
+      var exId = Ids.getExId(collId,exerciseId);
       if(!StateData.getSingleState(collId,exId)){
         StateData.updateState(collId,exId,"New");
       }
@@ -260,9 +238,12 @@ angular.module('collocationmatching.controllers', [])
 .controller('ExerciseCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, $ionicPopover,$filter, $timeout,
   ionicToast, Ids, AnswerData, DropData, SummaryData, Exercises) {
   $ionicLoading.show();
-  var exId = $stateParams.exId;
+  var exerciseId = $stateParams.exerciseId;
   var collectionName = $stateParams.collectionName;
   var collId = Ids.getId(collectionName);
+
+  Ids.createExId(collId,exerciseId);
+  var exId = Ids.getExId(collId,exerciseId);
 
   if(!AnswerData.getValues(collId,exId)){
     AnswerData.createValue(collId,exId);
@@ -285,7 +266,7 @@ angular.module('collocationmatching.controllers', [])
 
   Exercises.getSingleEx(collId,exId).then(function(response){
     $scope.words = response;
-    $scope.slides = Exercises.getSlidesCount();
+    $scope.slides = Exercises.getSlidesCount(collId,exId);
     $scope.slideCount = new Array($scope.slides);
 
     for(var i=0;i<$scope.slides;i++){
@@ -325,7 +306,7 @@ angular.module('collocationmatching.controllers', [])
     return array;
   }
 
-  $scope.title = Exercises.getExTitle(collId,$stateParams.exId);
+  $scope.title = Exercises.getExTitle(collId,$stateParams.exerciseId);
 
   $scope.options = {
     pagination: '.swiper-pagination',

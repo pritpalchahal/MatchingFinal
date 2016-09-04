@@ -6,8 +6,10 @@
 angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers', 'collocationmatching.services',
   'ngDraggable', 'ngCordova','ionic-toast'])
 
-.run(function($ionicPlatform,$ionicHistory,$stateParams,$filter,Exercises,StateData,SummaryData,DropData,AnswerData,Ids) {
+.run(function($ionicPlatform,$ionicHistory,$stateParams,$filter,Exercises,StateData,SummaryData,DropData,AnswerData,Ids,ionicToast) {
   $ionicPlatform.ready(function() {
+    Ids.watchStatus();
+    ionicToast.show("App.js - "+Ids.getStatus(),'middle',false,2500);
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -92,7 +94,7 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
   })
 
   .state('exercise', {
-    url: '/collections/:collectionName/:exId',
+    url: '/collections/:collectionName/:exerciseId',
         templateUrl: 'templates/ex-detail.html',
         controller: 'ExerciseCtrl'
   });
