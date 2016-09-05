@@ -256,7 +256,9 @@ angular.module('collocationmatching.controllers', [])
     for(var i=0; i<$scope.words.length;i++){
       var word = $scope.words[i];
       countSet++;
-      if(word[slideIndex].isCorrect){
+      //it is critical to check for word[slideIndex]
+      //because slideIndex can be different 
+      if(word[slideIndex] && word[slideIndex].isCorrect){
         count++;
       }
     }
@@ -282,13 +284,13 @@ angular.module('collocationmatching.controllers', [])
   var shuffle = function(array) {
     var m = array.length, t, i;
 
-    // While there remain elements to shuffle…
+    // While there remain elements to shuffle
     while (m) {
 
-      // Pick a remaining element…
+      // Pick a remaining element
       i = Math.floor(Math.random() * m--);
 
-      // And swap it with the current element.
+      // And swap it with the current element
       t = array[m];
       array[m] = array[i];
       array[i] = t;
@@ -329,21 +331,21 @@ angular.module('collocationmatching.controllers', [])
 
   $scope.onDragSuccess = function(data,evt,wordId,slideIndex){
     for(var i=0;i<$scope.words.length;i++){
-      if($scope.words[i][slideIndex].id == wordId){
+      var word = $scope.words[i];
+      if(word[slideIndex] && (word[slideIndex].id == wordId)){
         $scope.words[i][slideIndex].drop = "";
       }
     }
   }
   $scope.onDropComplete = function(data,evt,wordId,slideIndex){
-    var index = null;
     for(var i=0;i<$scope.words.length;i++){
-      if($scope.words[i][slideIndex].id == wordId){
-        index = i;
+      var word = $scope.words[i];
+      if(word[slideIndex] && (word[slideIndex].id == wordId)){
+        var value = $scope.words[i][slideIndex].drop;
+        if(value != data){
+          $scope.words[i][slideIndex].drop = data;
+        }
       }
-    }
-    var value = $scope.words[index][slideIndex].drop;
-    if(value != data){
-      $scope.words[index][slideIndex].drop = data;
     }
   }
 

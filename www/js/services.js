@@ -97,10 +97,12 @@ angular.module('collocationmatching.services', [])
       ionicToast.show(Ids.getErrorMsg(),'middle',false,3000);
       return new Promise((resolve,reject) => resolve(exercises[collId]));
     }
-    //initiate all sub arrays
-    exercises[collId] = [];
-    words[collId] = [];
-    slidesCount[collId] = [];
+    if(!isRefreshing){
+      //initiate all sub arrays
+      exercises[collId] = [];
+      words[collId] = [];
+      slidesCount[collId] = [];
+    }
 
     var collectionName = Ids.getName(collId);
     var suffix_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
@@ -116,10 +118,24 @@ angular.module('collocationmatching.services', [])
           var array = category[i].exercise;
           if(array){//check if array is defined or not
             if(array.length > 0){
-              exercises[collId] = [].concat(array);
+              // if(isRefreshing){
+                if(!exercises[collId].contains(array)){
+                  exercises[collId] = [].concat(array);
+                }
+              // }
+              // else{
+              //   exercises[collId] = [].concat(array);
+              // }
             }
             else{
-              exercises[collId].push(array);
+              // if(isRefreshing){
+                if(!exercises[collId].contains(array)){
+                  exercises[collId].push(array);
+                }
+              // }
+              // else{
+              //   exercises[collId].push(array);
+              // }
             }
           }
         }
