@@ -14,7 +14,6 @@ angular.module('collocationmatching.services', [])
   const SERVICE_NUMBER = 100;
   const TEMPLATE_COLLNAME = "&s1.collname=CCCC";
 
-  var temp_collections = [];
   var collections = [];//list of possible collections for this activity
   var descriptions = [];//list of name,description for each collection
 
@@ -26,14 +25,15 @@ angular.module('collocationmatching.services', [])
   //actual path does work in browser but not in phone (via phonegap or ionicview, so always keep the $http.get path form index.html)
   // var url = "templates/default_exercises/default_exercise_list.xml";
 
-  var getAllColls = function(){
-    if(collections.length > 0){
+  var getAllColls = function(isRefreshing){
+    if(collections.length > 0 && !isRefreshing){
       return new Promise((resolve,reject) => resolve(collections));
     }
     if(!Ids.getStatus()){
       ionicToast.show(Ids.getErrorMsg(),'middle',false,3000);
       return new Promise((resolve,reject) => resolve(collections));
     }
+    var temp_collections = [];
     return $http.get(ALL_COLLECTIONS_URL).then(function(response){
       var x2js = new X2JS();
       var jsonData = x2js.xml_str2json(response.data);
@@ -70,6 +70,7 @@ angular.module('collocationmatching.services', [])
   };
 
   var check = function(collectionName){
+    collections = [];
     var suffix_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
     var coll_url = PREFIX_URL + suffix_url;
 
@@ -88,8 +89,8 @@ angular.module('collocationmatching.services', [])
     });
   };
 
-  var getAllEx = function(collId){
-    if(exercises[collId]){
+  var getAllEx = function(collId,isRefreshing){
+    if(exercises[collId] && !isRefreshing){
       return new Promise((resolve,reject) => resolve(exercises[collId]));
     }
     if(!Ids.getStatus()){
@@ -171,7 +172,7 @@ angular.module('collocationmatching.services', [])
               var text = collo[k].__text;
               var left = getLeft(text);
               var right = getRight(text);
-              var obj = {"left":left,"right":right,"drop":"","id":uniqueId,get value(){return (this.right == this.drop);}};
+              var obj = {"left":left,"right":right,"drop":"","id":uniqueId,get isCorrect(){return (this.right == this.drop);}};
               uniqueId++;
               words[collId][exId][j].push(obj);
             };
@@ -241,101 +242,6 @@ angular.module('collocationmatching.services', [])
 
     removeEx: removeEx,
     removeColl: removeColl
-  };
-})
-
-.factory('DropData',function(){
-  var dropped = [];
-
-  var createEx = function(collId,exId){
-    dropped[collId][exId] = [];
-  }
-
-  var createWord = function(collId,exId,wordId){
-    dropped[collId][exId][wordId] = [];
-  }
-
-  var add = function(collId,exId,wordId,slideId,value){
-    dropped[collId][exId][wordId][slideId] = value;
-  }
-
-  var clearValue = function(collId,exId,wordId,slideId){
-    dropped[collId][exId][wordId][slideId] = null;
-  }
-
-  var getWord = function(collId,exId){
-    return dropped[collId][exId];
-  }
-
-  var getValue = function(collId,exId,wordId,slideId){
-    return dropped[collId][exId][wordId][slideId];
-  }
-
-  var clear = function(collId,exId){
-    dropped[collId][exId] = [];
-  }
-
-  var createColl = function(collId){
-    dropped[collId] = [];
-  }
-
-  var isCreated = function(collId){
-    if(dropped[collId]){
-      return true;
-    }
-    return false;
-  }
-
-  return{
-    // createEx: createEx,
-    // createWord: createWord,
-    // add: add,
-    // clearValue: clearValue,
-    // getWord: getWord,
-    // getValue: getValue,
-    // clear: clear,
-    // createColl: createColl,
-    // isCreated: isCreated
-  };
-})
-
-.factory('AnswerData', function () {
-  var myValues = [];
-
-  var updateValue = function(collId,exId,value,n){
-    myValues[collId][exId][n] = value;
-  }
-
-  var createValue = function(collId,exId){
-    myValues[collId][exId] = [];
-  }
-
-  var getValues = function(collId,exId){
-    return myValues[collId][exId];
-  }
-
-  var clearValues = function(collId,exId){
-    myValues[collId][exId] = [];
-  }
-
-  var createColl = function(collId){
-    myValues[collId] = [];
-  }
-
-  var isCreated = function(collId){
-    if(myValues[collId]){
-      return true;
-    }
-    return false;
-  }
-
-  return {
-    // updateValue: updateValue,
-    // createValue: createValue,
-    // getValues: getValues,
-    // clearValues: clearValues,
-    // createColl: createColl,
-    // isCreated: isCreated
   };
 })
 

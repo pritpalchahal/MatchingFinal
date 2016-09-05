@@ -21,20 +21,20 @@
           </ul>
         </div>
 
-        <div ng-repeat-start="word in words track by $index" ng-init="wordIndex = word[slideIndex].id" ng-if="word[slideIndex]">
+        <div ng-repeat-start="word in words track by $index" ng-init="wordId = word[slideIndex].id" ng-if="word[slideIndex]">
           <div class="row" style="margin-top:10px;">
 
-            <div class="fixed-value col col-xs-4 text" ng-show="word[slideIndex].value">
+            <div class="fixed-value col col-xs-4 text" ng-show="word[slideIndex].isCorrect">
                 {{word[slideIndex].left}} {{word[slideIndex].right}}
             </div>
 
-            <div class="fixed-value col col-xs-4 text" ng-show="!word[slideIndex].value">
+            <div class="fixed-value col col-xs-4 text" ng-show="!word[slideIndex].isCorrect">
                 {{word[slideIndex].left}}
             </div>
 
-            <div ng-show="!word[slideIndex].value" ng-drop="true" ng-drop-success="onDropComplete($data,$event,wordIndex,slideIndex)" class="col col-xs-8">
+            <div ng-show="!word[slideIndex].isCorrect" ng-drop="true" ng-drop-success="onDropComplete($data,$event,wordId,slideIndex)" class="col col-xs-8">
 
-              <div ng-drag="true" ng-drag-data="word[slideIndex].drop" ng-drag-success="onDragSuccess($data,$event,wordIndex,slideIndex)" ng-center-anchor="{{centerAnchor}}" class="text">
+              <div ng-drag="true" ng-drag-data="word[slideIndex].drop" ng-drag-success="onDragSuccess($data,$event,wordId,slideIndex)" ng-center-anchor="{{centerAnchor}}" class="text">
                 {{word[slideIndex].drop}}
               </div>
 
@@ -43,13 +43,13 @@
         </div>
 
         <div ng-repeat-end>
-          <div class="bar bar-footer bar-positive" ng-show="word[slideIndex].value">
+          <div class="bar bar-footer bar-positive" ng-show="checkAll(slideIndex)">
             <div class="title">
               Correct answer!
             </div>
           </div>
 
-          <div class="bar bar-footer" ng-show="!word[slideIndex].value">
+          <div class="bar bar-footer" ng-show="!checkAll(slideIndex)">
             <div class="title" ng-click="checkAnswer(slideIndex)" style="cursor:pointer;font-style:italic;">
               Check Answer
             </div>

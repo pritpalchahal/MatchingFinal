@@ -51,7 +51,7 @@ angular.module('collocationmatching.controllers', [])
 .controller('CollectionsCtrl', function($scope, $timeout, $ionicLoading, $state, $ionicPopover, $ionicPopup, Exercises, 
   $cordovaNetwork, $rootScope, Ids){
 
-  Exercises.getAllColls().then(function(response){
+  Exercises.getAllColls(false).then(function(response){
     $ionicLoading.show();
 
     response.forEach(function(collectionName){
@@ -67,8 +67,8 @@ angular.module('collocationmatching.controllers', [])
 
   $scope.doRefresh = function(){
     //to remove duplicacy always remember to empty previous data before refreshing
-    Exercises.newList();
-    Exercises.getAllColls().then(function(response){
+    // Exercises.newList();
+    Exercises.getAllColls(true).then(function(response){
       response.forEach(function(collectionName){
         Exercises.check(collectionName).then(function(res){
 
@@ -81,8 +81,8 @@ angular.module('collocationmatching.controllers', [])
     });
   };
 
-  $scope.remove = function(ex) {
-    Exercises.removeColl(ex);
+  $scope.remove = function(coll) {
+    Exercises.removeColl(coll);
   };
 
   $ionicPopover.fromTemplateUrl("templates/collections-popover.html",{
@@ -152,7 +152,7 @@ angular.module('collocationmatching.controllers', [])
     SummaryData.createColl(collId);
   }
 
-  Exercises.getAllEx(collId).then(function(response){
+  Exercises.getAllEx(collId,false).then(function(response){
     $scope.exercises = response;
     for(var i=0;i<$scope.exercises.length;i++){
       var exerciseId = $scope.exercises[i]._id;
@@ -169,7 +169,7 @@ angular.module('collocationmatching.controllers', [])
     return Ids.getExId(collId,exerciseId);
   }
 
-  $scope.remove = function(collId,ex) {
+  $scope.remove = function(ex) {
     Exercises.removeEx(collId,ex);
   };
 
@@ -180,7 +180,7 @@ angular.module('collocationmatching.controllers', [])
 
   $scope.doRefresh = function(){
     // $timeout(function(){
-      Exercises.getAllEx(collId).then(function(response){
+      Exercises.getAllEx(collId,true).then(function(response){
         $scope.exercises = response;
         for(var i=0;i<$scope.exercises.length;i++){
           var exerciseId = $scope.exercises[i]._id;
@@ -235,7 +235,7 @@ angular.module('collocationmatching.controllers', [])
 })
 
 .controller('ExerciseCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, $ionicPopover,$filter, $timeout,
-  ionicToast, Ids, AnswerData, DropData, SummaryData, Exercises) {
+  ionicToast, Ids, SummaryData, Exercises) {
   $ionicLoading.show();
   var exerciseId = $stateParams.exerciseId;
   var collectionName = $stateParams.collectionName;
@@ -251,7 +251,21 @@ angular.module('collocationmatching.controllers', [])
     SummaryData.updateStartTime(collId,exId,timeNow);
   }
 
-  // $scope.myValue = AnswerData.getValues(collId,exId);
+  $scope.checkAll = function(slideIndex){
+    var countSet = 0, count = 0;
+    for(var i=0; i<$scope.words.length;i++){
+      var word = $scope.words[i];
+      countSet++;
+      if(word[slideIndex].isCorrect){
+        count++;
+      }
+    }
+    if(countSet == count){
+      return true;
+    }
+    return false;
+  }
+
   $scope.summary = SummaryData.getSummary(collId,exId);
 
   Exercises.getSingleEx(collId,exId).then(function(response){
@@ -298,7 +312,6 @@ angular.module('collocationmatching.controllers', [])
     // data.slider is the instance of Swiper
     $scope.slider = data.slider;
     var n = $scope.slider.activeIndex;
-    LoadState();
     // var element = angular.element(document.querySelector('#r1'));
     // element.text = "a";
     // console.log(element);
@@ -335,27 +348,13 @@ angular.module('collocationmatching.controllers', [])
   }
 
   $scope.checkAnswer = function(n){
-    if(!Check(n)){
+    if(!$scope.checkAll(n)){
       ionicToast.show('Answer Incorrect!','middle',false,2500);
       // var errorPopup = $ionicPopup.alert({
       //   template: 'Incorrect',
       //   title: 'Try again'
       // });
     }
-  }
-
-  var Check = function(wordIndex,slideIndex){
-    var index = null;
-    for(var i=0;i<$scope.words.length;i++){
-      if($scope.words[i][slideIndex].id == wordIndex){
-        index = i;
-      }
-    }
-    if($scope.words[index][slideIndex].right == $scope.words[index][slideIndex].drop){
-      //AnswerData.updateValue(collId,exId,true,slideIndex);//update show/hide values
-      return true;
-    }
-    return false;
   }
 
   $ionicPopover.fromTemplateUrl("templates/ex-detail-popover.html",{
@@ -402,8 +401,6 @@ angular.module('collocationmatching.controllers', [])
     confirmPopup.then(function(response){
       if(response){
         //clear model
-        //DropData.clear(collId,exId);
-        //AnswerData.clearValues(collId,exId);
         SummaryData.clearSummary(collId,exId);
         SummaryData.createSummary(collId,exId);
 
@@ -412,8 +409,12 @@ angular.module('collocationmatching.controllers', [])
         SummaryData.updateStartTime(collId,exId,timeNow);
 
         //clear view
-        // $scope.myValue = AnswerData.getValues(collId,exId);
-        $scope.dropped = [];
+        for(var i=0;i<$scope.words.length;i++){
+          var word = $scope.words[i];
+          for(var j=0;j<word.length;j++){
+            word[j].drop = "";
+          }
+        }
 
         //update summary
         $scope.summary = SummaryData.getSummary(collId,exId);
@@ -422,11 +423,5 @@ angular.module('collocationmatching.controllers', [])
         // console.log("no");
       }
     });
-  }
-
-  var LoadState = function(){
-    // if(oldData){
-    //   $scope.dropped = oldData;
-    // }
   }
 });

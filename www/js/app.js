@@ -7,7 +7,7 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
   'ngDraggable', 'ngCordova','ionic-toast'])
 
 .run(function($ionicPlatform,$ionicHistory,$stateParams,$filter, $ionicPopup,
-  Exercises,StateData,SummaryData,DropData,AnswerData,Ids,ionicToast) {
+  Exercises,StateData,SummaryData,Ids,ionicToast) {
   $ionicPlatform.ready(function() {
     Ids.watchStatus();
     if(!Ids.getStatus()){
