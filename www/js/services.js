@@ -162,6 +162,7 @@ angular.module('collocationmatching.services', [])
           var x2js = new X2JS();
           var jsonData = x2js.xml_str2json(response.data);
           temp_words = jsonData.response.player.word;
+          var uniqueId = 0;
           for(var j=0; j<temp_words.length; j++){
             var collo = temp_words[j].collo;
             words[collId][exId][j] = [];
@@ -170,7 +171,8 @@ angular.module('collocationmatching.services', [])
               var text = collo[k].__text;
               var left = getLeft(text);
               var right = getRight(text);
-              var obj = {"left":left,"right":right};
+              var obj = {"left":left,"right":right,"drop":"","id":uniqueId,get value(){return (this.right == this.drop);}};
+              uniqueId++;
               words[collId][exId][j].push(obj);
             };
           };
@@ -285,15 +287,15 @@ angular.module('collocationmatching.services', [])
   }
 
   return{
-    createEx: createEx,
-    createWord: createWord,
-    add: add,
-    clearValue: clearValue,
-    getWord: getWord,
-    getValue: getValue,
-    clear: clear,
-    createColl: createColl,
-    isCreated: isCreated
+    // createEx: createEx,
+    // createWord: createWord,
+    // add: add,
+    // clearValue: clearValue,
+    // getWord: getWord,
+    // getValue: getValue,
+    // clear: clear,
+    // createColl: createColl,
+    // isCreated: isCreated
   };
 })
 
@@ -328,12 +330,12 @@ angular.module('collocationmatching.services', [])
   }
 
   return {
-    updateValue: updateValue,
-    createValue: createValue,
-    getValues: getValues,
-    clearValues: clearValues,
-    createColl: createColl,
-    isCreated: isCreated
+    // updateValue: updateValue,
+    // createValue: createValue,
+    // getValues: getValues,
+    // clearValues: clearValues,
+    // createColl: createColl,
+    // isCreated: isCreated
   };
 })
 

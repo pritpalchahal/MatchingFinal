@@ -8,7 +8,7 @@ angular.module('collocationmatching.controllers', [])
   //});
 
 .controller('BackButtonController', function($scope, $ionicHistory, $stateParams, $filter,
-  Exercises, StateData, SummaryData, AnswerData, DropData, Ids){
+  Exercises, StateData, SummaryData, Ids){
   $scope.customGoBack = function(){
     var exerciseId = $stateParams.exerciseId;
     var name = $stateParams.collectionName;
@@ -33,12 +33,12 @@ angular.module('collocationmatching.controllers', [])
     if(totalSlides == 0){return;}
 
     var j = 0;
-    var values = AnswerData.getValues(collId,exId);
-    for(i=0;i<values.length;i++){
-      if(values[i]){
-        j++;
-      }
-    }
+    // var values = AnswerData.getValues(collId,exId);
+    // for(i=0;i<values.length;i++){
+    //   if(values[i]){
+    //     j++;
+    //   }
+    // }
     if(j == totalSlides){
       StateData.updateState(collId,exId,"Complete");
     }
@@ -121,7 +121,7 @@ angular.module('collocationmatching.controllers', [])
 })
 
 .controller('ExsCtrl', function($scope, $timeout, $stateParams, $ionicPopup, $ionicPopover, 
-  Ids, StateData, DropData, AnswerData, SummaryData, Exercises) {
+  Ids, StateData, SummaryData, Exercises) {
   
   var name = $stateParams.collectionName;
   $scope.collectionName = name;
@@ -147,12 +147,6 @@ angular.module('collocationmatching.controllers', [])
   //create new data for this collection
   if(!StateData.isCreated(collId)){
     StateData.createColl(collId);
-  }
-  if(!DropData.isCreated(collId)){
-    DropData.createColl(collId);
-  }
-  if(!AnswerData.isCreated(collId)){
-    AnswerData.createColl(collId);
   }
   if(!SummaryData.isCreated(collId)){
     SummaryData.createColl(collId);
@@ -250,10 +244,6 @@ angular.module('collocationmatching.controllers', [])
   //exIds already created in 'ExsCtrl'
   var exId = Ids.getExId(collId,exerciseId);
 
-  if(!AnswerData.getValues(collId,exId)){
-    AnswerData.createValue(collId,exId);
-  }
-
   if(!SummaryData.getSummary(collId,exId)){
     SummaryData.createSummary(collId,exId);
     var time = new Date();
@@ -261,46 +251,17 @@ angular.module('collocationmatching.controllers', [])
     SummaryData.updateStartTime(collId,exId,timeNow);
   }
 
-  $scope.myValue = AnswerData.getValues(collId,exId);
+  // $scope.myValue = AnswerData.getValues(collId,exId);
   $scope.summary = SummaryData.getSummary(collId,exId);
-
-  var oldData = DropData.getWord(collId,exId);
-
-  $scope.draggableObjects = [];
-  $scope.dropped = [];
 
   Exercises.getSingleEx(collId,exId).then(function(response){
     $ionicLoading.hide();
     $scope.words = response;
     $scope.slides = Exercises.getSlidesCount(collId,exId);
     $scope.slideCount = new Array($scope.slides);
-    $scope.slideCount = shuffle($scope.slideCount);
-    // console.log($scope.words);
-    // // $scope.words = shuffle($scope.words);
-    // // console.log($scope.words);
-    // var shuffled = [];
-    // for(var j=0 ; j<$scope.words.length; j++){
-    //   shuffled[j] = shuffle($scope.words[j]);
-    // }
-    // console.log(shuffled);
-
-    for(var i=0;i<$scope.slides;i++){
-        $scope.draggableObjects[i] = new Array($scope.words.length);
-        for(var j=0 ; j<$scope.words.length; j++){
-          if($scope.words[j][i]){
-            $scope.draggableObjects[i][j] = $scope.words[j][i].right;
-          }
-        }
-        //shuffle words
-        $scope.draggableObjects[i] = shuffle($scope.draggableObjects[i]);
-    }
-    // console.log($scope.words);
-
-    if(!oldData){
-      DropData.createEx(collId,exId);
-      for(var i=0;i<$scope.words.length;i++){
-        DropData.createWord(collId,exId,i);
-      }
+    console.log($scope.words);
+    for(var j=0 ; j<$scope.words.length; j++){
+      $scope.words[j] = shuffle($scope.words[j]);
     }
   });
 
@@ -353,20 +314,48 @@ angular.module('collocationmatching.controllers', [])
     $scope.previousIndex = data.previousIndex;
   });
 
-  $scope.onDragSuccess = function(data,evt,wordIndex){
-    var slideId = $scope.slider.activeIndex;
-    DropData.clearValue(collId,exId,wordIndex,slideId);
-    // console.log("onDragSuccess", "",wordIndex,"", data);
-  }
-  $scope.onDropComplete = function(data,evt,wordIndex){
-    var slideId = $scope.slider.activeIndex;
-    var value = DropData.getValue(collId,exId,wordIndex,slideId);
-    if(value != data){
-      DropData.add(collId,exId,wordIndex,slideId,data);
-      $scope.dropped = DropData.getWord(collId,exId);
+  $scope.onDragSuccess = function(data,evt,wordId,slideIndex){
+    for(var i=0;i<$scope.words.length;i++){
+      if($scope.words[i][slideIndex].id == wordId){
+        $scope.words[i][slideIndex].drop = "";
+      }
     }
-    // console.log("onDropComplete", "", wordIndex,"", data);
-    Check(slideId);
+  }
+  $scope.onDropComplete = function(data,evt,wordId,slideIndex){
+    var index = null;
+    for(var i=0;i<$scope.words.length;i++){
+      if($scope.words[i][slideIndex].id == wordId){
+        index = i;
+      }
+    }
+    var value = $scope.words[index][slideIndex].drop;
+    if(value != data){
+      $scope.words[index][slideIndex].drop = data;
+    }
+  }
+
+  $scope.checkAnswer = function(n){
+    if(!Check(n)){
+      ionicToast.show('Answer Incorrect!','middle',false,2500);
+      // var errorPopup = $ionicPopup.alert({
+      //   template: 'Incorrect',
+      //   title: 'Try again'
+      // });
+    }
+  }
+
+  var Check = function(wordIndex,slideIndex){
+    var index = null;
+    for(var i=0;i<$scope.words.length;i++){
+      if($scope.words[i][slideIndex].id == wordIndex){
+        index = i;
+      }
+    }
+    if($scope.words[index][slideIndex].right == $scope.words[index][slideIndex].drop){
+      //AnswerData.updateValue(collId,exId,true,slideIndex);//update show/hide values
+      return true;
+    }
+    return false;
   }
 
   $ionicPopover.fromTemplateUrl("templates/ex-detail-popover.html",{
@@ -380,14 +369,14 @@ angular.module('collocationmatching.controllers', [])
   }
 
   $scope.showSummary = function(){
-    var values = AnswerData.getValues(collId,exId);
-    var i = 0;
-    for(var j=0;j<values.length;j++){
-      if(values[j]){
-        i++;
-      }
-    }
-    SummaryData.updateScore(collId,exId,i);
+    // var values = AnswerData.getValues(collId,exId);
+    // var i = 0;
+    // for(var j=0;j<values.length;j++){
+    //   if(values[j]){
+    //     i++;
+    //   }
+    // }
+    // SummaryData.updateScore(collId,exId,i);
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
       title: 'Summary report',
@@ -413,8 +402,8 @@ angular.module('collocationmatching.controllers', [])
     confirmPopup.then(function(response){
       if(response){
         //clear model
-        DropData.clear(collId,exId);
-        AnswerData.clearValues(collId,exId);
+        //DropData.clear(collId,exId);
+        //AnswerData.clearValues(collId,exId);
         SummaryData.clearSummary(collId,exId);
         SummaryData.createSummary(collId,exId);
 
@@ -423,7 +412,7 @@ angular.module('collocationmatching.controllers', [])
         SummaryData.updateStartTime(collId,exId,timeNow);
 
         //clear view
-        $scope.myValue = AnswerData.getValues(collId,exId);
+        // $scope.myValue = AnswerData.getValues(collId,exId);
         $scope.dropped = [];
 
         //update summary
@@ -435,42 +424,9 @@ angular.module('collocationmatching.controllers', [])
     });
   }
 
-  $scope.checkAnswer = function(n){
-    if(!Check(n)){
-      ionicToast.show('Answer Incorrect!','middle',false,2500);
-      // var errorPopup = $ionicPopup.alert({
-      //   template: 'Incorrect',
-      //   title: 'Try again'
-      // });
-    }
-  }
-
-  var Check = function(slideId){
-    var count = 0;
-    var countSet = 0;
-    var wordsCount = $scope.words.length;
-
-    for(var i=0;i<wordsCount;i++){
-      if($scope.dropped[i]){
-        if($scope.words[i][slideId]){
-          countSet++;
-          if($scope.dropped[i][slideId] == $scope.words[i][slideId].right){
-            count++;
-          }
-        }
-      }
-    }
-
-    if(count == countSet){
-      AnswerData.updateValue(collId,exId,true,slideId);//update show/hide values
-      return true;
-    }
-    return false;
-  }
-
   var LoadState = function(){
-    if(oldData){
-      $scope.dropped = oldData;
-    }
+    // if(oldData){
+    //   $scope.dropped = oldData;
+    // }
   }
 });

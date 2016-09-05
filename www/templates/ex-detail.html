@@ -11,46 +11,48 @@
   </ion-nav-buttons>
   <ion-content class="" scroll="false">
     <ion-slides  options="options" slider="data.slider">
-      <ion-slide-page ng-repeat="collo in slideCount track by $index" ng-init="slideIndex = $index">
+      <ion-slide-page ng-repeat="slide in slideCount track by $index" ng-init="slideIndex = $index">
 
         <div class="draggables container-fluid sub-header"> 
           <ul class="draggable-objects">
-            <li  ng-repeat="obj in draggableObjects[slideIndex] track by $index">
-              <div ng-drag="true" ng-drag-data="obj" data-allow-transform="true" class="text"> {{obj}} </div>
+            <li  ng-repeat="word in words track by $index">
+              <div ng-drag="true" ng-drag-data="word[slideIndex].right" data-allow-transform="true" class="text"> {{word[slideIndex].right}} </div>
             </li>
           </ul>
         </div>
 
-        <div ng-repeat="word in words track by $index" ng-init="wordIndex = $index" ng-if="word[slideIndex]">
+        <div ng-repeat-start="word in words track by $index" ng-init="wordIndex = word[slideIndex].id" ng-if="word[slideIndex]">
           <div class="row" style="margin-top:10px;">
 
-            <div class="fixed-value col col-xs-4 text" ng-show="myValue[slideIndex]">
+            <div class="fixed-value col col-xs-4 text" ng-show="word[slideIndex].value">
                 {{word[slideIndex].left}} {{word[slideIndex].right}}
             </div>
 
-            <div class="fixed-value col col-xs-4 text" ng-show="!myValue[slideIndex]">
+            <div class="fixed-value col col-xs-4 text" ng-show="!word[slideIndex].value">
                 {{word[slideIndex].left}}
             </div>
 
-            <div ng-show="!myValue[slideIndex]" ng-drop="true" ng-drop-success="onDropComplete($data,$event,wordIndex)" class="col col-xs-8">
+            <div ng-show="!word[slideIndex].value" ng-drop="true" ng-drop-success="onDropComplete($data,$event,wordIndex,slideIndex)" class="col col-xs-8">
 
-              <div ng-drag="true" ng-drag-data="dropped[wordIndex][slideIndex]" ng-drag-success="onDragSuccess($data,$event,wordIndex)" ng-center-anchor="{{centerAnchor}}" class="text">
-                {{dropped[wordIndex][slideIndex]}}
+              <div ng-drag="true" ng-drag-data="word[slideIndex].drop" ng-drag-success="onDragSuccess($data,$event,wordIndex,slideIndex)" ng-center-anchor="{{centerAnchor}}" class="text">
+                {{word[slideIndex].drop}}
               </div>
 
             </div>
           </div>
         </div>
 
-        <div class="bar bar-footer bar-positive" ng-show="myValue[slideIndex]">
-          <div class="title">
-            Correct answer!
+        <div ng-repeat-end>
+          <div class="bar bar-footer bar-positive" ng-show="word[slideIndex].value">
+            <div class="title">
+              Correct answer!
+            </div>
           </div>
-        </div>
 
-        <div class="bar bar-footer" ng-show="!myValue[slideIndex]">
-          <div class="title" ng-click="checkAnswer(slideIndex)" style="cursor:pointer;font-style:italic;">
-            Check Answer
+          <div class="bar bar-footer" ng-show="!word[slideIndex].value">
+            <div class="title" ng-click="checkAnswer(slideIndex)" style="cursor:pointer;font-style:italic;">
+              Check Answer
+            </div>
           </div>
         </div>
       </ion-slide-page>
