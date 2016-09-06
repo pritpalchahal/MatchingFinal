@@ -274,19 +274,21 @@ angular.module('collocationmatching.controllers', [])
     $ionicLoading.hide();
     $scope.words = response;
     $scope.slides = Exercises.getSlidesCount(collId,exId);
+    $scope.slideCount = new Array($scope.slides);
+    console.log($scope.words);
 
-    $scope.slideCount = Array.apply(null, {length: $scope.slides}).map(Number.call,Number);
-    var shuffled = [].concat(shuffle($scope.slideCount));
+    var N = Exercises.getMinSlidesCount(collId,exId);
+    var temp = Array.apply(null, {length: N}).map(Number.call,Number);
+    var shuffled = [].concat(shuffle(temp));
     for(var i=0; i<$scope.words.length;i++){
       var arr = [];
-      var k = 0;
-      for(var j=0;j<shuffled.length;j++){
-        var val = shuffled[j];
-        if(val < $scope.words[i].length){
-          arr[j-k] = $scope.words[i][val];
+      for(var j=0;j<$scope.words[i].length;j++){
+        if(j >= shuffled.length){
+          arr[j] = $scope.words[i][j];
         }
         else{
-          k++;
+          var val = shuffled[j];
+          arr[j] = $scope.words[i][val];
         }
       }
       $scope.words[i] = arr;

@@ -204,9 +204,16 @@ angular.module('collocationmatching.services', [])
     if(!slidesCount[collId][exId]){
       return 0;
     }
-    // return Math.min.apply(Math,slidesCount);
+    // return Math.min.apply(Math,slidesCount[collId][exId]);
     return Math.max.apply(Math,slidesCount[collId][exId]);
   };
+
+  getMinSlidesCount = function(collId,exId){
+    if(!slidesCount[collId][exId]){
+      return 0;
+    }
+    return Math.min.apply(Math,slidesCount[collId][exId]);
+  }
 
   removeEx = function(collId,ex) {
     exercises[collId].splice(exercises[collId].indexOf(ex), 1);
@@ -247,6 +254,7 @@ angular.module('collocationmatching.services', [])
 
     getExTitle: getExTitle,
     getSlidesCount: getSlidesCount,
+    getMinSlidesCount: getMinSlidesCount,
 
     removeEx: removeEx,
     removeColl: removeColl
