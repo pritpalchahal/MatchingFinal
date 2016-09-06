@@ -12,7 +12,7 @@ angular.module('collocationmatching.controllers', [])
   $scope.customGoBack = function(){
     var exerciseId = $stateParams.exerciseId;
     var name = $stateParams.collectionName;
-    var collId = Ids.getId(name);
+    var collId = Ids.getCollId(name);
     var exId = Ids.getExId(collId,exerciseId);
 
     $ionicHistory.goBack();
@@ -32,14 +32,7 @@ angular.module('collocationmatching.controllers', [])
     var totalSlides = Exercises.getSlidesCount(collId,exId);
     if(totalSlides == 0){return;}
 
-    var j = 0;
-    // var values = AnswerData.getValues(collId,exId);
-    // for(i=0;i<values.length;i++){
-    //   if(values[i]){
-    //     j++;
-    //   }
-    // }
-    if(j == totalSlides){
+    if(SummaryData.getSummary(collId,exId).score == totalSlides){
       StateData.updateState(collId,exId,"Complete");
     }
     else{
@@ -127,8 +120,8 @@ angular.module('collocationmatching.controllers', [])
   $scope.collectionName = name;
 
   //create a unique id for each collection
-  Ids.createId($scope.collectionName);
-  var collId = Ids.getId($scope.collectionName);
+  Ids.createCollId($scope.collectionName);
+  var collId = Ids.getCollId($scope.collectionName);
   console.log("collId: "+collId);
 
   var desc = Exercises.getDesc();
@@ -239,7 +232,7 @@ angular.module('collocationmatching.controllers', [])
   $ionicLoading.show();
   var exerciseId = $stateParams.exerciseId;
   var collectionName = $stateParams.collectionName;
-  var collId = Ids.getId(collectionName);
+  var collId = Ids.getCollId(collectionName);
 
   //exIds already created in 'ExsCtrl'
   var exId = Ids.getExId(collId,exerciseId);
@@ -369,8 +362,8 @@ angular.module('collocationmatching.controllers', [])
     }
   }
 
-  $scope.checkAnswer = function(n){
-    if(!$scope.checkAll(n)){
+  $scope.checkAnswer = function(slideIndex){
+    if(!$scope.checkAll(slideIndex)){
       ionicToast.show('Answer Incorrect!','middle',false,2500);
       // var errorPopup = $ionicPopup.alert({
       //   template: 'Incorrect',

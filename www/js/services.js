@@ -29,8 +29,8 @@ angular.module('collocationmatching.services', [])
     if(collections.length > 0 && !isRefreshing){
       return new Promise((resolve,reject) => resolve(collections));
     }
-    if(!Ids.getStatus()){
-      ionicToast.show(Ids.getErrorMsg(),'middle',false,3000);
+    if(!getConnectionStatus()){
+      ionicToast.show(getErrorMsg(),'middle',false,3000);
       return new Promise((resolve,reject) => resolve(collections));
     }
     var temp_collections = [];
@@ -67,7 +67,7 @@ angular.module('collocationmatching.services', [])
       }
       return temp_collections;
     });
-  };
+  }
 
   var check = function(collectionName){
     collections = [];
@@ -87,15 +87,15 @@ angular.module('collocationmatching.services', [])
       }
       return collections;
     });
-  };
+  }
 
   var getAllEx = function(collId,isRefreshing){
     if(exercises[collId] && !isRefreshing){
       return new Promise((resolve,reject) => resolve(exercises[collId]));
     }
-    if(!Ids.getStatus()){
-      ionicToast.show(Ids.getErrorMsg(),'middle',false,3000);
-      return new Promise((resolve,reject) => resolve(exercises[collId]));
+    if(!getConnectionStatus()){
+      ionicToast.show(getErrorMsg(),'middle',false,3000);
+      return new Promise((resolve,reject) => resolve([]));
     }
     if(!isRefreshing){
       //initiate all sub arrays
@@ -104,7 +104,7 @@ angular.module('collocationmatching.services', [])
       slidesCount[collId] = [];
     }
 
-    var collectionName = Ids.getName(collId);
+    var collectionName = Ids.getCollName(collId);
     var suffix_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
     var coll_url = PREFIX_URL + suffix_url;
 
@@ -118,16 +118,10 @@ angular.module('collocationmatching.services', [])
           var array = category[i].exercise;
           if(array){//check if array is defined or not
             if(array.length > 0){
-              //check if this array is already in
-              //this will only happen if user is refreshing
-              if(!exercises[collId].contains(array)){
-                exercises[collId] = [].concat(array);
-              }
+              exercises[collId] = [].concat(array);
             }
             else{
-              if(!exercises[collId].contains(array)){
-                exercises[collId].push(array);
-              }
+              exercises[collId].push(array);
             }
           }
         }
@@ -137,22 +131,22 @@ angular.module('collocationmatching.services', [])
       }
       return exercises[collId];
     });
-  };
+  }
 
   getSingleEx = function(collId,exId){
     if(words[collId][exId]){
       return new Promise((resolve,reject) => resolve(words[collId][exId]));
     }
-    if(!Ids.getStatus()){
-      ionicToast.show(Ids.getErrorMsg(),'middle',false,3000);
-      return new Promise((resolve,reject) => resolve(words[collId][exId]));
+    if(!getConnectionStatus()){
+      ionicToast.show(getErrorMsg(),'middle',false,3000);
+      return new Promise((resolve,reject) => resolve([]));
     }
     //initiate
     words[collId][exId] = [];
     slidesCount[collId][exId] = [];
 
     var exerciseId = Ids.getExerciseId(collId,exId);
-    var collectionName = Ids.getName(collId);
+    var collectionName = Ids.getCollName(collId);
 
     var temp_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
     var collname_url= TEMPLATE_COLLNAME.replace("CCCC",collectionName);
@@ -189,7 +183,7 @@ angular.module('collocationmatching.services', [])
         });
       }
     }
-  };
+  }
 
   getExTitle = function(collId,exId){
     for(var i= 0 ; i<exercises[collId].length; i++){
@@ -198,7 +192,7 @@ angular.module('collocationmatching.services', [])
       }
     }
     return null;
-  };
+  }
 
   getSlidesCount = function(collId,exId){
     if(!slidesCount[collId][exId]){
@@ -206,7 +200,7 @@ angular.module('collocationmatching.services', [])
     }
     // return Math.min.apply(Math,slidesCount[collId][exId]);
     return Math.max.apply(Math,slidesCount[collId][exId]);
-  };
+  }
 
   getMinSlidesCount = function(collId,exId){
     if(!slidesCount[collId][exId]){
@@ -217,30 +211,55 @@ angular.module('collocationmatching.services', [])
 
   removeEx = function(collId,ex) {
     exercises[collId].splice(exercises[collId].indexOf(ex), 1);
-  };
+  }
 
   removeColl = function(coll){
     collections.splice(collections.indexOf(coll),1);
-  };
+  }
 
   var getDesc = function(){
     return descriptions;
-  };
+  }
 
   var newList = function(){
     temp_collections = [];
     collections = [];
     descriptions = [];
-  };
+  }
 
   var getLeft = function(word){
     // return word.split(" ")[0];
     return word.substr(0,word.indexOf(" "));
-  };
+  }
 
   var getRight = function(word){
     return word.substr(word.indexOf(" ")+1);
   };
+
+  //Internet connectivity
+  var online = true;
+  var msg = "No Internet connection available!";
+
+  var getConnectionStatus = function(){
+    return online;
+  }
+
+  var watchConnectionStatus = function(){
+    document.addEventListener("deviceready",function(){
+      online = $cordovaNetwork.isOnline();
+
+      $rootScope.$on('$cordovaNetwork:online',function(event,state){
+        online = true;
+      })
+      $rootScope.$on('$cordovaNetwork:offline',function(event,state){
+        online = false;
+      })
+    });
+  }
+
+  var getErrorMsg = function(){
+    return msg;
+  }
 
   return {
     getAllColls: getAllColls,
@@ -257,8 +276,48 @@ angular.module('collocationmatching.services', [])
     getMinSlidesCount: getMinSlidesCount,
 
     removeEx: removeEx,
-    removeColl: removeColl
+    removeColl: removeColl,
+
+    getConnectionStatus: getConnectionStatus,
+    watchConnectionStatus: watchConnectionStatus,
+    getErrorMsg: getErrorMsg
   };
+})
+
+.factory('ExtraData',function(){
+  var data = [];
+
+  var createColl = function(collId){
+    data[collId] = [];
+  }
+
+  var createEx = function(collId,exId){
+    data[collId][exId] = {summary:{start_time:"",end_time:"",score:"0"},state:""};
+  }
+
+  var startTime = function(collId,exId,time){
+    data[collId][exId].summary.start_time = time;
+  }
+
+  var endTime = function(collId,exId,time){
+    data[collId][exId].summary.end_time = time;
+  }
+
+  var score = function(collId,exId,score){
+    data[collId][exId].summary.score = score;
+  }
+
+  var state = function(collId,exId,state){
+    data[collId][exId].state = state;
+  }
+
+  var get = function(collId,exId){
+    return data[collId][exId];
+  }
+
+  var clear = function(collId,exId){
+    data[collId].splice(exId,1);
+  }
 })
 
 .factory('SummaryData', function () {
@@ -279,7 +338,7 @@ angular.module('collocationmatching.services', [])
   }
 
   var createSummary = function(collId,exId){
-    summary[collId][exId] = {sTime:"n/a",eTime:"n/a",score:"0"};
+    summary[collId][exId] = {sTime:"n/a",eTime:"n/a",score:0};
   }
 
   var clearSummary = function(collId,exId){
@@ -349,9 +408,8 @@ angular.module('collocationmatching.services', [])
 })
 
 .factory('Ids',function($cordovaNetwork,$rootScope){
-  var ids = [];
+  var collIds = [];
   var exIds = [];
-  var online = true;
 
   var createExId = function(collId,exerciseId){
     var index = exIds[collId].indexOf(exerciseId);
@@ -368,56 +426,30 @@ angular.module('collocationmatching.services', [])
     return exIds[collId][exId];
   }
 
-  var createId = function(name){
-    var index = ids.indexOf(name);
+  var createCollId = function(name){
+    var index = collIds.indexOf(name);
     if(index == -1){
-      ids.push(name);
+      collIds.push(name);
     }
-    var collId = ids.indexOf(name);
+    var collId = collIds.indexOf(name);
     //also initiate exIds if not already done
     if(!exIds[collId]){
       exIds[collId] = [];
     }
   }
 
-  var getId = function(name){
-    return ids.indexOf(name);
+  var getCollId = function(name){
+    return collIds.indexOf(name);
   }
 
-  var getName = function(collId){
-    return ids[collId];
-  }
-
-  var getStatus = function(){
-    return online;
-  }
-
-  var watchStatus = function(){
-    document.addEventListener("deviceready",function(){
-      online = $cordovaNetwork.isOnline();
-
-      $rootScope.$on('$cordovaNetwork:online',function(event,state){
-        online = true;
-      })
-      $rootScope.$on('$cordovaNetwork:offline',function(event,state){
-        online = false;
-      })
-    });
-  }
-
-  var msg = "No Internet connection available!";
-  var getErrorMsg = function(){
-    return msg;
+  var getCollName = function(collId){
+    return collIds[collId];
   }
 
   return{
-    createId: createId,
-    getId: getId,
-    getName: getName,
-
-    getStatus: getStatus,
-    watchStatus: watchStatus,
-    getErrorMsg: getErrorMsg,
+    createCollId: createCollId,
+    getCollId: getCollId,
+    getCollName: getCollName,
 
     createExId: createExId,
     getExId: getExId,

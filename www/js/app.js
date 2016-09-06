@@ -7,11 +7,11 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
   'ngDraggable', 'ngCordova','ionic-toast'])
 
 .run(function($ionicPlatform,$ionicHistory,$stateParams,$filter, $ionicPopup,
-  Exercises,StateData,SummaryData,Ids,ionicToast) {
+  Exercises,StateData,SummaryData,ionicToast) {
   $ionicPlatform.ready(function() {
-    Ids.watchStatus();
-    if(!Ids.getStatus()){
-      // ionicToast.show(Ids.getErrorMsg(),'middle',true);
+    Exercises.watchConnectionStatus();
+    if(!Exercises.getConnectionStatus()){
+      // ionicToast.show(Exercises.getErrorMsg(),'middle',true);
       $ionicPopup.alert({
         title: 'Connection error',
         subTitle: 'No internet connection detected',
@@ -67,14 +67,7 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
     var totalSlides = Exercises.getSlidesCount(collId,exId);
     if(totalSlides == 0){return;}
 
-    var j = 0;
-    var values = AnswerData.getValues(collId,exId);
-    for(i=0;i<values.length;i++){
-      if(values[i]){
-        j++;
-      }
-    }
-    if(j == totalSlides){
+    if(SummaryData.getSummary(collId,exId).score == totalSlides){
       StateData.updateState(collId,exId,"Complete");
     }
     else{
