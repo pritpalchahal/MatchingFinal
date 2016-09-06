@@ -118,24 +118,16 @@ angular.module('collocationmatching.services', [])
           var array = category[i].exercise;
           if(array){//check if array is defined or not
             if(array.length > 0){
-              // if(isRefreshing){
-                if(!exercises[collId].contains(array)){
-                  exercises[collId] = [].concat(array);
-                }
-              // }
-              // else{
-              //   exercises[collId] = [].concat(array);
-              // }
+              //check if this array is already in
+              //this will only happen if user is refreshing
+              if(!exercises[collId].contains(array)){
+                exercises[collId] = [].concat(array);
+              }
             }
             else{
-              // if(isRefreshing){
-                if(!exercises[collId].contains(array)){
-                  exercises[collId].push(array);
-                }
-              // }
-              // else{
-              //   exercises[collId].push(array);
-              // }
+              if(!exercises[collId].contains(array)){
+                exercises[collId].push(array);
+              }
             }
           }
         }
