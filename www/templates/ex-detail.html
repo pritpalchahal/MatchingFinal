@@ -15,8 +15,8 @@
 
         <div class="draggables container-fluid sub-header"> 
           <ul class="draggable-objects">
-            <li  ng-repeat="word in words track by $index">
-              <div ng-drag="true" ng-drag-data="word[slideIndex].right" data-allow-transform="true" class="text"> {{word[slideIndex].right}} </div>
+            <li  ng-repeat="word in drags[slideIndex] track by $index">
+              <div ng-drag="true" ng-drag-data="word" data-allow-transform="true" class="text"> {{word}} </div>
             </li>
           </ul>
         </div>

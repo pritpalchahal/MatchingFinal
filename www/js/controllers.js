@@ -272,6 +272,7 @@ angular.module('collocationmatching.controllers', [])
   }
 
   $scope.summary = SummaryData.getSummary(collId,exId);
+  $scope.drags = [];
 
   Exercises.getSingleEx(collId,exId).then(function(response){
     if(response.status == 404){
@@ -283,7 +284,6 @@ angular.module('collocationmatching.controllers', [])
     $scope.words = response;
     $scope.slides = Exercises.getSlidesCount(collId,exId);
     $scope.slideCount = new Array($scope.slides);
-    console.log($scope.words);
 
     var N = Exercises.getMinSlidesCount(collId,exId);
     var temp = Array.apply(null, {length: N}).map(Number.call,Number);
@@ -305,6 +305,16 @@ angular.module('collocationmatching.controllers', [])
     // for(var j=0 ; j<$scope.words.length; j++){
     //   $scope.words[j] = shuffle($scope.words[j]);
     // }
+
+    for(var i=0;i<$scope.slides;i++){
+        $scope.drags[i] = new Array($scope.words.length);
+        for(var j=0 ; j<$scope.words.length; j++){
+          if($scope.words[j][i]){
+            $scope.drags[i][j] = $scope.words[j][i].right;
+          }
+        }
+        $scope.drags[i] = shuffle($scope.drags[i]);
+    }
   });
 
   var shuffle = function(array) {
@@ -365,8 +375,8 @@ angular.module('collocationmatching.controllers', [])
 
   $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
     // data.slider is the instance of Swiper
-    var element = angular.element(document.querySelector('#ulid'));
-    console.log(element);
+    // var element = angular.element(document.querySelector('#ulid'));
+    // console.log(element);
     $scope.slideIndex = data.slider.activeIndex;
     if($scope.words){
       checkAll();
