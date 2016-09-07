@@ -6,8 +6,8 @@
 angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers', 'collocationmatching.services',
   'ngDraggable', 'ngCordova','ionic-toast'])
 
-.run(function($ionicPlatform,$ionicHistory,$stateParams,$filter, $ionicPopup,
-  Exercises,StateData,SummaryData,ionicToast) {
+.run(function($ionicPlatform, $ionicHistory, $stateParams, $filter, $ionicPopup,
+  Exercises, StateData, SummaryData, ionicToast, Ids) {
   $ionicPlatform.ready(function() {
     Exercises.watchConnectionStatus();
     if(!Exercises.getConnectionStatus()){
@@ -42,20 +42,21 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
     //     Ids.setStatus(false);
     //   }
     // }
-  })
+  });
 
   //override default android back button behavior 
   $ionicPlatform.onHardwareBackButton(function(){
-    var exerciseId = $stateParams.exerciseId;
-    var name = $stateParams.collectionName;
-    var collId = Ids.getId(name);
-    var exId = Ids.getExId(collId,exerciseId);
 
     var currentState = $ionicHistory.currentStateName();
 
     if(currentState != "exercise"){
       return;
     }
+
+    var exerciseId = $stateParams.exerciseId;
+    var name = $stateParams.collectionName;
+    var collId = Ids.getCollId(name);
+    var exId = Ids.getExId(collId,exerciseId);
 
     //update end time
     if(StateData.getSingleState(collId,exId) != "Complete"){

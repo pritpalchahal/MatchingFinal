@@ -1,6 +1,6 @@
 angular.module('collocationmatching.services', [])
 
-.factory('Exercises', function ($http,$cordovaNetwork,$rootScope,ionicToast,Ids) {
+.factory('Exercises', function ($http, $cordovaNetwork, ionicToast, Ids) {
   const THIS_ACTIVITY = "CollocationMatching";
 
   const ALL_COLLECTIONS_URL = "http://collections.flax.nzdl.org/greenstone3/flax?a=fp&sa=library&o=xml";
@@ -294,42 +294,6 @@ angular.module('collocationmatching.services', [])
     getErrorMsg: getErrorMsg,
     get404Msg: get404Msg
   };
-})
-
-.factory('ExtraData',function(){
-  var data = [];
-
-  var createColl = function(collId){
-    data[collId] = [];
-  }
-
-  var createEx = function(collId,exId){
-    data[collId][exId] = {summary:{start_time:"",end_time:"",score:"0"},state:""};
-  }
-
-  var startTime = function(collId,exId,time){
-    data[collId][exId].summary.start_time = time;
-  }
-
-  var endTime = function(collId,exId,time){
-    data[collId][exId].summary.end_time = time;
-  }
-
-  var score = function(collId,exId,score){
-    data[collId][exId].summary.score = score;
-  }
-
-  var state = function(collId,exId,state){
-    data[collId][exId].state = state;
-  }
-
-  var get = function(collId,exId){
-    return data[collId][exId];
-  }
-
-  var clear = function(collId,exId){
-    data[collId].splice(exId,1);
-  }
 })
 
 .factory('SummaryData', function () {

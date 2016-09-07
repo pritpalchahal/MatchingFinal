@@ -285,6 +285,7 @@ angular.module('collocationmatching.controllers', [])
     $scope.slides = Exercises.getSlidesCount(collId,exId);
     $scope.slideCount = new Array($scope.slides);
 
+    //shuffle slides keepig local words same
     var N = Exercises.getMinSlidesCount(collId,exId);
     var temp = Array.apply(null, {length: N}).map(Number.call,Number);
     var shuffled = [].concat(shuffle(temp));
@@ -302,6 +303,7 @@ angular.module('collocationmatching.controllers', [])
       $scope.words[i] = arr;
     }
 
+    //shuffle without maintaining order
     // for(var j=0 ; j<$scope.words.length; j++){
     //   $scope.words[j] = shuffle($scope.words[j]);
     // }

@@ -20,7 +20,7 @@
             </li>
           </ul>
         </div>
-
+        <ion-content class="has-header has-footer has-subfooter" style="margin-top:10px;">
         <div ng-repeat="word in words track by $index" ng-init="wordId = word[slideIndex].id" ng-if="word[slideIndex]">
           <div class="row" style="margin-top:10px;">
 
@@ -41,6 +41,7 @@
             </div>
           </div>
         </div>
+        </ion-content>
       </ion-slide-page>
     </ion-slides>
         <div class="bar bar-footer" ng-hide="hide">
