@@ -167,7 +167,7 @@ angular.module('collocationmatching.services', [])
         var params_url = contained_url.substr(contained_url.indexOf("&s1.params"));
         var final_url = PREFIX_URL + middle_url + params_url;
 
-        return $http.get("a").then(function(response){
+        return $http.get(final_url).then(function(response){
           var x2js = new X2JS();
           var jsonData = x2js.xml_str2json(response.data);
           temp_words = jsonData.response.player.word;

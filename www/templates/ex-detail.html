@@ -21,7 +21,7 @@
           </ul>
         </div>
 
-        <div ng-repeat-start="word in words track by $index" ng-init="wordId = word[slideIndex].id" ng-if="word[slideIndex]">
+        <div ng-repeat="word in words track by $index" ng-init="wordId = word[slideIndex].id" ng-if="word[slideIndex]">
           <div class="row" style="margin-top:10px;">
 
             <div class="fixed-value col col-xs-4 text" ng-show="word[slideIndex].isCorrect">
@@ -41,22 +41,13 @@
             </div>
           </div>
         </div>
-
-        <div ng-repeat-end>
-          <div class="bar bar-footer bar-positive" ng-show="checkAll(slideIndex)">
-            <div class="title">
-              Correct answer!
-            </div>
-          </div>
-
-          <div class="bar bar-footer" ng-show="!checkAll(slideIndex)">
-            <div class="title" ng-click="checkAnswer(slideIndex)" style="cursor:pointer;font-style:italic;">
-              Check Answer
-            </div>
-          </div>
-        </div>
-        <footer class="slideNo" drag-content="false">{{slideIndex+1}}/{{slideCount.length}}</footer>
       </ion-slide-page>
     </ion-slides>
+        <div class="bar bar-footer" ng-hide="hide">
+          <div class="title" ng-click="checkAnswer()" style="cursor:pointer;font-style:italic;">
+            Check Answer
+          </div>
+        </div>
+        <footer class="slideNo" drag-content="false">{{slideIndex+1}}/{{slides}}</footer>
   </ion-content>
 </ion-view>

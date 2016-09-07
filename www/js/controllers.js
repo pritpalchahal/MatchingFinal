@@ -254,6 +254,7 @@ angular.module('collocationmatching.controllers', [])
 
 .controller('ExerciseCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, $ionicPopover,$filter, $timeout,
   ionicToast, Ids, SummaryData, Exercises) {
+  $scope.slideIndex = 0;//index of initial slide
   $ionicLoading.show();
   var exerciseId = $stateParams.exerciseId;
   var collectionName = $stateParams.collectionName;
@@ -267,23 +268,6 @@ angular.module('collocationmatching.controllers', [])
     var time = new Date();
     var timeNow = $filter('date')(time,'medium');//angularjs date format
     SummaryData.updateStartTime(collId,exId,timeNow);
-  }
-
-  $scope.checkAll = function(slideIndex){
-    var countSet = 0, count = 0;
-    for(var i=0; i<$scope.words.length;i++){
-      var word = $scope.words[i];
-      countSet++;
-      //it is critical to check for word[slideIndex]
-      //because slideIndex can be different 
-      if(word[slideIndex] && word[slideIndex].isCorrect){
-        count++;
-      }
-    }
-    if(countSet == count){
-      return true;
-    }
-    return false;
   }
 
   $scope.summary = SummaryData.getSummary(collId,exId);
@@ -348,28 +332,60 @@ angular.module('collocationmatching.controllers', [])
     // freeMode: true,
     loop: false,
     spaceBetween: 10,
-    initialSlide: 0,
+    initialSlide: $scope.slideIndex,
     effect: 'flip',//fade,slide,cube,coverflow,flip (http://idangero.us/swiper/api)
     speed: 500
   };
 
+  $scope.checkAnswer = function(){
+    if(!checkAll()){
+      ionicToast.show('Answer Incorrect!','middle',false,2500);
+    }
+  }
+
+  checkAll = function(){
+    var countSet = 0, count = 0;
+    for(var i=0; i<$scope.words.length;i++){
+      var word = $scope.words[i];
+      if(word[$scope.slideIndex]){
+        countSet++;
+        //it is critical to check for word[slideIndex]
+        //because slideIndex can be different 
+        if(word[$scope.slideIndex] && word[$scope.slideIndex].isCorrect){
+          count++;
+        }
+      }
+    }
+    if(countSet == count){
+      $scope.hide = true;
+      return true;
+    }
+    $scope.hide = false;
+    return false;
+  }
+
   $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
     // data.slider is the instance of Swiper
-    $scope.slider = data.slider;
-    var n = $scope.slider.activeIndex;
     // var element = angular.element(document.querySelector('#r1'));
     // element.text = "a";
-    // console.log(element);
+    $scope.slideIndex = data.slider.activeIndex;
+    if($scope.words){
+      checkAll();
+      $scope.$apply();//required to update the view
+    }
   });
 
   $scope.$on("$ionicSlides.slideChangeStart", function(event, data){
     // console.log('Slide change is beginning');
+    $scope.slideIndex = data.slider.activeIndex;
+    checkAll();
+    $scope.$apply();//required to update the view
   });
 
   $scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
     // note: the indexes are 0-based
-    $scope.activeIndex = data.activeIndex;
-    $scope.previousIndex = data.previousIndex;
+    // $scope.activeIndex = data.activeIndex;
+    // $scope.previousIndex = data.previousIndex;
   });
 
   $scope.onDragSuccess = function(data,evt,wordId,slideIndex){
@@ -390,16 +406,7 @@ angular.module('collocationmatching.controllers', [])
         }
       }
     }
-  }
-
-  $scope.checkAnswer = function(slideIndex){
-    if(!$scope.checkAll(slideIndex)){
-      ionicToast.show('Answer Incorrect!','middle',false,2500);
-      // var errorPopup = $ionicPopup.alert({
-      //   template: 'Incorrect',
-      //   title: 'Try again'
-      // });
-    }
+    checkAll();
   }
 
   $ionicPopover.fromTemplateUrl("templates/ex-detail-popover.html",{
@@ -421,6 +428,34 @@ angular.module('collocationmatching.controllers', [])
     //   }
     // }
     // SummaryData.updateScore(collId,exId,i);
+    var countSet = [];
+    var count = 0;
+    for(var i=0;i<$scope.words.length;i++){
+      var word = $scope.words[i];
+      for(var j=0;j<word.length;j++){
+        if(word[j].isCorrect){
+          if(countSet[j]){
+            countSet[j]++;
+          }
+          else{
+            countSet[j] = 1;
+          }
+        }
+        if(word.length == countSet[j]){
+          count++;
+        }
+      }
+    }
+    console.log(countSet);
+    // var count = 0;
+    // for(var i=0;i<$scope.words.length;i++){
+    //   for(var j=0;j<countSet.length;j++){
+    //     if($scope.words[i].length == countSet[j]){
+    //       count++;
+    //     }
+    //   }
+    // }
+    SummaryData.updateScore(collId,exId,count);
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
       title: 'Summary report',
