@@ -255,6 +255,7 @@ angular.module('collocationmatching.controllers', [])
 .controller('ExerciseCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, $ionicPopover,$filter, $timeout,
   ionicToast, Ids, SummaryData, Exercises) {
   $scope.slideIndex = 0;//index of initial slide
+
   $ionicLoading.show();
   var exerciseId = $stateParams.exerciseId;
   var collectionName = $stateParams.collectionName;
@@ -301,8 +302,6 @@ angular.module('collocationmatching.controllers', [])
       $scope.words[i] = arr;
     }
 
-    // $scope.slideCount = new Array($scope.slides);
-    // console.log($scope.words);
     // for(var j=0 ; j<$scope.words.length; j++){
     //   $scope.words[j] = shuffle($scope.words[j]);
     // }
@@ -344,19 +343,19 @@ angular.module('collocationmatching.controllers', [])
   }
 
   checkAll = function(){
-    var countSet = 0, count = 0;
+    var all_words = 0, correct_words = 0;
     for(var i=0; i<$scope.words.length;i++){
       var word = $scope.words[i];
       if(word[$scope.slideIndex]){
-        countSet++;
+        all_words++;
         //it is critical to check for word[slideIndex]
         //because slideIndex can be different 
         if(word[$scope.slideIndex] && word[$scope.slideIndex].isCorrect){
-          count++;
+          correct_words++;
         }
       }
     }
-    if(countSet == count){
+    if(all_words == correct_words){
       $scope.hide = true;
       return true;
     }
@@ -366,8 +365,8 @@ angular.module('collocationmatching.controllers', [])
 
   $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
     // data.slider is the instance of Swiper
-    // var element = angular.element(document.querySelector('#r1'));
-    // element.text = "a";
+    var element = angular.element(document.querySelector('#ulid'));
+    console.log(element);
     $scope.slideIndex = data.slider.activeIndex;
     if($scope.words){
       checkAll();
@@ -420,42 +419,24 @@ angular.module('collocationmatching.controllers', [])
   }
 
   $scope.showSummary = function(){
-    // var values = AnswerData.getValues(collId,exId);
-    // var i = 0;
-    // for(var j=0;j<values.length;j++){
-    //   if(values[j]){
-    //     i++;
-    //   }
-    // }
-    // SummaryData.updateScore(collId,exId,i);
-    var countSet = [];
-    var count = 0;
-    for(var i=0;i<$scope.words.length;i++){
-      var word = $scope.words[i];
-      for(var j=0;j<word.length;j++){
-        if(word[j].isCorrect){
-          if(countSet[j]){
-            countSet[j]++;
+    var score = 0;
+    for(var i=0;i<$scope.slides;i++){
+      var all_words = 0, correct_words=0;
+      for(var j=0;j<$scope.words.length;j++){
+        var word = $scope.words[j];
+        if(word[i]){
+          all_words++;
+          if(word[i].isCorrect){
+            correct_words++;
           }
-          else{
-            countSet[j] = 1;
-          }
-        }
-        if(word.length == countSet[j]){
-          count++;
         }
       }
+      if(all_words == correct_words){
+        score++;
+      }
     }
-    console.log(countSet);
-    // var count = 0;
-    // for(var i=0;i<$scope.words.length;i++){
-    //   for(var j=0;j<countSet.length;j++){
-    //     if($scope.words[i].length == countSet[j]){
-    //       count++;
-    //     }
-    //   }
-    // }
-    SummaryData.updateScore(collId,exId,count);
+
+    SummaryData.updateScore(collId,exId,score);
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
       title: 'Summary report',
