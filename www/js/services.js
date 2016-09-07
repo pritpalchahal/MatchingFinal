@@ -66,6 +66,8 @@ angular.module('collocationmatching.services', [])
         }
       }
       return temp_collections;
+    },function(error){
+      return error;
     });
   }
 
@@ -86,6 +88,8 @@ angular.module('collocationmatching.services', [])
         collections.push(collection_name);
       }
       return collections;
+    },function(error){
+      return error;
     });
   }
 
@@ -130,6 +134,8 @@ angular.module('collocationmatching.services', [])
         exercises[collId] = [].concat(jsonData.response.categoryList.category.exercise);
       }
       return exercises[collId];
+    },function(error){
+      return error;
     });
   }
 
@@ -161,7 +167,7 @@ angular.module('collocationmatching.services', [])
         var params_url = contained_url.substr(contained_url.indexOf("&s1.params"));
         var final_url = PREFIX_URL + middle_url + params_url;
 
-        return $http.get(final_url).then(function(response){
+        return $http.get("a").then(function(response){
           var x2js = new X2JS();
           var jsonData = x2js.xml_str2json(response.data);
           temp_words = jsonData.response.player.word;
@@ -180,6 +186,8 @@ angular.module('collocationmatching.services', [])
             };
           };
           return words[collId][exId];
+        },function(error){
+          return error;
         });
       }
     }
@@ -238,7 +246,6 @@ angular.module('collocationmatching.services', [])
 
   //Internet connectivity
   var online = true;
-  var msg = "No Internet connection available!";
 
   var getConnectionStatus = function(){
     return online;
@@ -258,7 +265,11 @@ angular.module('collocationmatching.services', [])
   }
 
   var getErrorMsg = function(){
-    return msg;
+    return "No Internet connection available!";
+  }
+
+  var get404Msg = function(msg){
+    return "Error at server, try again later! " + (msg ? msg : "");
   }
 
   return {
@@ -280,7 +291,8 @@ angular.module('collocationmatching.services', [])
 
     getConnectionStatus: getConnectionStatus,
     watchConnectionStatus: watchConnectionStatus,
-    getErrorMsg: getErrorMsg
+    getErrorMsg: getErrorMsg,
+    get404Msg: get404Msg
   };
 })
 

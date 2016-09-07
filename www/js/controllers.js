@@ -42,13 +42,22 @@ angular.module('collocationmatching.controllers', [])
 })
 
 .controller('CollectionsCtrl', function($scope, $timeout, $ionicLoading, $state, $ionicPopover, $ionicPopup, Exercises, 
-  $cordovaNetwork, $rootScope, Ids){
+  $cordovaNetwork, $rootScope, Ids, ionicToast){
 
   Exercises.getAllColls(false).then(function(response){
+    if(response.status == 404){
+      ionicToast.show(Exercises.get404Msg(),'middle',true);
+      return;
+    }
     $ionicLoading.show();
 
     response.forEach(function(collectionName){
       Exercises.check(collectionName).then(function(res){
+          if(res.status == 404){
+            ionicToast.show(Exercises.get404Msg("Unable to retrieve some collections."),'middle',true);
+            $ionicLoading.hide();
+            return;
+          }
 
         // $timeout(function(){
           $scope.collections = res;
@@ -62,8 +71,16 @@ angular.module('collocationmatching.controllers', [])
     //to remove duplicacy always remember to empty previous data before refreshing
     // Exercises.newList();
     Exercises.getAllColls(true).then(function(response){
+      if(response.status == 404){
+        ionicToast.show(Exercises.get404Msg(),'middle',true);
+        return;
+      }
       response.forEach(function(collectionName){
         Exercises.check(collectionName).then(function(res){
+          if(res.status == 404){
+            ionicToast.show(Exercises.get404Msg("Unable to retrieve some collections."),'middle',true);
+            return;
+          }
 
           // $timeout(function(){
             $scope.collections = res; 
@@ -114,7 +131,7 @@ angular.module('collocationmatching.controllers', [])
 })
 
 .controller('ExsCtrl', function($scope, $timeout, $stateParams, $ionicPopup, $ionicPopover, 
-  Ids, StateData, SummaryData, Exercises) {
+  Ids, StateData, SummaryData, Exercises, ionicToast) {
   
   var name = $stateParams.collectionName;
   $scope.collectionName = name;
@@ -146,6 +163,10 @@ angular.module('collocationmatching.controllers', [])
   }
 
   Exercises.getAllEx(collId,false).then(function(response){
+    if(response.status == 404){
+      ionicToast.show(Exercises.get404Msg(),'middle',true);
+      return;
+    }
     $scope.exercises = response;
     for(var i=0;i<$scope.exercises.length;i++){
       var exerciseId = $scope.exercises[i]._id;
@@ -174,6 +195,10 @@ angular.module('collocationmatching.controllers', [])
   $scope.doRefresh = function(){
     // $timeout(function(){
       Exercises.getAllEx(collId,true).then(function(response){
+        if(response.status == 404){
+          ionicToast.show(Exercises.get404Msg(),'middle',true);
+          return;
+        }
         $scope.exercises = response;
         for(var i=0;i<$scope.exercises.length;i++){
           var exerciseId = $scope.exercises[i]._id;
@@ -264,6 +289,11 @@ angular.module('collocationmatching.controllers', [])
   $scope.summary = SummaryData.getSummary(collId,exId);
 
   Exercises.getSingleEx(collId,exId).then(function(response){
+    if(response.status == 404){
+      ionicToast.show(Exercises.get404Msg(),'middle',true);
+      $ionicLoading.hide();
+      return;
+    }
     $ionicLoading.hide();
     $scope.words = response;
     $scope.slides = Exercises.getSlidesCount(collId,exId);
