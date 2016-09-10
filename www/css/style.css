@@ -27,13 +27,6 @@
     cursor: pointer;
 }
 
-.bar-footer{
-    margin-bottom: 40px;
-    width:100%;
-    border-bottom: 1px solid grey;
-    background-color: #A0CCA6;
-}
-
 table, th , td  {
   border: 1px solid grey;
   border-collapse: collapse;
@@ -115,19 +108,17 @@ p,h2{
 *{
     -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
-ul{
-    display: flex;
-    justify-content: center;
-}
-li{
-    margin:0px 10px;
-}
 popover-style{
     max-height: 120px;
     border: 1px solid red;
     /*position: relative;
     height: auto;
     min-height: 100% !important;*/
+}
+.dragged{
+  color:grey;
+  text-decoration: line-through;
+  cursor: default;
 }
 [ng-drag]{
     -moz-user-select: -moz-none;
@@ -140,6 +131,7 @@ popover-style{
   display: block;
   background: rgba(210,210,210,0.5);
   padding:4px;
+  width: 100%;
   /*border-top: 1px solid #000000;*/
 
 }
@@ -149,8 +141,7 @@ popover-style{
     color:black;
     text-align: center;
     font-size: 12px;
-    padding: 10px 0px;
-    margin:0 0px;
+    /*padding: 10px;*/
     width: inherit;
     display: block;
     cursor: move;
@@ -161,16 +152,15 @@ popover-style{
     color:black;
     text-align: center;
     font-size: 12px;
-    padding: 10px 0px;
+    /*padding: 10px;*/
     display: block;
-    margin:0 0px;
     position: relative;
 }
 [ng-drop]{
     /*background: rgba(0,255,0, 0.5);*/
     border: solid 1px black;
     text-align: center;
-    padding:0px;
+    /*padding:10px;*/
     display: block;
     margin:0 0px;
     position: relative;
@@ -186,15 +176,30 @@ popover-style{
     /*margin:0 10px;*/
 }
 ul.draggable-objects:after{
-    display: block;
+    /*display: block;
     content:"";
-    clear:both;
+    clear:both;*/
 }
 .draggable-objects li{
-    float:left;
+  display: table-cell;
+  margin:0px;
+  width:auto;
+  /*float: left;*/
     /*display: block;*/
     /*width: 120px;*/
     /*height:100px;*/
+}
+ul{
+  width:100%;
+  display: table;
+  /*justify-content: center;
+  list-style: none;*/
+}
+li{
+  /*display: table-cell;
+  margin:0px;
+  width:auto;*/
+  /*padding: 10px;*/
 }
 .text{
     font-size:12px;
@@ -243,6 +248,13 @@ ul.draggable-objects:after{
   background-color: #AEAEB5 !important;
   border-bottom: 2px solid #3F9200 !important;
   border-top: 1px solid #3F9200 !important;
+}
+
+.bar-footer{
+  margin-bottom: 40px;
+  width:100%;
+  border-bottom: 2px solid #3F9200 !important;
+  background-color: #A0CCA6;
 }
 
 /*Ionic popup CSS */

@@ -310,10 +310,20 @@ angular.module('collocationmatching.controllers', [])
     // }
 
     for(var i=0;i<$scope.slides;i++){
-        $scope.drags[i] = new Array($scope.words.length);
+        if(!$scope.drags[i]){
+          $scope.drags[i] = new Array($scope.words.length);
+        }
         for(var j=0 ; j<$scope.words.length; j++){
           if($scope.words[j][i]){
-            $scope.drags[i][j] = $scope.words[j][i].right;
+            var word = $scope.words[j][i];
+            var value = word.right;
+            if($scope.drags[i][j] && $scope.drags[i][j].id == word.id){
+              var isDrag = $scopw.words[i][j].isDraggable;
+              $scope.drags[i][j] = {"value":value,"id":word.id,"isDraggable":isDrag};
+            }
+            else{
+              $scope.drags[i][j] = {"value":value,"id":word.id,"isDraggable":true};
+            }
           }
         }
         $scope.drags[i] = shuffle($scope.drags[i]);
@@ -399,7 +409,9 @@ angular.module('collocationmatching.controllers', [])
     // $scope.activeIndex = data.activeIndex;
     // $scope.previousIndex = data.previousIndex;
   });
-
+  $scope.dragSuccess = function(data,evt,index,slideIndex){
+    $scope.drags[slideIndex][index].isDraggable = false;
+  }
   $scope.onDragSuccess = function(data,evt,wordId,slideIndex){
     for(var i=0;i<$scope.words.length;i++){
       var word = $scope.words[i];
@@ -409,12 +421,23 @@ angular.module('collocationmatching.controllers', [])
     }
   }
   $scope.onDropComplete = function(data,evt,wordId,slideIndex){
+    console.log("Dropped");
     for(var i=0;i<$scope.words.length;i++){
       var word = $scope.words[i];
       if(word[slideIndex] && (word[slideIndex].id == wordId)){
         var value = $scope.words[i][slideIndex].drop;
         if(value != data){
           $scope.words[i][slideIndex].drop = data;
+        }
+        if(value != ""){
+          for(var j=0;j<$scope.drags[slideIndex].length;j++){
+            var word = $scope.drags[slideIndex][j];
+            if(word.value == value && word.isDraggable == false){
+              console.log(word.value+"-"+value);
+              word.isDraggable = true;
+              break;
+            }
+          }
         }
       }
     }

@@ -16,7 +16,8 @@
         <div class="draggables container-fluid sub-header"> 
           <ul class="draggable-objects">
             <li  ng-repeat="word in drags[slideIndex] track by $index">
-              <div ng-drag="true" ng-drag-data="word" data-allow-transform="true" class="text"> {{word}} </div>
+              <div ng-drag="word.isDraggable" ng-drag-data="word.value" data-allow-transform="true" ng-drag-success="dragSuccess($data,$event,$index,slideIndex)" style="padding:10px;">  
+                <div ng-class="{dragged:!word.isDraggable}">{{word.value}}</div></div>
             </li>
           </ul>
         </div>
