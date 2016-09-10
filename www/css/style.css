@@ -235,14 +235,14 @@ ul.draggable-objects:after{
 }
 
 .navbar{
-  background-color: #A0CCA6  !important; /*#B8EBBF,A0CCA6,76967A,3F9200,AEAEB5*/
+  background-color: #B8EBBF  !important; /*#B8EBBF,A0CCA6,76967A,3F9200,AEAEB5*/
   border-bottom: 2px solid #3F9200 !important;
   border-top: 1px solid #3F9200 !important;
 }
 
 .navbar-title {
-  background-repeat: no-repeat;
-  background-position: 50%;
+  /*background-repeat: no-repeat;*/
+  /*background-position: 50%;*/
   height: 100%;
   position: absolute;
   left:0px;
@@ -262,8 +262,8 @@ ul.draggable-objects:after{
 }
 
 .popup-head{
-  background-color: #A0CCA6  !important;
-  background-image: url('../img/ic_launcher-web.png') !important;
+  background-color: #B8EBBF  !important;
+  background-image: url('../img/header_icon.png') !important;
   background-repeat: no-repeat !important;
   background-attachment: relative !important;
   /*"fixed" value in this property causes image not to display in iOS and browser, but it works in android*/
