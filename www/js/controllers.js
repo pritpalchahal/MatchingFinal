@@ -17,7 +17,7 @@ angular.module('collocationmatching.controllers', [])
     if(currentState != "exercise"){
       return;
     }
-    
+
     var exerciseId = $stateParams.exerciseId;
     var name = $stateParams.collectionName;
     var collId = Ids.getCollId(name);
@@ -477,6 +477,7 @@ angular.module('collocationmatching.controllers', [])
         //clear model
         SummaryData.clearSummary(collId,exId);
         SummaryData.createSummary(collId,exId);
+        $scope.hide = false;
 
         var time = new Date();
         var timeNow = $filter('date')(time,'medium');//angularjs date format
