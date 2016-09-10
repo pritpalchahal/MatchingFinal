@@ -44,37 +44,75 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
     // }
   });
 
-  //override default android back button behavior 
-  $ionicPlatform.onHardwareBackButton(function(){
-
+  $ionicPlatform.registerBackButtonAction(function (event){
     var currentState = $ionicHistory.currentStateName();
-
-    if(currentState != "exercise"){
-      return;
-    }
-
-    var exerciseId = $stateParams.exerciseId;
-    var name = $stateParams.collectionName;
-    var collId = Ids.getCollId(name);
-    var exId = Ids.getExId(collId,exerciseId);
-
-    //update end time
-    if(StateData.getSingleState(collId,exId) != "Complete"){
-      var time = new Date();
-      var timeNow = $filter('date')(time,'medium');
-      SummaryData.updateEndTime(collId,exId,timeNow);
-    }
-
-    var totalSlides = Exercises.getSlidesCount(collId,exId);
-    if(totalSlides == 0){return;}
-
-    if(SummaryData.getSummary(collId,exId).score == totalSlides){
-      StateData.updateState(collId,exId,"Complete");
+    if(currentState == "collections"){
+      // navigator.app.exitApp();//exit the app
+      backAsHome.trigger();//exitApp as home button (don't kill the app)
+      // event.preventDefault();//don't do anything
     }
     else{
-      StateData.updateState(collId,exId,"Incomplete");
+      //this can also be accompolished using $ionicPlatform.onHardwareBackButton
+      $ionicHistory.goBack();
+
+      if(currentState != "exercise"){
+        return;
+      }
+    
+      var exerciseId = $stateParams.exerciseId;
+      var name = $stateParams.collectionName;
+      var collId = Ids.getCollId(name);
+      var exId = Ids.getExId(collId,exerciseId);
+
+      //update end time
+      if(StateData.getSingleState(collId,exId) != "Complete"){
+        var time = new Date();
+        var timeNow = $filter('date')(time,'medium');
+        SummaryData.updateEndTime(collId,exId,timeNow);
+      }
+
+      var totalSlides = Exercises.getSlidesCount(collId,exId);
+      if(totalSlides == 0){return;}
+
+      if(SummaryData.getSummary(collId,exId).score == totalSlides){
+        StateData.updateState(collId,exId,"Complete");
+      }
+      else{
+        StateData.updateState(collId,exId,"Incomplete");
+      }
     }
-  });
+  }, 100);
+
+  // override default android back button behavior 
+  //   $ionicPlatform.onHardwareBackButton(function(){
+  //     $ionicHistory.goBack();
+
+  //     if(currentState != "exercise"){
+  //       return;
+  //     }
+    
+  //     var exerciseId = $stateParams.exerciseId;
+  //     var name = $stateParams.collectionName;
+  //     var collId = Ids.getCollId(name);
+  //     var exId = Ids.getExId(collId,exerciseId);
+
+  //     //update end time
+  //     if(StateData.getSingleState(collId,exId) != "Complete"){
+  //       var time = new Date();
+  //       var timeNow = $filter('date')(time,'medium');
+  //       SummaryData.updateEndTime(collId,exId,timeNow);
+  //     }
+
+  //     var totalSlides = Exercises.getSlidesCount(collId,exId);
+  //     if(totalSlides == 0){return;}
+
+  //     if(SummaryData.getSummary(collId,exId).score == totalSlides){
+  //       StateData.updateState(collId,exId,"Complete");
+  //     }
+  //     else{
+  //       StateData.updateState(collId,exId,"Incomplete");
+  //     }
+  // });
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {

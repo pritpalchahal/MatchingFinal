@@ -10,10 +10,6 @@ angular.module('collocationmatching.controllers', [])
 .controller('BackButtonController', function($scope, $ionicHistory, $stateParams, $filter,
   Exercises, StateData, SummaryData, Ids){
   $scope.customGoBack = function(){
-    var exerciseId = $stateParams.exerciseId;
-    var name = $stateParams.collectionName;
-    var collId = Ids.getCollId(name);
-    var exId = Ids.getExId(collId,exerciseId);
 
     $ionicHistory.goBack();
     var currentState = $ionicHistory.currentStateName();
@@ -21,6 +17,11 @@ angular.module('collocationmatching.controllers', [])
     if(currentState != "exercise"){
       return;
     }
+    
+    var exerciseId = $stateParams.exerciseId;
+    var name = $stateParams.collectionName;
+    var collId = Ids.getCollId(name);
+    var exId = Ids.getExId(collId,exerciseId);
 
     //update end time
     if(StateData.getSingleState(collId,exId) != "Complete"){
