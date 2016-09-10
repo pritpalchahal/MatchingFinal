@@ -20,27 +20,27 @@
             </li>
           </ul>
         </div>
-        <ion-content class="has-header has-footer has-subfooter" style="margin-top:10px;">
-        <div ng-repeat="word in words track by $index" ng-init="wordId = word[slideIndex].id" ng-if="word[slideIndex]">
-          <div class="row" style="margin-top:10px;">
+        <ion-content class="has-header has-footer has-subfooter has-subheader" style="margin-top:10px;">
+          <div ng-repeat="word in words track by $index" ng-init="wordId = word[slideIndex].id" ng-if="word[slideIndex]">
+            <div class="row">
 
-            <div class="fixed-value col text" ng-show="word[slideIndex].isCorrect">
-                {{word[slideIndex].left}} {{word[slideIndex].right}}
-            </div>
-
-            <div class="fixed-value col text" ng-show="!word[slideIndex].isCorrect">
-                {{word[slideIndex].left}}
-            </div>
-
-            <div ng-show="!word[slideIndex].isCorrect" ng-drop="true" ng-drop-success="onDropComplete($data,$event,wordId,slideIndex)" class="col">
-
-              <div ng-drag="true" ng-drag-data="word[slideIndex].drop" ng-drag-success="onDragSuccess($data,$event,wordId,slideIndex)" ng-center-anchor="{{centerAnchor}}" class="text">
-                {{word[slideIndex].drop}}
+              <div class="fixed-value col" ng-show="word[slideIndex].isCorrect">
+                  {{word[slideIndex].left}} {{word[slideIndex].right}}
               </div>
 
+              <div class="fixed-value col" ng-show="!word[slideIndex].isCorrect">
+                  {{word[slideIndex].left}}
+              </div>
+
+              <div ng-show="!word[slideIndex].isCorrect" ng-drop="true" ng-drop-success="onDropComplete($data,$event,wordId,slideIndex)" class="col">
+
+                <div ng-drag="true" ng-drag-data="word[slideIndex].drop" ng-drag-success="onDragSuccess($data,$event,wordId,slideIndex)" ng-center-anchor="{{centerAnchor}}">
+                  {{word[slideIndex].drop}}
+                </div>
+
+              </div>
             </div>
           </div>
-        </div>
         </ion-content>
       </ion-slide-page>
     </ion-slides>

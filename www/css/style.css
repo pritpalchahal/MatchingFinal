@@ -148,7 +148,7 @@ popover-style{
     /*border: solid 1px black;*/
     color:black;
     text-align: center;
-    font-size: 14px;
+    font-size: 12px;
     padding: 10px 0px;
     margin:0 0px;
     width: inherit;
@@ -160,7 +160,7 @@ popover-style{
     border: solid 1px black;
     color:black;
     text-align: center;
-    font-size: 14px;
+    font-size: 12px;
     padding: 10px 0px;
     display: block;
     margin:0 0px;
@@ -175,16 +175,6 @@ popover-style{
     margin:0 0px;
     position: relative;
 }
-/*.fixed-value {
-    background: rgba(0,255,0, 0.5);
-    text-align: center;
-    width: 600px;
-    height: 60px;
-    padding:10px;
-    display: block;
-    margin:20px auto;
-    position: relative;
-}*/
 .data-value {
     /*background: rgba(255,0,0, 0.5);*/
     border-right: solid 1px black;
