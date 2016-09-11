@@ -7,7 +7,7 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
   'ngDraggable', 'ngCordova','ionic-toast'])
 
 .run(function($ionicPlatform, $ionicHistory, $stateParams, $filter, $ionicPopup, $window, $rootScope,
-  Exercises, StateData, SummaryData, ionicToast, Ids) {
+  Data, StateData, SummaryData, ionicToast, Ids) {
 
   $rootScope.online = navigator.onLine;
   $window.addEventListener("offline", function () {
@@ -80,7 +80,7 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
         SummaryData.updateEndTime(collId,exId,timeNow);
       }
 
-      var totalSlides = Exercises.getSlidesCount(collId,exId);
+      var totalSlides = Data.getSlidesCount(collId,exId);
       if(totalSlides == 0){return;}
 
       if(SummaryData.getSummary(collId,exId).score == totalSlides){

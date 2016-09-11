@@ -1,6 +1,6 @@
 angular.module('collocationmatching.services', [])
 
-.factory('Exercises', function ($http, $cordovaNetwork, ionicToast, Ids, $rootScope) {
+.factory('Data', function ($http, $cordovaNetwork, ionicToast, Ids, $rootScope) {
   const THIS_ACTIVITY = "CollocationMatching";
 
   const ALL_COLLECTIONS_URL = "http://collections.flax.nzdl.org/greenstone3/flax?a=fp&sa=library&o=xml";
@@ -21,7 +21,6 @@ angular.module('collocationmatching.services', [])
   var slidesCount = [];
 
   var words = [];
-  var temp_collections = [];
 
   //actual path does work in browser but not in phone (via phonegap or ionicview, so always keep the $http.get path form index.html)
   // var url = "templates/default_exercises/default_exercise_list.xml";
@@ -30,10 +29,7 @@ angular.module('collocationmatching.services', [])
     if(collections.length > 0 && !isRefreshing){
       return new Promise((resolve,reject) => resolve(temp_collections));
     }
-    // if(!$rootScope.online){
-    //   ionicToast.show(getErrorMsg(),'middle',false,3000);
-    //   return new Promise((resolve,reject) => resolve(temp_collections));
-    // }
+    var temp_collections = [];
     var promise = $http.get(ALL_COLLECTIONS_URL).then(function(response){
       var x2js = new X2JS();
       var jsonData = x2js.xml_str2json(response.data);
@@ -246,30 +242,6 @@ angular.module('collocationmatching.services', [])
     return word.substr(word.indexOf(" ")+1);
   };
 
-  //Internet connectivity
-  var online = true;
-
-  var getConnectionStatus = function(){
-    return online;
-  }
-
-  var setStatus = function(isOnline){
-    online = isOnline;
-  }
-
-  var watchConnectionStatus = function(){
-    document.addEventListener("deviceready",function(){
-      online = $cordovaNetwork.isOnline();
-
-      $rootScope.$on('$cordovaNetwork:online',function(event,state){
-        online = true;
-      })
-      $rootScope.$on('$cordovaNetwork:offline',function(event,state){
-        online = false;
-      })
-    });
-  }
-
   var getErrorMsg = function(){
     return "No Internet connection available!";
   }
@@ -279,7 +251,6 @@ angular.module('collocationmatching.services', [])
   }
 
   return {
-    // setStatus: setStatus,
     getAllColls: getAllColls,
     check: check,
 
@@ -296,8 +267,6 @@ angular.module('collocationmatching.services', [])
     removeEx: removeEx,
     removeColl: removeColl,
 
-    // getConnectionStatus: getConnectionStatus,
-    // watchConnectionStatus: watchConnectionStatus,
     getErrorMsg: getErrorMsg,
     get404Msg: get404Msg
   };
