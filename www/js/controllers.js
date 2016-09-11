@@ -44,7 +44,6 @@ angular.module('collocationmatching.controllers', [])
 
 .controller('CollectionsCtrl', function($scope, $timeout, $ionicLoading, $state, $ionicPopover, $ionicPopup, Exercises, 
   $cordovaNetwork, $rootScope, Ids, ionicToast){
-  Exercises.watchConnectionStatus();
   $scope.collections = [];
 
   var getData = function(isRefreshing){
@@ -60,7 +59,7 @@ angular.module('collocationmatching.controllers', [])
 
       response.forEach(function(collectionName){
         Exercises.check(collectionName).then(function(res){
-          if(res.status == 404){
+          if(res.status && res.status == 404){
             ionicToast.show(Exercises.get404Msg("Unable to retrieve some collections."),'middle',true);
             $ionicLoading.hide();
             return;
@@ -75,10 +74,20 @@ angular.module('collocationmatching.controllers', [])
     });
   }
 
-  getData(false);
+  if($rootScope.online){
+    getData(false);
+  }
+  else{
+    ionicToast.show("Not online",'middle',false,2500);
+  }
 
   $scope.doRefresh = function(){
-    getData(true);
+    if($rootScope.online){
+      getData(true);
+    }
+    else{
+      ionicToast.show("Not online",'middle',false,2500);
+    }
     $scope.$broadcast('scroll.refreshComplete'); 
   };
 
@@ -121,7 +130,7 @@ angular.module('collocationmatching.controllers', [])
   }
 })
 
-.controller('ExsCtrl', function($scope, $timeout, $stateParams, $ionicPopup, $ionicPopover, 
+.controller('ExsCtrl', function($scope, $timeout, $stateParams, $ionicPopup, $ionicPopover, $rootScope,
   Ids, StateData, SummaryData, Exercises, ionicToast,$ionicLoading) {
   
   var name = $stateParams.collectionName;
@@ -154,7 +163,7 @@ angular.module('collocationmatching.controllers', [])
   var getData = function(collId,isRefreshing){
     $ionicLoading.show();
     Exercises.getAllEx(collId,isRefreshing).then(function(response){
-      if(response.status == 404){
+      if(response.status && response.status == 404){
         ionicToast.show(Exercises.get404Msg(),'middle',true);
         $ionicLoading.hide();
         return;
@@ -180,10 +189,13 @@ angular.module('collocationmatching.controllers', [])
   getData(collId,false);
 
   $scope.doRefresh = function(){
-    // $timeout(function(){
-    getData(collId,true); 
+    if($rootScope.online){
+      getData(collId,true); 
+    }
+    else{
+      ionicToast.show(Exercises.getErrorMsg(),'middle');
+    }
     $scope.$broadcast('scroll.refreshComplete'); 
-    // },1000);
   };
 
   $scope.getId = function(exerciseId){

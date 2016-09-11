@@ -13,28 +13,29 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
   $window.addEventListener("offline", function () {
     $rootScope.$apply(function() {
       $rootScope.online = false;
+      ionicToast.show("offline",'bottom');
     });
   }, false);
   $window.addEventListener("online", function () {
     $rootScope.$apply(function() {
       $rootScope.online = true;
+      ionicToast.show("online",'bottom');
     });
   }, false);
 
+  if(!$rootScope.online){
+    $ionicPopup.alert({
+      title: 'Connection error',
+      subTitle: 'No internet connection detected',
+      buttons: [
+        {
+          text: 'Close',
+          type: 'button-negative'
+        }]
+    });
+  }
+
   $ionicPlatform.ready(function() {
-    // Exercises.watchConnectionStatus();
-    // if(!Exercises.getConnectionStatus()){
-    //   // ionicToast.show(Exercises.getErrorMsg(),'middle',true);
-    //   $ionicPopup.alert({
-    //     title: 'Connection error',
-    //     subTitle: 'No internet connection detected',
-    //     buttons: [
-    //       {
-    //         text: 'Close',
-    //         type: 'button-negative'
-    //       }]
-    //   });
-    // }
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -49,21 +50,6 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
-    }
-
-    if(window.Connection){
-      if(navigator.connection.type == Connection.NONE){
-        Exercises.setStatus(false);
-        $ionicPopup.alert({
-          title: 'Connection error',
-          subTitle: 'No internet connection detected',
-          buttons: [
-            {
-              text: 'Close',
-              type: 'button-negative'
-            }]
-        });
-      }
     }
   });
 

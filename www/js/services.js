@@ -30,10 +30,10 @@ angular.module('collocationmatching.services', [])
     if(collections.length > 0 && !isRefreshing){
       return new Promise((resolve,reject) => resolve(temp_collections));
     }
-    if(!getConnectionStatus()){
-      ionicToast.show(getErrorMsg(),'middle',false,3000);
-      return new Promise((resolve,reject) => resolve(temp_collections));
-    }
+    // if(!$rootScope.online){
+    //   ionicToast.show(getErrorMsg(),'middle',false,3000);
+    //   return new Promise((resolve,reject) => resolve(temp_collections));
+    // }
     var promise = $http.get(ALL_COLLECTIONS_URL).then(function(response){
       var x2js = new X2JS();
       var jsonData = x2js.xml_str2json(response.data);
@@ -73,10 +73,6 @@ angular.module('collocationmatching.services', [])
   }
 
   var check = function(collectionName){
-    if(!getConnectionStatus()){
-      ionicToast.show(getErrorMsg(),'middle',false,3000);
-      return new Promise((resolve,reject) => resolve(collections));
-    }
     collections = [];
     var suffix_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
     var coll_url = PREFIX_URL + suffix_url;
@@ -103,7 +99,7 @@ angular.module('collocationmatching.services', [])
     if(exercises[collId] && !isRefreshing){
       return new Promise((resolve,reject) => resolve(exercises[collId]));
     }
-    if(!getConnectionStatus()){
+    if(!$rootScope.online){
       ionicToast.show(getErrorMsg(),'middle',false,3000);
       return new Promise((resolve,reject) => resolve([]));
     }
@@ -149,7 +145,7 @@ angular.module('collocationmatching.services', [])
     if(words[collId][exId]){
       return new Promise((resolve,reject) => resolve(words[collId][exId]));
     }
-    if(!getConnectionStatus()){
+    if(!$rootScope.online){
       ionicToast.show(getErrorMsg(),'middle',false,3000);
       return new Promise((resolve,reject) => resolve([]));
     }
@@ -283,7 +279,7 @@ angular.module('collocationmatching.services', [])
   }
 
   return {
-    setStatus: setStatus,
+    // setStatus: setStatus,
     getAllColls: getAllColls,
     check: check,
 
@@ -300,8 +296,8 @@ angular.module('collocationmatching.services', [])
     removeEx: removeEx,
     removeColl: removeColl,
 
-    getConnectionStatus: getConnectionStatus,
-    watchConnectionStatus: watchConnectionStatus,
+    // getConnectionStatus: getConnectionStatus,
+    // watchConnectionStatus: watchConnectionStatus,
     getErrorMsg: getErrorMsg,
     get404Msg: get404Msg
   };
