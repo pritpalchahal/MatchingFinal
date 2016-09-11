@@ -180,7 +180,7 @@ angular.module('collocationmatching.services', [])
               var text = collo[k].__text;
               var left = getLeft(text);
               var right = getRight(text);
-              var obj = {"left":left,"right":right,"drop":"","id":uniqueId,get isCorrect(){return (this.right == this.drop);}};
+              var obj = {"left":left,"right":right,"drop":"","id":uniqueId,"isDraggable":true,get isCorrect(){return (this.right == this.drop);}};
               uniqueId++;
               words[collId][exId][j].push(obj);
             };

@@ -303,31 +303,40 @@ angular.module('collocationmatching.controllers', [])
       }
       $scope.words[i] = arr;
     }
+    var count = $scope.words.length;
+    var tmp = Array.apply(null, {length: count}).map(Number.call,Number);
+    $scope.drags = [].concat(shuffle(tmp));
+    // for(var i=0;i<$scope.words.length;i++){
+    //   var word = $scope.words[i];
+    //   for(var j=0;j<word.length;j++){
+
+    //   }
+    // }
 
     //shuffle without maintaining order
     // for(var j=0 ; j<$scope.words.length; j++){
     //   $scope.words[j] = shuffle($scope.words[j]);
     // }
 
-    for(var i=0;i<$scope.slides;i++){
-        if(!$scope.drags[i]){
-          $scope.drags[i] = new Array($scope.words.length);
-        }
-        for(var j=0 ; j<$scope.words.length; j++){
-          if($scope.words[j][i]){
-            var word = $scope.words[j][i];
-            var value = word.right;
-            if($scope.drags[i][j] && $scope.drags[i][j].id == word.id){
-              var isDrag = $scopw.words[i][j].isDraggable;
-              $scope.drags[i][j] = {"value":value,"id":word.id,"isDraggable":isDrag};
-            }
-            else{
-              $scope.drags[i][j] = {"value":value,"id":word.id,"isDraggable":true};
-            }
-          }
-        }
-        $scope.drags[i] = shuffle($scope.drags[i]);
-    }
+    // for(var i=0;i<$scope.slides;i++){
+    //     if(!$scope.drags[i]){
+    //       $scope.drags[i] = new Array($scope.words.length);
+    //     }
+    //     for(var j=0 ; j<$scope.words.length; j++){
+    //       if($scope.words[j][i]){
+    //         var word = $scope.words[j][i];
+    //         var value = word.right;
+    //         if($scope.drags[i][j] && $scope.drags[i][j].id == word.id){
+    //           var isDrag = $scopw.words[i][j].isDraggable;
+    //           $scope.drags[i][j] = {"value":value,"id":word.id,"isDraggable":isDrag};
+    //         }
+    //         else{
+    //           $scope.drags[i][j] = {"value":value,"id":word.id,"isDraggable":true};
+    //         }
+    //       }
+    //     }
+    //     $scope.drags[i] = shuffle($scope.drags[i]);
+    // }
   });
 
   var shuffle = function(array) {
@@ -410,7 +419,9 @@ angular.module('collocationmatching.controllers', [])
     // $scope.previousIndex = data.previousIndex;
   });
   $scope.dragSuccess = function(data,evt,index,slideIndex){
-    $scope.drags[slideIndex][index].isDraggable = false;
+    // $scope.drags[slideIndex][index].isDraggable = false;
+    $scope.words[index][slideIndex].isDraggable = false;
+    console.log(index);
   }
   $scope.onDragSuccess = function(data,evt,wordId,slideIndex){
     for(var i=0;i<$scope.words.length;i++){
@@ -422,22 +433,32 @@ angular.module('collocationmatching.controllers', [])
   }
   $scope.onDropComplete = function(data,evt,wordId,slideIndex){
     console.log("Dropped");
+    var done = null;
     for(var i=0;i<$scope.words.length;i++){
       var word = $scope.words[i];
       if(word[slideIndex] && (word[slideIndex].id == wordId)){
         var value = $scope.words[i][slideIndex].drop;
         if(value != data){
           $scope.words[i][slideIndex].drop = data;
+          done = value;
         }
-        if(value != ""){
-          for(var j=0;j<$scope.drags[slideIndex].length;j++){
-            var word = $scope.drags[slideIndex][j];
-            if(word.value == value && word.isDraggable == false){
-              console.log(word.value+"-"+value);
-              word.isDraggable = true;
-              break;
-            }
-          }
+        // if(value != ""){
+        //   for(var j=0;j<$scope.drags[slideIndex].length;j++){
+        //     var word = $scope.drags[slideIndex][j];
+        //     if(word.value == value && word.isDraggable == false){
+        //       console.log(word.value+"-"+value);
+        //       word.isDraggable = true;
+        //       break;
+        //     }
+        //   }
+        // }
+      }
+    }
+    if(done){
+      for(var i=0;i<$scope.words.length;i++){
+        var word = $scope.words[i];
+        if(word[slideIndex] && (word[slideIndex].right == done)){
+          word[slideIndex].isDraggable = true;
         }
       }
     }
