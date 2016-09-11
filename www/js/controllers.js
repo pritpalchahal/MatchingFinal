@@ -44,11 +44,16 @@ angular.module('collocationmatching.controllers', [])
 
 .controller('CollectionsCtrl', function($scope, $timeout, $ionicLoading, $state, $ionicPopover, $ionicPopup, Exercises, 
   $cordovaNetwork, $rootScope, Ids, ionicToast){
+  Exercises.watchConnectionStatus();
+  $scope.collections = [];
 
   var getData = function(isRefreshing){
     Exercises.getAllColls(isRefreshing).then(function(response){
-      if(response.status == 404){
+      if(response.status && response.status == 404){
         ionicToast.show(Exercises.get404Msg(),'middle',true);
+        return;
+      }
+      if(!(response instanceof Array) || response.length == 0){
         return;
       }
       // $ionicLoading.show();

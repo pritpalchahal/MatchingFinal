@@ -6,22 +6,35 @@
 angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers', 'collocationmatching.services',
   'ngDraggable', 'ngCordova','ionic-toast'])
 
-.run(function($ionicPlatform, $ionicHistory, $stateParams, $filter, $ionicPopup,
+.run(function($ionicPlatform, $ionicHistory, $stateParams, $filter, $ionicPopup, $window, $rootScope,
   Exercises, StateData, SummaryData, ionicToast, Ids) {
+
+  $rootScope.online = navigator.onLine;
+  $window.addEventListener("offline", function () {
+    $rootScope.$apply(function() {
+      $rootScope.online = false;
+    });
+  }, false);
+  $window.addEventListener("online", function () {
+    $rootScope.$apply(function() {
+      $rootScope.online = true;
+    });
+  }, false);
+
   $ionicPlatform.ready(function() {
-    Exercises.watchConnectionStatus();
-    if(!Exercises.getConnectionStatus()){
-      // ionicToast.show(Exercises.getErrorMsg(),'middle',true);
-      $ionicPopup.alert({
-        title: 'Connection error',
-        subTitle: 'No internet connection detected',
-        buttons: [
-          {
-            text: 'Close',
-            type: 'button-negative'
-          }]
-      });
-    }
+    // Exercises.watchConnectionStatus();
+    // if(!Exercises.getConnectionStatus()){
+    //   // ionicToast.show(Exercises.getErrorMsg(),'middle',true);
+    //   $ionicPopup.alert({
+    //     title: 'Connection error',
+    //     subTitle: 'No internet connection detected',
+    //     buttons: [
+    //       {
+    //         text: 'Close',
+    //         type: 'button-negative'
+    //       }]
+    //   });
+    // }
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -37,11 +50,21 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-    // if(window.connection){
-    //   if(window.connection.type == Connection.NONE){
-    //     Ids.setStatus(false);
-    //   }
-    // }
+
+    if(window.Connection){
+      if(navigator.connection.type == Connection.NONE){
+        Exercises.setStatus(false);
+        $ionicPopup.alert({
+          title: 'Connection error',
+          subTitle: 'No internet connection detected',
+          buttons: [
+            {
+              text: 'Close',
+              type: 'button-negative'
+            }]
+        });
+      }
+    }
   });
 
   $ionicPlatform.registerBackButtonAction(function (event){

@@ -1,6 +1,6 @@
 angular.module('collocationmatching.services', [])
 
-.factory('Exercises', function ($http, $cordovaNetwork, ionicToast, Ids) {
+.factory('Exercises', function ($http, $cordovaNetwork, ionicToast, Ids, $rootScope) {
   const THIS_ACTIVITY = "CollocationMatching";
 
   const ALL_COLLECTIONS_URL = "http://collections.flax.nzdl.org/greenstone3/flax?a=fp&sa=library&o=xml";
@@ -28,13 +28,13 @@ angular.module('collocationmatching.services', [])
 
   var getAllColls = function(isRefreshing){
     if(collections.length > 0 && !isRefreshing){
-      return new Promise((resolve,reject) => resolve(collections));
+      return new Promise((resolve,reject) => resolve(temp_collections));
     }
     if(!getConnectionStatus()){
       ionicToast.show(getErrorMsg(),'middle',false,3000);
-      return new Promise((resolve,reject) => resolve(collections));
+      return new Promise((resolve,reject) => resolve(temp_collections));
     }
-    return $http.get(ALL_COLLECTIONS_URL).then(function(response){
+    var promise = $http.get(ALL_COLLECTIONS_URL).then(function(response){
       var x2js = new X2JS();
       var jsonData = x2js.xml_str2json(response.data);
       var collectionList = jsonData.page.pageResponse.collectionList.collection;
@@ -69,6 +69,7 @@ angular.module('collocationmatching.services', [])
     },function(error){
       return error;
     });
+    return promise;
   }
 
   var check = function(collectionName){
@@ -80,7 +81,7 @@ angular.module('collocationmatching.services', [])
     var suffix_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
     var coll_url = PREFIX_URL + suffix_url;
 
-    return $http.get(coll_url).then(function(res){
+    var promise = $http.get(coll_url).then(function(res){
       var x2js = new X2JS();
       var data = x2js.xml_str2json(res.data);
       if(!data || !data.response){return;}
@@ -95,6 +96,7 @@ angular.module('collocationmatching.services', [])
     },function(error){
       return error;
     });
+    return promise;
   }
 
   var getAllEx = function(collId,isRefreshing){
@@ -255,6 +257,10 @@ angular.module('collocationmatching.services', [])
     return online;
   }
 
+  var setStatus = function(isOnline){
+    online = isOnline;
+  }
+
   var watchConnectionStatus = function(){
     document.addEventListener("deviceready",function(){
       online = $cordovaNetwork.isOnline();
@@ -277,6 +283,7 @@ angular.module('collocationmatching.services', [])
   }
 
   return {
+    setStatus: setStatus,
     getAllColls: getAllColls,
     check: check,
 
