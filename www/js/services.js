@@ -21,6 +21,7 @@ angular.module('collocationmatching.services', [])
   var slidesCount = [];
 
   var words = [];
+  var temp_collections = [];
 
   //actual path does work in browser but not in phone (via phonegap or ionicview, so always keep the $http.get path form index.html)
   // var url = "templates/default_exercises/default_exercise_list.xml";
@@ -33,7 +34,6 @@ angular.module('collocationmatching.services', [])
       ionicToast.show(getErrorMsg(),'middle',false,3000);
       return new Promise((resolve,reject) => resolve(collections));
     }
-    var temp_collections = [];
     return $http.get(ALL_COLLECTIONS_URL).then(function(response){
       var x2js = new X2JS();
       var jsonData = x2js.xml_str2json(response.data);
@@ -72,6 +72,10 @@ angular.module('collocationmatching.services', [])
   }
 
   var check = function(collectionName){
+    if(!getConnectionStatus()){
+      ionicToast.show(getErrorMsg(),'middle',false,3000);
+      return new Promise((resolve,reject) => resolve(collections));
+    }
     collections = [];
     var suffix_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
     var coll_url = PREFIX_URL + suffix_url;
@@ -387,35 +391,30 @@ angular.module('collocationmatching.services', [])
   var collIds = [];
   var exIds = [];
 
-  var createExId = function(collId,exerciseId){
-    var index = exIds[collId].indexOf(exerciseId);
-    if(index == -1){
-      exIds[collId].push(exerciseId);
-    }
-  }
-
   var getExId = function(collId,exerciseId){
-    return exIds[collId].indexOf(exerciseId);
+    var exId = exIds[collId].indexOf(exerciseId);
+    if(exId == -1){
+      exIds[collId].push(exerciseId);
+      exId = exIds[collId].indexOf(exerciseId);
+    }
+    return exId;
   }
 
   var getExerciseId = function(collId,exId){
     return exIds[collId][exId];
   }
 
-  var createCollId = function(name){
-    var index = collIds.indexOf(name);
-    if(index == -1){
-      collIds.push(name);
-    }
+  var getCollId = function(name){
     var collId = collIds.indexOf(name);
+    if(collId == -1){
+      collIds.push(name);
+      collId = collIds.indexOf(name);
+    }
     //also initiate exIds if not already done
     if(!exIds[collId]){
       exIds[collId] = [];
     }
-  }
-
-  var getCollId = function(name){
-    return collIds.indexOf(name);
+    return collId;
   }
 
   var getCollName = function(collId){
@@ -423,11 +422,9 @@ angular.module('collocationmatching.services', [])
   }
 
   return{
-    createCollId: createCollId,
     getCollId: getCollId,
     getCollName: getCollName,
 
-    createExId: createExId,
     getExId: getExId,
     getExerciseId: getExerciseId
   };

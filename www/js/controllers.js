@@ -45,51 +45,36 @@ angular.module('collocationmatching.controllers', [])
 .controller('CollectionsCtrl', function($scope, $timeout, $ionicLoading, $state, $ionicPopover, $ionicPopup, Exercises, 
   $cordovaNetwork, $rootScope, Ids, ionicToast){
 
-  Exercises.getAllColls(false).then(function(response){
-    if(response.status == 404){
-      ionicToast.show(Exercises.get404Msg(),'middle',true);
-      return;
-    }
-    $ionicLoading.show();
+  var getData = function(isRefreshing){
+    Exercises.getAllColls(isRefreshing).then(function(response){
+      if(response.status == 404){
+        ionicToast.show(Exercises.get404Msg(),'middle',true);
+        return;
+      }
+      // $ionicLoading.show();
 
-    response.forEach(function(collectionName){
-      Exercises.check(collectionName).then(function(res){
+      response.forEach(function(collectionName){
+        Exercises.check(collectionName).then(function(res){
           if(res.status == 404){
             ionicToast.show(Exercises.get404Msg("Unable to retrieve some collections."),'middle',true);
             $ionicLoading.hide();
             return;
           }
 
-        // $timeout(function(){
-          $scope.collections = res;
-          $ionicLoading.hide();
-        // }, 400);
-      });
-    });
-  });
-
-  $scope.doRefresh = function(){
-    //to remove duplicacy always remember to empty previous data before refreshing
-    // Exercises.newList();
-    Exercises.getAllColls(true).then(function(response){
-      if(response.status == 404){
-        ionicToast.show(Exercises.get404Msg(),'middle',true);
-        return;
-      }
-      response.forEach(function(collectionName){
-        Exercises.check(collectionName).then(function(res){
-          if(res.status == 404){
-            ionicToast.show(Exercises.get404Msg("Unable to retrieve some collections."),'middle',true);
-            return;
-          }
-
           // $timeout(function(){
-            $scope.collections = res; 
+            $scope.collections = res;
+            // $ionicLoading.hide();
           // }, 400);
         });
       });
-      $scope.$broadcast('scroll.refreshComplete'); 
     });
+  }
+
+  getData(false);
+
+  $scope.doRefresh = function(){
+    getData(true);
+    $scope.$broadcast('scroll.refreshComplete'); 
   };
 
   $scope.remove = function(coll) {
@@ -132,13 +117,11 @@ angular.module('collocationmatching.controllers', [])
 })
 
 .controller('ExsCtrl', function($scope, $timeout, $stateParams, $ionicPopup, $ionicPopover, 
-  Ids, StateData, SummaryData, Exercises, ionicToast) {
+  Ids, StateData, SummaryData, Exercises, ionicToast,$ionicLoading) {
   
   var name = $stateParams.collectionName;
   $scope.collectionName = name;
 
-  //create a unique id for each collection
-  Ids.createCollId($scope.collectionName);
   var collId = Ids.getCollId($scope.collectionName);
   console.log("collId: "+collId);
 
@@ -163,22 +146,40 @@ angular.module('collocationmatching.controllers', [])
     SummaryData.createColl(collId);
   }
 
-  Exercises.getAllEx(collId,false).then(function(response){
-    if(response.status == 404){
-      ionicToast.show(Exercises.get404Msg(),'middle',true);
-      return;
-    }
-    $scope.exercises = response;
-    for(var i=0;i<$scope.exercises.length;i++){
-      var exerciseId = $scope.exercises[i]._id;
-      Ids.createExId(collId,exerciseId);
-      var exId = Ids.getExId(collId,exerciseId);
-      if(!StateData.getSingleState(collId,exId)){
-        StateData.updateState(collId,exId,"New");
+  var getData = function(collId,isRefreshing){
+    $ionicLoading.show();
+    Exercises.getAllEx(collId,isRefreshing).then(function(response){
+      if(response.status == 404){
+        ionicToast.show(Exercises.get404Msg(),'middle',true);
+        $ionicLoading.hide();
+        return;
       }
-    }
-    $scope.states = StateData.getAllStates(collId);
-  });
+      $scope.exercises = response;
+      for(var i=0;i<$scope.exercises.length;i++){
+        var exerciseId = $scope.exercises[i]._id;
+        var exId = Ids.getExId(collId,exerciseId);
+        var currentState = StateData.getSingleState(collId,exId);
+        if(currentState){
+          StateData.updateState(collId,exId,currentState);
+        }
+        else{
+          StateData.updateState(collId,exId,"New");
+        }
+      }
+      $scope.states = StateData.getAllStates(collId);
+      $ionicLoading.hide();
+    });
+  }
+
+  //fetch the data
+  getData(collId,false);
+
+  $scope.doRefresh = function(){
+    // $timeout(function(){
+    getData(collId,true); 
+    $scope.$broadcast('scroll.refreshComplete'); 
+    // },1000);
+  };
 
   $scope.getId = function(exerciseId){
     return Ids.getExId(collId,exerciseId);
@@ -192,31 +193,6 @@ angular.module('collocationmatching.controllers', [])
   $scope.$on('$ionicView.enter',function(e){
     $scope.states = StateData.getAllStates(collId);//refresh states
   });
-
-  $scope.doRefresh = function(){
-    // $timeout(function(){
-      Exercises.getAllEx(collId,true).then(function(response){
-        if(response.status == 404){
-          ionicToast.show(Exercises.get404Msg(),'middle',true);
-          return;
-        }
-        $scope.exercises = response;
-        for(var i=0;i<$scope.exercises.length;i++){
-          var exerciseId = $scope.exercises[i]._id;
-          var exId = Ids.getExId(collId,exerciseId);
-          var currentState = StateData.getSingleState(collId,exId);
-          if(currentState){
-            StateData.updateState(collId,exId,currentState);
-          }
-          else{
-            StateData.updateState(collId,exId,"New");
-          }
-        }
-        $scope.states = StateData.getAllStates(collId);
-        $scope.$broadcast('scroll.refreshComplete');
-      });
-    // },1000);
-  };
 
   $ionicPopover.fromTemplateUrl("templates/exercises-popover.html",{
     scope: $scope
@@ -442,16 +418,6 @@ angular.module('collocationmatching.controllers', [])
           $scope.words[i][slideIndex].drop = data;
           done = value;
         }
-        // if(value != ""){
-        //   for(var j=0;j<$scope.drags[slideIndex].length;j++){
-        //     var word = $scope.drags[slideIndex][j];
-        //     if(word.value == value && word.isDraggable == false){
-        //       console.log(word.value+"-"+value);
-        //       word.isDraggable = true;
-        //       break;
-        //     }
-        //   }
-        // }
       }
     }
     if(done){
