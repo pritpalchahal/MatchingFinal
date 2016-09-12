@@ -47,6 +47,7 @@ angular.module('collocationmatching.controllers', [])
   $scope.collections = [];
 
   var getData = function(isRefreshing){
+    $rootScope.show();
     Data.getAllColls(isRefreshing).then(function(response){
       if(response.status && response.status == 404){
         ionicToast.show(Data.get404Msg(),'middle',true);
@@ -55,11 +56,10 @@ angular.module('collocationmatching.controllers', [])
       if(!(response instanceof Array) || response.length == 0){
         return;
       }
-      $ionicLoading.show();
 
       response.forEach(function(collectionName){
         Data.check(collectionName).then(function(res){
-          if(res.status && res.status == 404){
+          if(res && res.status == 404){
             ionicToast.show(Data.get404Msg("Unable to retrieve some collections."),'middle',true);
             $ionicLoading.hide();
             return;
@@ -67,10 +67,13 @@ angular.module('collocationmatching.controllers', [])
 
           // $timeout(function(){
             $scope.collections = res;
-            $ionicLoading.hide();
           // }, 400);
         });
       });
+      // return "a";
+    }).then(function(res){//res will be the returned value, if nothing returned; its undefined
+      console.log(res);
+      $rootScope.hide();
     });
   }
 
@@ -131,13 +134,12 @@ angular.module('collocationmatching.controllers', [])
 })
 
 .controller('ExsCtrl', function($scope, $timeout, $stateParams, $ionicPopup, $ionicPopover, $rootScope,
-  Ids, StateData, SummaryData, Data, ionicToast,$ionicLoading) {
+  Ids, StateData, SummaryData, Data, ionicToast,$ionicLoading,$ionicListDelegate) {
   
   var name = $stateParams.collectionName;
   $scope.collectionName = name;
 
   var collId = Ids.getCollId($scope.collectionName);
-  console.log("collId: "+collId);
 
   var desc = Data.getDesc();
   desc.forEach(function(val){
@@ -161,11 +163,10 @@ angular.module('collocationmatching.controllers', [])
   }
 
   var getData = function(collId,isRefreshing){
-    $ionicLoading.show();
+    $rootScope.show();
     Data.getAllEx(collId,isRefreshing).then(function(response){
       if(response.status && response.status == 404){
         ionicToast.show(Data.get404Msg(),'middle',true);
-        $ionicLoading.hide();
         return;
       }
       $scope.exercises = response;
@@ -181,7 +182,8 @@ angular.module('collocationmatching.controllers', [])
         }
       }
       $scope.states = StateData.getAllStates(collId);
-      $ionicLoading.hide();
+    }).then(function(){
+      $rootScope.hide();
     });
   }
 
@@ -205,6 +207,15 @@ angular.module('collocationmatching.controllers', [])
   $scope.remove = function(ex) {
     Data.removeEx(collId,ex);
   };
+
+  $scope.doRestart = function(ex){
+    var exId = Ids.getExId(collId,ex);
+    SummaryData.clearSummary(collId,exId);
+    SummaryData.createSummary(collId,exId);
+    StateData.updateState(collId,exId,"New");
+    $ionicListDelegate.closeOptionButtons();
+    console.log(ex,exId,collId);
+  }
 
   //use this method to refresh data
   $scope.$on('$ionicView.enter',function(e){
@@ -247,10 +258,10 @@ angular.module('collocationmatching.controllers', [])
 })
 
 .controller('ExerciseCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, $ionicPopover,$filter, $timeout,
-  ionicToast, Ids, SummaryData, Data) {
+  ionicToast, Ids, SummaryData, Data, $rootScope) {
   $scope.slideIndex = 0;//index of initial slide
 
-  $ionicLoading.show();
+  $rootScope.show();
   var exerciseId = $stateParams.exerciseId;
   var collectionName = $stateParams.collectionName;
   var collId = Ids.getCollId(collectionName);
@@ -265,73 +276,7 @@ angular.module('collocationmatching.controllers', [])
     SummaryData.updateStartTime(collId,exId,timeNow);
   }
 
-  $scope.summary = SummaryData.getSummary(collId,exId);
-  $scope.drags = [];
-
-  Data.getSingleEx(collId,exId).then(function(response){
-    if(response.status == 404){
-      ionicToast.show(Data.get404Msg(),'middle',true);
-      $ionicLoading.hide();
-      return;
-    }
-    $ionicLoading.hide();
-    $scope.words = response;
-    $scope.slides = Data.getSlidesCount(collId,exId);
-    $scope.slideCount = new Array($scope.slides);
-
-    //shuffle slides keepig local words same
-    var N = Data.getMinSlidesCount(collId,exId);
-    var temp = Array.apply(null, {length: N}).map(Number.call,Number);
-    var shuffled = [].concat(shuffle(temp));
-    for(var i=0; i<$scope.words.length;i++){
-      var arr = [];
-      for(var j=0;j<$scope.words[i].length;j++){
-        if(j >= shuffled.length){
-          arr[j] = $scope.words[i][j];
-        }
-        else{
-          var val = shuffled[j];
-          arr[j] = $scope.words[i][val];
-        }
-      }
-      $scope.words[i] = arr;
-    }
-    var count = $scope.words.length;
-    var tmp = Array.apply(null, {length: count}).map(Number.call,Number);
-    $scope.drags = [].concat(shuffle(tmp));
-    // for(var i=0;i<$scope.words.length;i++){
-    //   var word = $scope.words[i];
-    //   for(var j=0;j<word.length;j++){
-
-    //   }
-    // }
-
-    //shuffle without maintaining order
-    // for(var j=0 ; j<$scope.words.length; j++){
-    //   $scope.words[j] = shuffle($scope.words[j]);
-    // }
-
-    // for(var i=0;i<$scope.slides;i++){
-    //     if(!$scope.drags[i]){
-    //       $scope.drags[i] = new Array($scope.words.length);
-    //     }
-    //     for(var j=0 ; j<$scope.words.length; j++){
-    //       if($scope.words[j][i]){
-    //         var word = $scope.words[j][i];
-    //         var value = word.right;
-    //         if($scope.drags[i][j] && $scope.drags[i][j].id == word.id){
-    //           var isDrag = $scopw.words[i][j].isDraggable;
-    //           $scope.drags[i][j] = {"value":value,"id":word.id,"isDraggable":isDrag};
-    //         }
-    //         else{
-    //           $scope.drags[i][j] = {"value":value,"id":word.id,"isDraggable":true};
-    //         }
-    //       }
-    //     }
-    //     $scope.drags[i] = shuffle($scope.drags[i]);
-    // }
-  });
-
+  //Fisher-Yates shuffle
   var shuffle = function(array) {
     var m = array.length, t, i;
 
@@ -349,16 +294,63 @@ angular.module('collocationmatching.controllers', [])
     return array;
   }
 
+  $scope.summary = SummaryData.getSummary(collId,exId);
+  $scope.drags = [];
+
+  Data.getSingleEx(collId,exId).then(function(response){
+    if(response.status == 404){
+      ionicToast.show(Data.get404Msg(),'middle',true);
+      return;
+    }
+    $scope.words = response;
+    $scope.slides = Data.getSlidesCount(collId,exId);
+    $scope.slideCount = new Array($scope.slides);
+
+    //shuffle slides keepig local words same
+    var N = Data.getMinSlidesCount(collId,exId);
+    var temp = Array.apply(null, {length: N}).map(Number.call,Number);
+    var shuffled = temp;//[].concat(shuffle(temp));
+    for(var i=0; i<$scope.words.length;i++){
+      var arr = [];
+      for(var j=0;j<$scope.words[i].length;j++){
+        if(j >= shuffled.length){
+          arr[j] = $scope.words[i][j];
+        }
+        else{
+          var val = shuffled[j];
+          arr[j] = $scope.words[i][val];
+        }
+      }
+      $scope.words[i] = arr;
+    }
+
+    //shuffle without maintaining order
+    // for(var j=0 ; j<$scope.words.length; j++){
+    //   $scope.words[j] = shuffle($scope.words[j]);
+    // }
+
+    //create a shuffled array for shuffling partial phrases
+    var count = $scope.words.length;
+    var tmp = Array.apply(null, {length: count}).map(Number.call,Number);
+    // $scope.drags = [].concat(shuffle(tmp));
+    $scope.drags = shuffle(tmp);
+
+  }).catch(function(e){
+    console.log(e);
+  }).then(function(){//finally creates problems here
+    $rootScope.hide();
+  });
+
   $scope.title = Data.getExTitle(collId,$stateParams.exerciseId);
 
   $scope.options = {
     pagination: '.swiper-pagination',
-    // freeMode: true,
+    // freeModeSticky: true,
     loop: false,
     spaceBetween: 10,
     initialSlide: $scope.slideIndex,
-    effect: 'flip',//fade,slide,cube,coverflow,flip (http://idangero.us/swiper/api)
-    speed: 500
+    effect: 'slide',//fade,slide,cube,coverflow,flip (http://idangero.us/swiper/api)
+    // speed: 500
   };
 
   $scope.checkAnswer = function(){
@@ -414,7 +406,6 @@ angular.module('collocationmatching.controllers', [])
   $scope.dragSuccess = function(data,evt,index,slideIndex){
     // $scope.drags[slideIndex][index].isDraggable = false;
     $scope.words[index][slideIndex].isDraggable = false;
-    console.log(index);
   }
   $scope.onDragSuccess = function(data,evt,wordId,slideIndex){
     for(var i=0;i<$scope.words.length;i++){
@@ -515,6 +506,7 @@ angular.module('collocationmatching.controllers', [])
           var word = $scope.words[i];
           for(var j=0;j<word.length;j++){
             word[j].drop = "";
+            word[j].isDraggable = true;
           }
         }
 

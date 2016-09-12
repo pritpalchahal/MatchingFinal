@@ -72,8 +72,8 @@ angular.module('collocationmatching.services', [])
     collections = [];
     var suffix_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
     var coll_url = PREFIX_URL + suffix_url;
-
-    var promise = $http.get(coll_url).then(function(res){
+    
+    return $http.get(coll_url).then(function(res){
       var x2js = new X2JS();
       var data = x2js.xml_str2json(res.data);
       if(!data || !data.response){return;}
@@ -88,7 +88,7 @@ angular.module('collocationmatching.services', [])
     },function(error){
       return error;
     });
-    return promise;
+    // return promise;
   }
 
   var getAllEx = function(collId,isRefreshing){
@@ -219,18 +219,16 @@ angular.module('collocationmatching.services', [])
     exercises[collId].splice(exercises[collId].indexOf(ex), 1);
   }
 
+  restartEx = function(collId,ex){
+    exercises[collId][exercises.indexOf(ex)] = [];
+  }
+
   removeColl = function(coll){
     collections.splice(collections.indexOf(coll),1);
   }
 
   var getDesc = function(){
     return descriptions;
-  }
-
-  var newList = function(){
-    temp_collections = [];
-    collections = [];
-    descriptions = [];
   }
 
   var getLeft = function(word){
@@ -253,9 +251,7 @@ angular.module('collocationmatching.services', [])
   return {
     getAllColls: getAllColls,
     check: check,
-
     getDesc: getDesc,
-    newList: newList,
 
     getAllEx: getAllEx,
     getSingleEx: getSingleEx,
@@ -266,6 +262,7 @@ angular.module('collocationmatching.services', [])
 
     removeEx: removeEx,
     removeColl: removeColl,
+    restartEx: restartEx,
 
     getErrorMsg: getErrorMsg,
     get404Msg: get404Msg

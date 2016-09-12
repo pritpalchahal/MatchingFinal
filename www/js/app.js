@@ -7,7 +7,7 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
   'ngDraggable', 'ngCordova','ionic-toast'])
 
 .run(function($ionicPlatform, $ionicHistory, $stateParams, $filter, $ionicPopup, $window, $rootScope,
-  Data, StateData, SummaryData, ionicToast, Ids) {
+  Data, StateData, SummaryData, ionicToast, Ids, $ionicLoading) {
 
   $rootScope.online = navigator.onLine;
   $window.addEventListener("offline", function () {
@@ -33,6 +33,15 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
           type: 'button-negative'
         }]
     });
+  }
+
+  $rootScope.show = function(){
+    $ionicLoading.show({
+      template: '<p>Loading...</p><ion-spinner class="spinner-balanced" icon="spiral"></ion-spinner>'
+    });
+  }
+  $rootScope.hide = function(){
+    $ionicLoading.hide();
   }
 
   $ionicPlatform.ready(function() {

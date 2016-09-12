@@ -23,8 +23,11 @@
         <div style="font-size:10px;font-style:italic">{{states[getId(ex._id)]}}</div>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
-        <ion-option-button class="button-assertive" ng-click="remove(ex)">
+        <!-- <ion-option-button class="button-assertive" ng-click="remove(ex)">
           Delete
+        </ion-option-button> -->
+        <ion-option-button class="button-balanced" ng-click="doRestart(ex._id)">
+          Restart
         </ion-option-button>
       </ion-item>
     </ion-list>
