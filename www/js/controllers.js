@@ -54,39 +54,12 @@ angular.module('collocationmatching.controllers', [])
         return;
       }
       $scope.collections = response;
-      console.log(response);
+      // console.log(response);
       return response;
     }).then(function(res){
-      console.log(res);
+      // console.log(res);
       $rootScope.hide();
     });
-    // Data.getAllColls(isRefreshing).then(function(response){
-    //   if(response.status && response.status == 404){
-    //     ionicToast.show(Data.get404Msg(),'middle',true);
-    //     return;
-    //   }
-    //   if(!(response instanceof Array) || response.length == 0){
-    //     return;
-    //   }
-
-    //   response.forEach(function(collectionName){
-    //     Data.check(collectionName).then(function(res){
-    //       if(res && res.status == 404){
-    //         ionicToast.show(Data.get404Msg("Unable to retrieve some collections."),'middle',true);
-    //         $ionicLoading.hide();
-    //         return;
-    //       }
-
-    //       // $timeout(function(){
-    //         $scope.collections = res;
-    //       // }, 400);
-    //     });
-    //   });
-    //   // return "a";
-    // }).then(function(res){//res will be the returned value, if nothing returned; its undefined
-    //   // console.log(res);
-    //   $rootScope.hide();
-    // });
   }
 
   if($rootScope.online){
@@ -223,10 +196,16 @@ angular.module('collocationmatching.controllers', [])
   $scope.doRestart = function(ex){
     var exId = Ids.getExId(collId,ex);
     SummaryData.clearSummary(collId,exId);
-    SummaryData.createSummary(collId,exId);
     StateData.updateState(collId,exId,"New");
     $ionicListDelegate.closeOptionButtons();
-    console.log(ex,exId,collId);
+    var words = Data.getWords(collId,exId);
+    for(var i=0;i<words.length;i++){
+      var word = words[i];
+      for(var j=0;j<word.length;j++){
+        word[j].drop = "";
+        word[j].isDraggable = true;
+      }
+    }
   }
 
   //use this method to refresh data
@@ -272,6 +251,7 @@ angular.module('collocationmatching.controllers', [])
 .controller('ExerciseCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, $ionicPopover,$filter, $timeout,
   ionicToast, Ids, SummaryData, Data, $rootScope) {
   $scope.slideIndex = 0;//index of initial slide
+  $scope.hide = false;
 
   $rootScope.show();
   var exerciseId = $stateParams.exerciseId;
@@ -280,7 +260,6 @@ angular.module('collocationmatching.controllers', [])
 
   //exIds already created in 'ExsCtrl'
   var exId = Ids.getExId(collId,exerciseId);
-
   if(!SummaryData.getSummary(collId,exId)){
     SummaryData.createSummary(collId,exId);
     var time = new Date();
@@ -321,7 +300,7 @@ angular.module('collocationmatching.controllers', [])
     //shuffle slides keepig local words same
     var N = Data.getMinSlidesCount(collId,exId);
     var temp = Array.apply(null, {length: N}).map(Number.call,Number);
-    var shuffled = temp;//[].concat(shuffle(temp));
+    var shuffled = shuffle(temp);//[].concat(shuffle(temp));
     for(var i=0; i<$scope.words.length;i++){
       var arr = [];
       for(var j=0;j<$scope.words[i].length;j++){
@@ -377,6 +356,12 @@ angular.module('collocationmatching.controllers', [])
       var word = $scope.words[i];
       if(word[$scope.slideIndex]){
         all_words++;
+        SummaryData.createSummary(collId,exId);
+        $scope.hide = false;
+
+        var time = new Date();
+        var timeNow = $filter('date')(time,'medium');//angularjs date format
+        SummaryData.updateStartTime(collId,exId,timeNow);
         //it is critical to check for word[slideIndex]
         //because slideIndex can be different 
         if(word[$scope.slideIndex] && word[$scope.slideIndex].isCorrect){

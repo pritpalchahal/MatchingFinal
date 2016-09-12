@@ -73,19 +73,19 @@ angular.module('collocationmatching.services', [])
     promises = [];
 
     return getAllColls(isRefreshing).then(function(response){
-      console.log(response);
+      // console.log(response);
       response.forEach(function(collectionName){
         promises.push(cc(collectionName));
-        console.log(promises);
+        // console.log(promises);
       });
       var aa = $q.all(promises).then((values) => {
-        console.log(values[6]);
+        // console.log(values[6]);
         return values[0];
       });
       return aa;
     }).then(function(res){
-      console.log(res);
-      console.log(collections);
+      // console.log(res);
+      // console.log(collections);
       return res;
     });
   }
@@ -245,6 +245,13 @@ angular.module('collocationmatching.services', [])
     collections.splice(collections.indexOf(coll),1);
   }
 
+  var getWords = function(collId,exId){
+    if(words[collId][exId]){
+      return words[collId][exId];
+    }
+    return null;
+  }
+
   var getDesc = function(){
     return descriptions;
   }
@@ -267,6 +274,7 @@ angular.module('collocationmatching.services', [])
   }
 
   return {
+    getWords: getWords,
     getAllColls: getAllColls,
     check: check,
     getDesc: getDesc,
@@ -313,7 +321,9 @@ angular.module('collocationmatching.services', [])
   }
 
   var getSummary = function(collId,exId){
-    return summary[collId][exId];
+    if(summary[collId][exId]){
+      return summary[collId][exId];
+    }
   }
 
   var createColl = function(collId){
