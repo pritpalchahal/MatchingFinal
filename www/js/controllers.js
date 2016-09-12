@@ -48,33 +48,45 @@ angular.module('collocationmatching.controllers', [])
 
   var getData = function(isRefreshing){
     $rootScope.show();
-    Data.getAllColls(isRefreshing).then(function(response){
-      if(response.status && response.status == 404){
+    Data.check(isRefreshing).then(function(response){
+      if(response && response.status == 404){
         ionicToast.show(Data.get404Msg(),'middle',true);
         return;
       }
-      if(!(response instanceof Array) || response.length == 0){
-        return;
-      }
-
-      response.forEach(function(collectionName){
-        Data.check(collectionName).then(function(res){
-          if(res && res.status == 404){
-            ionicToast.show(Data.get404Msg("Unable to retrieve some collections."),'middle',true);
-            $ionicLoading.hide();
-            return;
-          }
-
-          // $timeout(function(){
-            $scope.collections = res;
-          // }, 400);
-        });
-      });
-      // return "a";
-    }).then(function(res){//res will be the returned value, if nothing returned; its undefined
+      $scope.collections = response;
+      console.log(response);
+      return response;
+    }).then(function(res){
       console.log(res);
       $rootScope.hide();
     });
+    // Data.getAllColls(isRefreshing).then(function(response){
+    //   if(response.status && response.status == 404){
+    //     ionicToast.show(Data.get404Msg(),'middle',true);
+    //     return;
+    //   }
+    //   if(!(response instanceof Array) || response.length == 0){
+    //     return;
+    //   }
+
+    //   response.forEach(function(collectionName){
+    //     Data.check(collectionName).then(function(res){
+    //       if(res && res.status == 404){
+    //         ionicToast.show(Data.get404Msg("Unable to retrieve some collections."),'middle',true);
+    //         $ionicLoading.hide();
+    //         return;
+    //       }
+
+    //       // $timeout(function(){
+    //         $scope.collections = res;
+    //       // }, 400);
+    //     });
+    //   });
+    //   // return "a";
+    // }).then(function(res){//res will be the returned value, if nothing returned; its undefined
+    //   // console.log(res);
+    //   $rootScope.hide();
+    // });
   }
 
   if($rootScope.online){

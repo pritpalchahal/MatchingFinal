@@ -1,6 +1,6 @@
 angular.module('collocationmatching.services', [])
 
-.factory('Data', function ($http, $cordovaNetwork, ionicToast, Ids, $rootScope) {
+.factory('Data', function ($http, $cordovaNetwork, ionicToast, Ids, $rootScope, $q) {
   const THIS_ACTIVITY = "CollocationMatching";
 
   const ALL_COLLECTIONS_URL = "http://collections.flax.nzdl.org/greenstone3/flax?a=fp&sa=library&o=xml";
@@ -68,11 +68,32 @@ angular.module('collocationmatching.services', [])
     return promise;
   }
 
-  var check = function(collectionName){
+  var check = function(isRefreshing){
     collections = [];
+    promises = [];
+
+    return getAllColls(isRefreshing).then(function(response){
+      console.log(response);
+      response.forEach(function(collectionName){
+        promises.push(cc(collectionName));
+        console.log(promises);
+      });
+      var aa = $q.all(promises).then((values) => {
+        console.log(values[6]);
+        return values[0];
+      });
+      return aa;
+    }).then(function(res){
+      console.log(res);
+      console.log(collections);
+      return res;
+    });
+  }
+
+  var cc = function(collectionName){
     var suffix_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
     var coll_url = PREFIX_URL + suffix_url;
-    
+
     return $http.get(coll_url).then(function(res){
       var x2js = new X2JS();
       var data = x2js.xml_str2json(res.data);
@@ -85,10 +106,7 @@ angular.module('collocationmatching.services', [])
         collections.push(collection_name);
       }
       return collections;
-    },function(error){
-      return error;
     });
-    // return promise;
   }
 
   var getAllEx = function(collId,isRefreshing){
