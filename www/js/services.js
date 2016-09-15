@@ -73,24 +73,21 @@ angular.module('collocationmatching.services', [])
     promises = [];
 
     return getAllColls(isRefreshing).then(function(response){
-      // console.log(response);
       response.forEach(function(collectionName){
-        promises.push(cc(collectionName));
-        // console.log(promises);
+        promises.push(isEmpty(collectionName));
       });
-      var aa = $q.all(promises).then((values) => {
-        // console.log(values[6]);
-        return values[0];
+      return $q.all(promises).then((values) => {
+        values.forEach(function(value){
+          if(value){
+            collections.push(value);
+          }
+        });
+        return collections;
       });
-      return aa;
-    }).then(function(res){
-      // console.log(res);
-      // console.log(collections);
-      return res;
     });
   }
 
-  var cc = function(collectionName){
+  var isEmpty = function(collectionName){
     var suffix_url = TEMPLATE_URL_WITH_ACTIVITY.replace("CCCC",collectionName);
     var coll_url = PREFIX_URL + suffix_url;
 
@@ -103,9 +100,8 @@ angular.module('collocationmatching.services', [])
       //only "password" has more than one category
       var ex = data.response.categoryList.category;
       if(ex.length > 0 || ex.exercise){
-        collections.push(collection_name);
+        return collection_name;
       }
-      return collections;
     });
   }
 

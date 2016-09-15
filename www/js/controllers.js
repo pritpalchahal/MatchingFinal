@@ -465,6 +465,7 @@ angular.module('collocationmatching.controllers', [])
     }
 
     SummaryData.updateScore(collId,exId,score);
+    // $scope.summary.score = score;
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
       title: 'Summary report',
