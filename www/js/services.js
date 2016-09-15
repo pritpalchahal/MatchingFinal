@@ -309,7 +309,9 @@ angular.module('collocationmatching.services', [])
   }
 
   var createSummary = function(collId,exId){
-    summary[collId][exId] = {sTime:"n/a",eTime:"n/a",score:0};
+    if(!summary[collId][exId]){
+      summary[collId][exId] = {sTime:"n/a",eTime:"n/a",score:0};
+    }
   }
 
   var clearSummary = function(collId,exId){

@@ -54,10 +54,8 @@ angular.module('collocationmatching.controllers', [])
         return;
       }
       $scope.collections = response;
-      // console.log(response);
       return response;
     }).then(function(res){
-      // console.log(res);
       $rootScope.hide();
     });
   }
@@ -358,10 +356,6 @@ angular.module('collocationmatching.controllers', [])
         all_words++;
         SummaryData.createSummary(collId,exId);
         $scope.hide = false;
-
-        var time = new Date();
-        var timeNow = $filter('date')(time,'medium');//angularjs date format
-        SummaryData.updateStartTime(collId,exId,timeNow);
         //it is critical to check for word[slideIndex]
         //because slideIndex can be different 
         if(word[$scope.slideIndex] && word[$scope.slideIndex].isCorrect){
@@ -401,7 +395,6 @@ angular.module('collocationmatching.controllers', [])
     // $scope.previousIndex = data.previousIndex;
   });
   $scope.dragSuccess = function(data,evt,index,slideIndex){
-    // $scope.drags[slideIndex][index].isDraggable = false;
     $scope.words[index][slideIndex].isDraggable = false;
   }
   $scope.onDragSuccess = function(data,evt,wordId,slideIndex){
@@ -413,7 +406,6 @@ angular.module('collocationmatching.controllers', [])
     }
   }
   $scope.onDropComplete = function(data,evt,wordId,slideIndex){
-    console.log("Dropped");
     var done = null;
     for(var i=0;i<$scope.words.length;i++){
       var word = $scope.words[i];
@@ -465,7 +457,6 @@ angular.module('collocationmatching.controllers', [])
     }
 
     SummaryData.updateScore(collId,exId,score);
-    // $scope.summary.score = score;
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
       title: 'Summary report',
