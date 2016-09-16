@@ -327,3 +327,10 @@ li{
   font-size: 12px;
   padding-left:5px;
 }
+.my-back-button{
+  content: url('../img/back-image.jpg');
+  width:55px;
+}
+.bar .button.back-button{
+  align-self: center;
+}
