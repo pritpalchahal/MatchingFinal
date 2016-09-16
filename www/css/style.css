@@ -54,13 +54,16 @@ table tr:nth-child(even) {
   background-image: url('../img/img_flax_help.png');
   background-size:contain;
 }
- .scroll-content {
-  /*display: table !important;*/
-  /*width: 100% !important;*/
-  /*height: 100% !important;*/
-  position: absolute !important;
-  /*margin-top: -50px;  the height of the centered content */
-  /*text-align: center;*/
+ .custom-content .scroll-content {
+  position: absolute; !important;
+  margin-top: 10px;
+}
+.home .scroll-content{
+  display: table !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin-top: -50px;  the height of the centered content 
+  text-align: center;
 }
 .home .scroll {
   display: table-cell;
@@ -136,6 +139,11 @@ popover-style{
   /*border-top: 1px solid #000000;*/
 
 }
+/*.draggables::after{
+  display: block;
+  content: "";
+  clear: both;
+}*/
 [ng-drag]{
     /*background: rgba(255,0,0, 0.5);*/
     /*border: solid 1px black;*/
@@ -176,6 +184,7 @@ popover-style{
     display: block;
     /*margin:0 10px;*/
 }
+
 ul.draggable-objects:after{
     /*display: block;
     content:"";
@@ -207,7 +216,7 @@ li{
 }
 .drags{
   border: 1px solid black;
-  margin: .2px;
+  margin: 1px;
 }
 
 [ng-drag].drag-over{
