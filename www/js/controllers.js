@@ -48,7 +48,7 @@ angular.module('collocationmatching.controllers', [])
 
   var getData = function(isRefreshing){
     $rootScope.show();
-    Data.check(isRefreshing).then(function(response){
+    Data.getAllColls(isRefreshing).then(function(response){
       if(response && response.status == 404){
         ionicToast.show(Data.get404Msg(),'middle',true);
         return;
@@ -75,10 +75,6 @@ angular.module('collocationmatching.controllers', [])
       ionicToast.show("Not online",'middle',false,2500);
     }
     $scope.$broadcast('scroll.refreshComplete'); 
-  };
-
-  $scope.remove = function(coll) {
-    Data.removeColl(coll);
   };
 
   $ionicPopover.fromTemplateUrl("templates/collections-popover.html",{
@@ -186,10 +182,6 @@ angular.module('collocationmatching.controllers', [])
   $scope.getId = function(exerciseId){
     return Ids.getExId(collId,exerciseId);
   }
-
-  $scope.remove = function(ex) {
-    Data.removeEx(collId,ex);
-  };
 
   $scope.doRestart = function(ex){
     var exId = Ids.getExId(collId,ex);
@@ -324,8 +316,6 @@ angular.module('collocationmatching.controllers', [])
     // $scope.drags = [].concat(shuffle(tmp));
     $scope.drags = shuffle(tmp);
 
-  }).catch(function(e){
-    console.log(e);
   }).then(function(){//finally creates problems here
     $rootScope.hide();
   });
@@ -373,8 +363,6 @@ angular.module('collocationmatching.controllers', [])
 
   $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
     // data.slider is the instance of Swiper
-    // var element = angular.element(document.querySelector('#ulid'));
-    // console.log(element);
     $scope.slideIndex = data.slider.activeIndex;
     if($scope.words){
       checkAll();
@@ -383,7 +371,6 @@ angular.module('collocationmatching.controllers', [])
   });
 
   $scope.$on("$ionicSlides.slideChangeStart", function(event, data){
-    // console.log('Slide change is beginning');
     $scope.slideIndex = data.slider.activeIndex;
     checkAll();
     $scope.$apply();//required to update the view

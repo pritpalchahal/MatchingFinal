@@ -1,7 +1,7 @@
 angular.module('collocationmatching.services', [])
 
 .factory('Data', function ($http, $cordovaNetwork, ionicToast, Ids, $rootScope, $q) {
-  const THIS_ACTIVITY = "CollocationMatching";
+  const THIS_ACTIVITY = "CollocationMatching";//name of this Activity
 
   const ALL_COLLECTIONS_URL = "http://collections.flax.nzdl.org/greenstone3/flax?a=fp&sa=library&o=xml";
 
@@ -22,10 +22,7 @@ angular.module('collocationmatching.services', [])
 
   var words = [];
 
-  //actual path does work in browser but not in phone (via phonegap or ionicview, so always keep the $http.get path form index.html)
-  // var url = "templates/default_exercises/default_exercise_list.xml";
-
-  var getAllColls = function(isRefreshing){
+  var getAll = function(isRefreshing){
     if(collections.length > 0 && !isRefreshing){
       return new Promise((resolve,reject) => resolve(temp_collections));
     }
@@ -68,11 +65,11 @@ angular.module('collocationmatching.services', [])
     return promise;
   }
 
-  var check = function(isRefreshing){
+  var getAllColls = function(isRefreshing){
     collections = [];
     promises = [];
 
-    return getAllColls(isRefreshing).then(function(response){
+    return getAll(isRefreshing).then(function(response){
       response.forEach(function(collectionName){
         promises.push(isEmpty(collectionName));
       });
@@ -170,7 +167,6 @@ angular.module('collocationmatching.services', [])
     var collname_url= TEMPLATE_COLLNAME.replace("CCCC",collectionName);
     var middle_url = temp_url.replace("11",SERVICE_NUMBER) + collname_url;
 
-    // var words = [];
     var temp_words = [];
 
     for(var i= 0 ; i<exercises[collId].length; i++){
@@ -272,7 +268,6 @@ angular.module('collocationmatching.services', [])
   return {
     getWords: getWords,
     getAllColls: getAllColls,
-    check: check,
     getDesc: getDesc,
 
     getAllEx: getAllEx,

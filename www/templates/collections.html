@@ -2,9 +2,6 @@
   <ion-nav-buttons side="left">
     <img src="img/header_icon.png" class="navbar-title">
   </ion-nav-buttons>
-  <!-- <ion-nav-title>
-    <img src="img/ic_launcher-web.png" class="navbar-title">Collocation Matching
-  </ion-nav-title> -->
   <ion-header-bar class="bar-subheader">
     <h2 class="title">Collections</h2>
   </ion-header-bar>
@@ -22,10 +19,6 @@
       <ion-item class="item-remove-animate item-icon-right" ng-repeat="coll in collections" type="item-text-wrap" href="#/collections/{{coll}}">
         <div style="font-size:12px;">{{coll}}</div>
         <i class="icon ion-chevron-right icon-accessory"></i>
-
-        <ion-option-button class="button-assertive" ng-click="remove(coll)">
-          Delete
-        </ion-option-button>
       </ion-item>
     </ion-list>
   </ion-content>

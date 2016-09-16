@@ -9,6 +9,7 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
 .run(function($ionicPlatform, $ionicHistory, $stateParams, $filter, $ionicPopup, $window, $rootScope,
   Data, StateData, SummaryData, ionicToast, Ids, $ionicLoading) {
 
+  //check network connection
   $rootScope.online = navigator.onLine;
   $window.addEventListener("offline", function () {
     $rootScope.$apply(function() {
