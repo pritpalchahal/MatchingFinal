@@ -16,10 +16,10 @@
         <div class="draggables container-fluid sub-header" ng-init="disable">
           <div class="row" ng-repeat="val in drags" ng-switch on="$index % 2" ng-init="word1 = words[drags[$index]][slideIndex];
           word2 = words[drags[$index+1]][slideIndex]">
-            <div class="col" ng-switch-when="0" ng-if="word1" ng-drag="word1.isDraggable" ng-drag-data="word1.right" data-allow-transform="true" ng-drag-success="dragSuccess($data,$event,drags[$index],slideIndex)">
+            <div class="col drags" ng-switch-when="0" ng-if="word1" ng-drag="word1.isDraggable" ng-drag-data="word1.right" data-allow-transform="true" ng-drag-success="dragSuccess($data,$event,drags[$index],slideIndex)" press-timeout="0">
               <div ng-class="{dragged:!word1.isDraggable}">{{word1.right}}</div>
             </div>
-            <div class="col" ng-switch-when="0" ng-if="word2" ng-drag="word2.isDraggable" ng-drag-data="word2.right" data-allow-transform="true" ng-drag-success="dragSuccess($data,$event,drags[$index+1],slideIndex)">
+            <div class="col drags" ng-switch-when="0" ng-if="word2" ng-drag="word2.isDraggable" ng-drag-data="word2.right" data-allow-transform="true" ng-drag-success="dragSuccess($data,$event,drags[$index+1],slideIndex)" press-timeout="0">
               <div ng-class="{dragged:!word2.isDraggable}">{{word2.right}}</div>
             </div>
           </div>

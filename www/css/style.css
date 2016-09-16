@@ -205,12 +205,18 @@ li{
 .text{
     font-size:12px;
 }
+.drags{
+  border: 1px solid black;
+  margin: .2px;
+}
+
 [ng-drag].drag-over{
     /*color:red;*/
     font-size: 16px;
 }
 [ng-drag].dragging{
     opacity: 0.5;
+    border: none;
 }
 [ng-drop].drag-enter{
     border:solid 5px #3F9200;
