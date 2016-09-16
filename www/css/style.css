@@ -1,16 +1,6 @@
-/*.slider-pager {
-    top: 0;
-    bottom: initial;
-}
-
-.slider-pager-page{
-  color: white !important;
-}
-
-.slider-pager-page.active{
-  color: blue !important;
-}*/
-
+/*
+*=== CUSTOM STYLING OF SLIDE BULLETS (BOTTOM OF PAGE) ===
+*/
 .swiper-pagination-bullet {
     /*width: 15px;
     height: 15px;*/
@@ -23,68 +13,9 @@
     background: #3F9200;
 }
 
-.div-button{
-    cursor: pointer;
-}
-
-table, th , td  {
-  border: 1px solid grey;
-  border-collapse: collapse;
-  padding: 5px;
-}
-table tr:nth-child(odd) {
-  background-color: #f1f1f1;
-}
-table tr:nth-child(even) {
-  background-color: #ffffff;
-}
-
-.tabs .tab-item .icon.about {
-  background-repeat: no-repeat;
-  background-position: 50%;
-  height: 70%;
-  background-image: url('../img/img_flax_launcher.png');
-  background-size:contain;
-}
-
-.tabs .tab-item .icon.howtoplay {
-  background-repeat: no-repeat;
-  background-position: 50%;
-  height: 70%;
-  background-image: url('../img/img_flax_help.png');
-  background-size:contain;
-}
- .custom-content .scroll-content {
-  position: absolute; !important;
-  margin-top: 10px;
-}
-.home .scroll-content{
-  display: table !important;
-  width: 100% !important;
-  height: 100% !important;
-  margin-top: -50px;  the height of the centered content 
-  text-align: center;
-}
-.home .scroll {
-  display: table-cell;
-  vertical-align: middle;
-}
-.row {
-    display: flex; /* equal height of the children */
-    flex-wrap: wrap;
-    align-content: center;
-    -webkit-align-content:center;
-}
-.col{
-    flex: 1; /* additionally, equal width */
-    /*padding: 1em;
-    border: solid;
-    align-content: center;*/
-}
-
-p,h2{
-    margin: 10px;
-}
+/*
+*=== POPOVERS ===
+*/
 .pop-image{
   padding-left: 50px;
   background-repeat: no-repeat;
@@ -93,7 +24,6 @@ p,h2{
   background-position: left center;
   background-size: 40px 40px;
 }
-
 .popover {
   height: auto !important;
 }
@@ -108,10 +38,6 @@ p,h2{
   width: 100%;
   padding: 5px 20px;
 }
-
-*{
-    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
-}
 popover-style{
     max-height: 120px;
     border: 1px solid red;
@@ -119,6 +45,10 @@ popover-style{
     height: auto;
     min-height: 100% !important;*/
 }
+
+/*
+*=== DRAGGABLES ===
+*/
 .dragged{
   color:grey;
   text-decoration: line-through;
@@ -136,7 +66,7 @@ popover-style{
   background: rgba(210,210,210,0.5);
   /*padding:4px;*/
   width: 100%;
-  /*border-top: 1px solid #000000;*/
+  border-bottom: 2px solid #3F9200;
 
 }
 /*.draggables::after{
@@ -174,46 +104,6 @@ popover-style{
     margin:0 0px;
     position: relative;
 }
-.data-value {
-    /*background: rgba(255,0,0, 0.5);*/
-    border-right: solid 1px black;
-    color:black;
-    text-align: center;
-    font-size: 14px;
-    padding: 10px;
-    display: block;
-    /*margin:0 10px;*/
-}
-
-ul.draggable-objects:after{
-    /*display: block;
-    content:"";
-    clear:both;*/
-}
-.draggable-objects li{
-  display: table-cell;
-  margin:0px;
-  width:auto;
-  /*float: left;*/
-    /*display: block;*/
-    /*width: 120px;*/
-    /*height:100px;*/
-}
-ul{
-  width:100%;
-  display: table;
-  /*justify-content: center;
-  list-style: none;*/
-}
-li{
-  /*display: table-cell;
-  margin:0px;
-  width:auto;*/
-  /*padding: 10px;*/
-}
-.text{
-    font-size:12px;
-}
 .drags{
   border: 1px solid black;
   margin: 1px;
@@ -245,13 +135,40 @@ li{
     position: relative;
     z-index: 2;
 }
+/*
+*-- Unused Drag Styling --
+*/
+ul.draggable-objects:after{
+    /*display: block;
+    content:"";
+    clear:both;*/
+}
+.draggable-objects li{
+  display: table-cell;
+  margin:0px;
+  width:auto;
+}
+ul{
+  width:100%;
+  display: table;
+  /*justify-content: center;
+  list-style: none;*/
+}
+li{
+  /*display: table-cell;
+  margin:0px;
+  width:auto;*/
+  /*padding: 10px;*/
+}
 
+/*
+*=== NAVBAR AND HEADER BARS ===
+*/
 .navbar{
   background-color: #B8EBBF  !important; /*#B8EBBF,A0CCA6,76967A,3F9200,AEAEB5*/
   border-bottom: 2px solid #3F9200 !important;
   border-top: 1px solid #3F9200 !important;
 }
-
 .navbar-title {
   /*background-repeat: no-repeat;*/
   /*background-position: 50%;*/
@@ -260,26 +177,28 @@ li{
   left:0px;
   top:0px;
 }
-
 .bar-subheader{
   background-color: #AEAEB5 !important;
   border-bottom: 2px solid #3F9200 !important;
   border-top: 1px solid #3F9200 !important;
 }
-
 .bar-footer{
   margin-bottom: 40px;
   width:100%;
   border-bottom: 2px solid #3F9200 !important;
   background-color: #A0CCA6;
 }
+.bar .button.back-button{
+  align-self: center;
+}
 
-/*Ionic popup CSS */
+/*
+*=== IONIC POPUP ===
+*/
 .popup{
   /*background-color: #AEAEB5 !important;*/
   width:90% !important;
 }
-
 .popup-head{
   background-color: #B8EBBF  !important;
   background-image: url('../img/header_icon.png') !important;
@@ -290,24 +209,19 @@ li{
   background-size: 50px 50px;
   border-bottom: 2px solid #3F9200 !important;
 }
-
 .popup-title {
   /*color: black !important;*/
 }
-
 .popup-sub-title{
 }
-
 .popup-body {
   background-color: white !important;
   padding: 10px 10px !important;
   text-align: justify; 
 }
-
 .popup-buttons {
   background-color: #A0CCA6 !important;
 }
-
 .popup-buttons .button{
   font-style: italic !important;
 }
@@ -317,24 +231,50 @@ li{
   margin-left: 0px !important;
   border-radius: 0px !important;
 }
-
 .popup-buttons .button-default{
   font-style: italic !important;
   margin-right: 0px !important;
   border-radius: 0px !important;
 }*/
 
+/* 
+*=== SUMMARY TABLES ===
+*/
 .summary-table th{
   text-align: left;
   border: none;
   background-color: white;
 }
-
 .summary-table{
   width:100%;
   border: none;
 }
+/*
+*-- Default Tables --
+*/
+table, th , td  {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
+}
+table tr:nth-child(odd) {
+  background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+  background-color: #ffffff;
+}
 
+/*
+*-- ion-content in ex-detail --
+*/
+.custom-content .scroll-content {
+  position: absolute; !important;
+  margin-top: 10px;
+}
+
+/*
+*=== OTHER IMPORTANT ===
+*/
 .slideNo{
   position: absolute;
   bottom: 0;
@@ -346,6 +286,27 @@ li{
   content: url('../img/back-image.jpg');
   width:55px;
 }
-.bar .button.back-button{
-  align-self: center;
+.text{
+    font-size:12px;
+}
+.row {
+    display: flex; /* equal height of the children */
+    flex-wrap: wrap;
+    align-content: center;
+    -webkit-align-content:center;
+}
+.col{
+    flex: 1; /* additionally, equal width */
+    /*padding: 1em;
+    border: solid;
+    align-content: center;*/
+}
+p,h2{
+    margin: 10px;
+}
+.div-button{
+    cursor: pointer;
+}
+*{
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
