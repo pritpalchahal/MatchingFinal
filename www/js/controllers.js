@@ -251,6 +251,10 @@ angular.module('collocationmatching.controllers', [])
   $scope.slideIndex = 0;//index of initial slide
   $scope.hide = false;
 
+  $scope.disable = function(){
+    //
+  }
+
   $rootScope.show();
   var exerciseId = $stateParams.exerciseId;
   var collectionName = $stateParams.collectionName;

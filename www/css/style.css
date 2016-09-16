@@ -54,12 +54,13 @@ table tr:nth-child(even) {
   background-image: url('../img/img_flax_help.png');
   background-size:contain;
 }
-.home .scroll-content {
-  display: table !important;
-  width: 100% !important;
-  height: 100% !important;
-  margin-top: -50px; /* the height of the centered content */
-  text-align: center;
+ .scroll-content {
+  /*display: table !important;*/
+  /*width: 100% !important;*/
+  /*height: 100% !important;*/
+  position: absolute !important;
+  /*margin-top: -50px;  the height of the centered content */
+  /*text-align: center;*/
 }
 .home .scroll {
   display: table-cell;
@@ -130,7 +131,7 @@ popover-style{
 .draggables {
   display: block;
   background: rgba(210,210,210,0.5);
-  padding:4px;
+  /*padding:4px;*/
   width: 100%;
   /*border-top: 1px solid #000000;*/
 
@@ -205,13 +206,14 @@ li{
     font-size:12px;
 }
 [ng-drag].drag-over{
-    /*border:solid 1px red;*/
+    /*color:red;*/
+    font-size: 16px;
 }
 [ng-drag].dragging{
     opacity: 0.5;
 }
 [ng-drop].drag-enter{
-    border:solid 5px red;
+    border:solid 5px #3F9200;
 }
 [ng-drop] span.title{
     /*display: block;
@@ -225,8 +227,8 @@ li{
     margin-top: -10px;*/
 }
 [ng-drop] div{
-    /*position: relative;
-    z-index: 2;*/
+    position: relative;
+    z-index: 2;
 }
 
 .navbar{
