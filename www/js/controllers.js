@@ -44,6 +44,7 @@ angular.module('collocationmatching.controllers', [])
 
 .controller('CollectionsCtrl', function($scope, $timeout, $ionicLoading, $state, $ionicPopover, $ionicPopup, Data, 
   $cordovaNetwork, $rootScope, Ids, ionicToast){
+  $scope.title = Data.getTitle();
   $scope.collections = [];
 
   var getData = function(isRefreshing){

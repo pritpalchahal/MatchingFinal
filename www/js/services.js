@@ -2,6 +2,7 @@ angular.module('collocationmatching.services', [])
 
 .factory('Data', function ($http, $cordovaNetwork, ionicToast, Ids, $rootScope, $q) {
   const THIS_ACTIVITY = "CollocationMatching";//name of this Activity
+  const NICE_TITLE = "Collocation Matching";//for displaying only
 
   const ALL_COLLECTIONS_URL = "http://collections.flax.nzdl.org/greenstone3/flax?a=fp&sa=library&o=xml";
 
@@ -265,6 +266,10 @@ angular.module('collocationmatching.services', [])
     return "Error at server, try again later! " + (msg ? msg : "");
   }
 
+  var getTitle = function(){
+    return NICE_TITLE;
+  }
+
   return {
     getWords: getWords,
     getAllColls: getAllColls,
@@ -282,7 +287,8 @@ angular.module('collocationmatching.services', [])
     restartEx: restartEx,
 
     getErrorMsg: getErrorMsg,
-    get404Msg: get404Msg
+    get404Msg: get404Msg,
+    getTitle: getTitle
   };
 })
 
