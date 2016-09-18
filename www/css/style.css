@@ -78,7 +78,7 @@ popover-style{
     /*background: rgba(255,0,0, 0.5);*/
     /*border: solid 1px black;*/
     color:black;
-    text-align: center;
+    text-align: left;
     font-size: 12px;
     /*padding: 10px;*/
     width: inherit;
@@ -267,14 +267,21 @@ table tr:nth-child(even) {
 /*
 *-- ion-content in ex-detail --
 */
-.custom-content .scroll-content {
-  position: absolute; !important;
+.custom-content.scroll-content {
+  /*position: absolute; !important;*/
   margin-top: 10px;
 }
 
 /*
 *=== OTHER IMPORTANT ===
 */
+.check-button{
+  cursor:pointer;
+  font-style: italic;
+}
+.bar.bar-footer{
+  border-top: solid 2px #3F9200;
+}
 .slideNo{
   position: absolute;
   bottom: 0;
