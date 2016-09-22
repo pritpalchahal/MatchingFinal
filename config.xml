@@ -14,6 +14,7 @@
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="SplashScreenDelay" value="2000"/>
+  <!-- <preference name="ShowSplashScreenSpinner" value="false"/> -->
   <!-- <preference name="FadeSplashScreenDuration" value="2000"/> -->
   <preference name="android-minSdkVersion" value="14"/>
   <preference name="BackupWebStorage" value="none"/>
