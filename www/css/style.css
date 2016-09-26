@@ -105,7 +105,7 @@ popover-style{
     position: relative;
 }
 .drags{
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   margin: 1px;
 }
 
@@ -317,7 +317,7 @@ table tr:nth-child(even) {
 }
 .col{
     flex: 1; /* additionally, equal width */
-    /*padding: 1em;
+    /*padding: 1px;
     border: solid;
     align-content: center;*/
 }

@@ -329,7 +329,7 @@ angular.module('collocationmatching.controllers', [])
     loop: false,
     spaceBetween: 10,
     initialSlide: $scope.slideIndex,
-    effect: 'slide',//fade,slide,cube,coverflow,flip (http://idangero.us/swiper/api)
+    effect: 'slide'//fade,slide,cube,coverflow,flip (http://idangero.us/swiper/api)
     // speed: 500
   };
 
