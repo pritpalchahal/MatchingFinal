@@ -317,7 +317,7 @@ angular.module('collocationmatching.controllers', [])
     // $scope.drags = [].concat(shuffle(tmp));
     $scope.drags = shuffle(tmp);
 
-  }).then(function(){//finally creates problems here
+  }).then(function(){//keyword 'finally' creates problems here
     $rootScope.hide();
   });
 
@@ -349,17 +349,22 @@ angular.module('collocationmatching.controllers', [])
         $scope.hide = false;
         //it is critical to check for word[slideIndex]
         //because slideIndex can be different 
-        if(word[$scope.slideIndex] && word[$scope.slideIndex].isCorrect){
+        if(word[$scope.slideIndex].isCorrect){
           correct_words++;
         }
       }
     }
+    var score = SummaryData.getSummary(collId,exId).score;
     if(all_words == correct_words){
+      score++;
       $scope.hide = true;
-      return true;
+      ionicToast.show('Well done!','bottom',false,2000);
     }
-    $scope.hide = false;
-    return false;
+    else{
+      $scope.hide = false;
+    }
+    SummaryData.updateScore(collId,exId,score);
+    return $scope.hide;
   }
 
   $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
@@ -427,24 +432,6 @@ angular.module('collocationmatching.controllers', [])
   }
 
   $scope.showSummary = function(){
-    var score = 0;
-    for(var i=0;i<$scope.slides;i++){
-      var all_words = 0, correct_words=0;
-      for(var j=0;j<$scope.words.length;j++){
-        var word = $scope.words[j];
-        if(word[i]){
-          all_words++;
-          if(word[i].isCorrect){
-            correct_words++;
-          }
-        }
-      }
-      if(all_words == correct_words){
-        score++;
-      }
-    }
-
-    SummaryData.updateScore(collId,exId,score);
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
       title: 'Summary report',
