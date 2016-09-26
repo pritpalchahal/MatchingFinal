@@ -313,15 +313,23 @@ angular.module('collocationmatching.services', [])
     summary[collId][exId].eTime = e;
   }
 
-  var updateScore = function(collId,exId,score){
+  var updateScore = function(collId,exId,slideIndex){
     if(summary[collId][exId]){
-      summary[collId][exId].score = score;
+      summary[collId][exId].scores[slideIndex] = true;
     }
   }
 
   var createSummary = function(collId,exId){
     if(!summary[collId][exId]){
-      summary[collId][exId] = {sTime:"n/a",eTime:"n/a",score:0};
+      summary[collId][exId] = {sTime:"n/a",eTime:"n/a",scores:[],get score(){
+        var s = 0;
+        for(var i=0;i<this.scores.length;i++){
+          if(this.scores[i]){
+            s++;
+          }
+        }
+        return s;
+      }};
     }
   }
 

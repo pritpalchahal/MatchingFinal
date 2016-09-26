@@ -343,27 +343,23 @@ angular.module('collocationmatching.controllers', [])
     var all_words = 0, correct_words = 0;
     for(var i=0; i<$scope.words.length;i++){
       var word = $scope.words[i];
-      if(word[$scope.slideIndex]){
+      if(word[$scope.slideIndex]){//critical check
         all_words++;
         SummaryData.createSummary(collId,exId);
         $scope.hide = false;
-        //it is critical to check for word[slideIndex]
-        //because slideIndex can be different 
         if(word[$scope.slideIndex].isCorrect){
           correct_words++;
         }
       }
     }
-    var score = SummaryData.getSummary(collId,exId).score;
     if(all_words == correct_words){
-      score++;
+      SummaryData.updateScore(collId,exId,$scope.slideIndex);
       $scope.hide = true;
       ionicToast.show('Well done!','bottom',false,2000);
     }
     else{
       $scope.hide = false;
     }
-    SummaryData.updateScore(collId,exId,score);
     return $scope.hide;
   }
 
