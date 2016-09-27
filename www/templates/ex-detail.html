@@ -13,7 +13,7 @@
     <ion-slides  options="options" slider="data.slider">
       <ion-slide-page ng-repeat="slide in slideCount track by $index" ng-init="slideIndex = $index">
 
-        <div class="draggables container-fluid sub-header swiper-no-swiping">
+        <div class="draggables swiper-no-swiping">
           <div class="row" ng-repeat="val in drags" ng-switch on="$index % 2" ng-init="word1 = words[drags[$index]][slideIndex];
           word2 = words[drags[$index+1]][slideIndex]">
             <div class="col drags" ng-switch-when="0" ng-if="word1" ng-drag="word1.isDraggable" ng-drag-data="word1.right" data-allow-transform="true" ng-drag-success="dragSuccess($data,$event,drags[$index],slideIndex)" press-timeout="0">
@@ -24,7 +24,7 @@
             </div>
           </div>
         </div>
-        <ion-content class="has-header has-footer has-subheader has-subfooter custom-content">
+        <ion-content class="has-header has-footer" ng-style="{'margin-top':(drags.length / 2)*20+'px'}">
           <div ng-repeat="word in words track by $index" ng-init="wordId = word[slideIndex].id" ng-if="word[slideIndex]">
             <div class="row">
 

@@ -78,7 +78,7 @@ popover-style{
     /*background: rgba(255,0,0, 0.5);*/
     /*border: solid 1px black;*/
     color:black;
-    text-align: left;
+    text-align: center;
     font-size: 12px;
     /*padding: 10px;*/
     width: inherit;
@@ -108,10 +108,9 @@ popover-style{
   /*border: 1px solid black;*/
   margin: 1px;
 }
-
 [ng-drag].drag-over{
     /*color:red;*/
-    font-size: 16px;
+    /*font-size: 16px;*/
 }
 [ng-drag].dragging{
     opacity: 0.5;
@@ -268,14 +267,6 @@ table tr:nth-child(odd) {
 }
 table tr:nth-child(even) {
   background-color: #ffffff;
-}
-
-/*
-*-- ion-content in ex-detail --
-*/
-.custom-content.scroll-content {
-  /*position: absolute; !important;*/
-  margin-top: 10px;
 }
 
 /*
