@@ -340,6 +340,9 @@ angular.module('collocationmatching.controllers', [])
   }
 
   checkAll = function(){
+    if(!$scope.words || $scope.words.length == 0){
+      return $scope.hide;
+    }
     var all_words = 0, correct_words = 0;
     for(var i=0; i<$scope.words.length;i++){
       var word = $scope.words[i];
@@ -366,10 +369,8 @@ angular.module('collocationmatching.controllers', [])
   $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
     // data.slider is the instance of Swiper
     $scope.slideIndex = data.slider.activeIndex;
-    if($scope.words){
-      checkAll();
-      $scope.$apply();//required to update the view
-    }
+    checkAll();
+    $scope.$apply();//required to update the view
   });
 
   $scope.$on("$ionicSlides.slideChangeStart", function(event, data){

@@ -24,7 +24,7 @@
             </div>
           </div>
         </div>
-        <ion-content class="has-header has-footer" ng-style="{'margin-top':(drags.length / 2)*20+'px'}">
+        <ion-content class="has-header has-footer" ng-style="{'margin-top':((drags.length%2)*0.5+drags.length/2)*40+'px'}">
           <div ng-repeat="word in words track by $index" ng-init="wordId = word[slideIndex].id" ng-if="word[slideIndex]">
             <div class="row">
 
