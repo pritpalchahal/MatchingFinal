@@ -11,44 +11,6 @@
   <div id="container">
     <div id="background"></div>
     
-      <ul id="jump_to">
-        <li>
-          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
-          <a class="small" href="javascript:void(0);">+</a>
-          <div id="jump_wrapper">
-          <div id="jump_page_wrapper">
-            <div id="jump_page">
-              
-                
-                <a class="source" href="app.html">
-                  app.js
-                </a>
-              
-                
-                <a class="source" href="controllers.html">
-                  controllers.js
-                </a>
-              
-                
-                <a class="source" href="ngDraggable.html">
-                  ngDraggable.js
-                </a>
-              
-                
-                <a class="source" href="services.html">
-                  services.js
-                </a>
-              
-                
-                <a class="source" href="xml2json.min.html">
-                  xml2json.min.js
-                </a>
-              
-            </div>
-          </div>
-        </li>
-      </ul>
-    
     <ul class="sections">
         
           <li id="title">
@@ -68,16 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>angular.module(<span class="hljs-string">'collocationmatching.services'</span>, [])
-
-.factory(<span class="hljs-string">'Data'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$http, $cordovaNetwork, ionicToast, Ids, $rootScope, $q</span>) </span>{
-  <span class="hljs-keyword">const</span> THIS_ACTIVITY = <span class="hljs-string">"CollocationMatching"</span>;<span class="hljs-comment">//name of this Activity</span>
-  <span class="hljs-keyword">const</span> NICE_TITLE = <span class="hljs-string">"Collocation Matching"</span>;<span class="hljs-comment">//for displaying only</span>
-
-  <span class="hljs-keyword">const</span> ALL_COLLECTIONS_URL = <span class="hljs-string">"http://collections.flax.nzdl.org/greenstone3/flax?a=fp&amp;sa=library&amp;o=xml"</span>;
-
-  <span class="hljs-keyword">const</span> PREFIX_URL = <span class="hljs-string">"http://collections.flax.nzdl.org/greenstone3/flax"</span>;
-  <span class="hljs-keyword">const</span> TEMPLATE_URL = <span class="hljs-string">"?a=pr&amp;o=xml&amp;ro=1&amp;rt=r&amp;s=SSSS&amp;c=CCCC&amp;s1.service=11"</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>angular.module(<span class="hljs-string">'collocationmatching.services'</span>, [])</pre></div></div>
             
         </li>
         
@@ -88,24 +41,141 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>to get url replace CCCC with collection name (e.g. collocations) &amp; SSSS with activity name (e.g. CollocationMatching)</p>
+              <p>Data factory is responsible for fetching data from FLAX server
+,save this data locally and provide controllers with suitable response</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>.factory(<span class="hljs-string">'Data'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$http, $cordovaNetwork, ionicToast, Ids, $rootScope, $q</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Name of this Activity</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> THIS_ACTIVITY = <span class="hljs-string">"CollocationMatching"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Nice name, for displaying only</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> NICE_TITLE = <span class="hljs-string">"Collocation Matching"</span>;
+
+  <span class="hljs-keyword">const</span> ALL_COLLECTIONS_URL = <span class="hljs-string">"http://collections.flax.nzdl.org/greenstone3/flax?a=fp&amp;sa=library&amp;o=xml"</span>;
+
+  <span class="hljs-keyword">const</span> PREFIX_URL = <span class="hljs-string">"http://collections.flax.nzdl.org/greenstone3/flax"</span>;
+  <span class="hljs-keyword">const</span> TEMPLATE_URL = <span class="hljs-string">"?a=pr&amp;o=xml&amp;ro=1&amp;rt=r&amp;s=SSSS&amp;c=CCCC&amp;s1.service=11"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>To get url replace CCCC with collection name (e.g. collocations) &amp; SSSS with activity name (e.g. CollocationMatching)</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> TEMPLATE_URL_WITH_ACTIVITY = TEMPLATE_URL.replace(<span class="hljs-string">"SSSS"</span>,THIS_ACTIVITY);
 
   <span class="hljs-keyword">const</span> SERVICE_NUMBER = <span class="hljs-number">100</span>;
-  <span class="hljs-keyword">const</span> TEMPLATE_COLLNAME = <span class="hljs-string">"&amp;s1.collname=CCCC"</span>;
+  <span class="hljs-keyword">const</span> TEMPLATE_COLLNAME = <span class="hljs-string">"&amp;s1.collname=CCCC"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>List of possible collections for this activity</p>
 
-  <span class="hljs-keyword">var</span> collections = [];<span class="hljs-comment">//list of possible collections for this activity</span>
-  <span class="hljs-keyword">var</span> descriptions = [];<span class="hljs-comment">//list of name,description for each collection</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> collections = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>List of name,description for each collection</p>
 
-  <span class="hljs-keyword">var</span> exercises = [];<span class="hljs-comment">//list of possible exercises for this activity</span>
-  <span class="hljs-keyword">var</span> slidesCount = [];
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> descriptions = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>List of possible exercises for this activity</p>
 
-  <span class="hljs-keyword">var</span> words = [];
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> exercises = [];
+  <span class="hljs-keyword">var</span> slidesCount = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>List of words for each game</p>
 
-  <span class="hljs-keyword">var</span> getAll = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> words = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Function retrieves all collection names from FLAX server</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getAll = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
     <span class="hljs-keyword">var</span> temp_collections = [];
     <span class="hljs-keyword">var</span> promise = $http.get(ALL_COLLECTIONS_URL,{<span class="hljs-attr">timeout</span>:$rootScope.timeout}).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>{
       <span class="hljs-keyword">var</span> x2js = <span class="hljs-keyword">new</span> X2JS();
@@ -118,11 +188,11 @@
         </li>
         
         
-        <li id="section-3">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>console.log(metadataList);</p>
 
@@ -156,9 +226,22 @@
       <span class="hljs-keyword">return</span> error;
     });
     <span class="hljs-keyword">return</span> promise;
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Function to fetch all data and return suitable response to Collections controller</p>
 
-  <span class="hljs-keyword">var</span> getAllColls = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">isRefreshing</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getAllColls = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">isRefreshing</span>)</span>{
     promises = [];
 
     <span class="hljs-keyword">return</span> getAll().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>{
@@ -166,12 +249,40 @@
         <span class="hljs-keyword">return</span> response;
       }
       <span class="hljs-keyword">var</span> temp_collections = [];
-      response.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collectionName</span>)</span>{
-        promises.push(checkIfEmpty(collectionName));
+      response.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collectionName</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>For each collection name, check if it contains any exercises or not</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        promises.push(checkIfEmpty(collectionName));
       });
       <span class="hljs-keyword">return</span> $q.all(promises).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">values</span>) </span>{
-        values.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>)</span>{
-          <span class="hljs-keyword">if</span>(value &amp;&amp; value.status != <span class="hljs-number">404</span> &amp;&amp; value.status != <span class="hljs-number">-1</span>){<span class="hljs-comment">//ignore erroneous values</span>
+        values.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Ignore erroneous values</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">if</span>(value &amp;&amp; value.status != <span class="hljs-number">404</span> &amp;&amp; value.status != <span class="hljs-number">-1</span>){
             temp_collections.push(value);
           }
         });</pre></div></div>
@@ -179,11 +290,11 @@
         </li>
         
         
-        <li id="section-4">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>if user if refreshing and due to server error, new collections retrieved
 are less than previously retrieved, then simply return previously retrieved</p>
@@ -191,22 +302,77 @@ are less than previously retrieved, then simply return previously retrieved</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span>(isRefreshing){
-          <span class="hljs-keyword">if</span>(collections.length &lt;= temp_collections.length){
-            collections = temp_collections;<span class="hljs-comment">//otherwise return newly retrieved</span>
+          <span class="hljs-keyword">if</span>(collections.length &lt;= temp_collections.length){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Otherwise return newly retrieved</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            collections = temp_collections;
           }
         }
-        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(temp_collections.length == <span class="hljs-number">0</span>){
-          <span class="hljs-keyword">return</span> {<span class="hljs-string">"status"</span>:<span class="hljs-number">404</span>};<span class="hljs-comment">//if no collection retrieved, return custom 404 error</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(temp_collections.length == <span class="hljs-number">0</span>){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>If no collection retrieved, return custom 404 error</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">return</span> {<span class="hljs-string">"status"</span>:<span class="hljs-number">404</span>};
         }
-        <span class="hljs-keyword">else</span>{
-          collections = temp_collections;<span class="hljs-comment">//if all okay, return retrieved collections</span>
+        <span class="hljs-keyword">else</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>If all okay, return retrieved collections</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          collections = temp_collections;
         }
         <span class="hljs-keyword">return</span> collections;
       });
     });
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Function to check if given collection is empty or not</p>
 
-  <span class="hljs-keyword">var</span> checkIfEmpty = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collectionName</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> checkIfEmpty = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collectionName</span>)</span>{
     <span class="hljs-keyword">var</span> suffix_url = TEMPLATE_URL_WITH_ACTIVITY.replace(<span class="hljs-string">"CCCC"</span>,collectionName);
     <span class="hljs-keyword">var</span> coll_url = PREFIX_URL + suffix_url;
 
@@ -214,31 +380,33 @@ are less than previously retrieved, then simply return previously retrieved</p>
       <span class="hljs-keyword">var</span> x2js = <span class="hljs-keyword">new</span> X2JS();
       <span class="hljs-keyword">var</span> data = x2js.xml_str2json(res.data);
       <span class="hljs-keyword">if</span>(!data || !data.response){<span class="hljs-keyword">return</span>;}
-      <span class="hljs-keyword">var</span> collection_name = data.response._from;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>only “password” has more than one category</p>
+      <span class="hljs-keyword">var</span> collection_name = data.response._from;
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> ex = data.response.categoryList.category;
+      <span class="hljs-comment">/*only "password" has more than one category*/</span>
+      <span class="hljs-keyword">var</span> ex = data.response.categoryList.category;
       <span class="hljs-keyword">if</span>(ex.length &gt; <span class="hljs-number">0</span> || ex.exercise){
         <span class="hljs-keyword">return</span> collection_name;
       }
     },<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>)</span>{
       <span class="hljs-keyword">return</span> error;
     });
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Function fetch all exercises for given collection and return
+suitable response to Exercises controller</p>
 
-  <span class="hljs-keyword">var</span> getAllEx = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,isRefreshing</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getAllEx = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,isRefreshing</span>)</span>{
     <span class="hljs-keyword">if</span>(exercises[collId] &amp;&amp; !isRefreshing){
       <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resolve</span>)</span>{
         <span class="hljs-keyword">return</span> resolve(exercises[collId]);
@@ -255,13 +423,13 @@ are less than previously retrieved, then simply return previously retrieved</p>
         </li>
         
         
-        <li id="section-6">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>initiate all sub arrays</p>
+              <p>If not refreshing, Initiate all sub arrays</p>
 
             </div>
             
@@ -276,26 +444,27 @@ are less than previously retrieved, then simply return previously retrieved</p>
 
     <span class="hljs-keyword">return</span> $http.get(coll_url,{<span class="hljs-attr">timeout</span>:$rootScope.timeout}).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>{
       <span class="hljs-keyword">var</span> x2js = <span class="hljs-keyword">new</span> X2JS();
-      <span class="hljs-keyword">var</span> jsonData = x2js.xml_str2json(response.data);</pre></div></div>
+      <span class="hljs-keyword">var</span> jsonData = x2js.xml_str2json(response.data);
+      <span class="hljs-comment">/* if(!jsonData.response){return;}*/</span>
+      <span class="hljs-keyword">var</span> category = jsonData.response.categoryList.category;
+      <span class="hljs-keyword">if</span>(category.length &gt; <span class="hljs-number">0</span>){
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt;category.length; i++){
+          <span class="hljs-keyword">var</span> array = category[i].exercise;</pre></div></div>
             
         </li>
         
         
-        <li id="section-7">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>if(!jsonData.response){return;}</p>
+              <p>Check if array is defined or not</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> category = jsonData.response.categoryList.category;
-      <span class="hljs-keyword">if</span>(category.length &gt; <span class="hljs-number">0</span>){
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt;category.length; i++){
-          <span class="hljs-keyword">var</span> array = category[i].exercise;
-          <span class="hljs-keyword">if</span>(array){<span class="hljs-comment">//check if array is defined or not</span>
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">if</span>(array){
             <span class="hljs-keyword">if</span>(array.length &gt; <span class="hljs-number">0</span>){
               exercises[collId] = [].concat(array);
             }
@@ -312,9 +481,22 @@ are less than previously retrieved, then simply return previously retrieved</p>
     },<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>)</span>{
       <span class="hljs-keyword">return</span> error;
     });
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Function fetch game data and return suitable response to Exercise Controller</p>
 
-  getSingleEx = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  getSingleEx = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
     <span class="hljs-keyword">if</span>(words[collId][exId]){
       <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resolve</span>)</span>{
         <span class="hljs-keyword">return</span> resolve(words[collId][exId]);
@@ -330,13 +512,13 @@ are less than previously retrieved, then simply return previously retrieved</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>initiate</p>
+              <p>Initiate data arrays</p>
 
             </div>
             
@@ -382,18 +564,44 @@ are less than previously retrieved, then simply return previously retrieved</p>
         });
       }
     }
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Function to get Exercise title</p>
 
-  getExTitle = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  getExTitle = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
     <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i= <span class="hljs-number">0</span> ; i&lt;exercises[collId].length; i++){
       <span class="hljs-keyword">if</span>(exercises[collId][i]._id == <span class="hljs-built_in">parseInt</span>(exId)){
         <span class="hljs-keyword">return</span> exercises[collId][i]._name;
       }
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>Function to get slides count</p>
 
-  getSlidesCount = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  getSlidesCount = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
     <span class="hljs-keyword">if</span>(!slidesCount[collId][exId]){
       <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     }</pre></div></div>
@@ -401,84 +609,240 @@ are less than previously retrieved, then simply return previously retrieved</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>return Math.min.apply(Math,slidesCount[collId][exId]);</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.max.apply(<span class="hljs-built_in">Math</span>,slidesCount[collId][exId]);
-  }
-
-  getMinSlidesCount = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
-    <span class="hljs-keyword">if</span>(!slidesCount[collId][exId]){
-      <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-    }
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.min.apply(<span class="hljs-built_in">Math</span>,slidesCount[collId][exId]);
-  }
-
-  removeEx = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,ex</span>) </span>{
-    exercises[collId].splice(exercises[collId].indexOf(ex), <span class="hljs-number">1</span>);
-  }
-
-  restartEx = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,ex</span>)</span>{
-    exercises[collId][exercises.indexOf(ex)] = [];
-  }
-
-  removeColl = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">coll</span>)</span>{
-    collections.splice(collections.indexOf(coll),<span class="hljs-number">1</span>);
-  }
-
-  <span class="hljs-keyword">var</span> getWords = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
-    <span class="hljs-keyword">if</span>(words[collId][exId]){
-      <span class="hljs-keyword">return</span> words[collId][exId];
-    }
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
-  }
-
-  <span class="hljs-keyword">var</span> getDesc = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-    <span class="hljs-keyword">return</span> descriptions;
-  }
-
-  <span class="hljs-keyword">var</span> getLeft = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">word</span>)</span>{</pre></div></div>
+  }</pre></div></div>
             
         </li>
         
         
-        <li id="section-10">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>Function return minimum slides count</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  getMinSlidesCount = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
+    <span class="hljs-keyword">if</span>(!slidesCount[collId][exId]){
+      <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.min.apply(<span class="hljs-built_in">Math</span>,slidesCount[collId][exId]);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>Function to remove an Exercise from list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  removeEx = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,ex</span>) </span>{
+    exercises[collId].splice(exercises[collId].indexOf(ex), <span class="hljs-number">1</span>);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Function to restart an Exercise</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  restartEx = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,ex</span>)</span>{
+    exercises[collId][exercises.indexOf(ex)] = [];
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>Function to remove an collection from list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  removeColl = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">coll</span>)</span>{
+    collections.splice(collections.indexOf(coll),<span class="hljs-number">1</span>);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>Function returns previously fetched words for given collection and exercise</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getWords = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
+    <span class="hljs-keyword">if</span>(words[collId][exId]){
+      <span class="hljs-keyword">return</span> words[collId][exId];
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>Function to get description</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getDesc = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">return</span> descriptions;
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>Function to get left word</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getLeft = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">word</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>return word.split(“ “)[0];</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> word.substr(<span class="hljs-number">0</span>,word.indexOf(<span class="hljs-string">" "</span>));
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>Function to get Right word</p>
 
-  <span class="hljs-keyword">var</span> getRight = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">word</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getRight = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">word</span>)</span>{
     <span class="hljs-keyword">return</span> word.substr(word.indexOf(<span class="hljs-string">" "</span>)+<span class="hljs-number">1</span>);
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>Function to get timeout msg</p>
 
-  <span class="hljs-keyword">var</span> getTimeoutMsg = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getTimeoutMsg = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
     <span class="hljs-keyword">return</span> <span class="hljs-string">"Request timed out. Try again later!"</span>;
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>Function return error msg</p>
 
-  <span class="hljs-keyword">var</span> getErrorMsg = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getErrorMsg = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
     <span class="hljs-keyword">return</span> <span class="hljs-string">"No Internet connection available!"</span>;
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>Function return 404 msg</p>
 
-  <span class="hljs-keyword">var</span> get404Msg = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> get404Msg = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>)</span>{
     <span class="hljs-keyword">return</span> <span class="hljs-string">"Error at server, try again later! "</span> + (msg ? msg : <span class="hljs-string">""</span>);
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>Function returns exercises title</p>
 
-  <span class="hljs-keyword">var</span> getTitle = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getTitle = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
     <span class="hljs-keyword">return</span> NICE_TITLE;
   }
 
@@ -503,26 +867,91 @@ are less than previously retrieved, then simply return previously retrieved</p>
     <span class="hljs-attr">get404Msg</span>: get404Msg,
     <span class="hljs-attr">getTitle</span>: getTitle
   };
-})
+})</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>SummartData factory stores summary data for each exercise</p>
 
-.factory(<span class="hljs-string">'SummaryData'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">var</span> summary = [];
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>.factory(<span class="hljs-string">'SummaryData'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> summary = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p>Function to update start time</p>
 
-  <span class="hljs-keyword">var</span> updateStartTime = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId,s</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> updateStartTime = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId,s</span>)</span>{
     summary[collId][exId].sTime = s;
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>Function to update end time</p>
 
-  <span class="hljs-keyword">var</span> updateEndTime = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId,e</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> updateEndTime = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId,e</span>)</span>{
     summary[collId][exId].eTime = e;
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>Function to update score</p>
 
-  <span class="hljs-keyword">var</span> updateScore = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId,slideIndex</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> updateScore = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId,slideIndex</span>)</span>{
     <span class="hljs-keyword">if</span>(summary[collId][exId]){
       summary[collId][exId].scores[slideIndex] = <span class="hljs-literal">true</span>;
     }
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <p>Function to create an entry for summary for given collection and exercise</p>
 
-  <span class="hljs-keyword">var</span> createSummary = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> createSummary = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
     <span class="hljs-keyword">if</span>(!summary[collId][exId]){
       summary[collId][exId] = {<span class="hljs-attr">sTime</span>:<span class="hljs-string">"n/a"</span>,<span class="hljs-attr">eTime</span>:<span class="hljs-string">"n/a"</span>,<span class="hljs-attr">scores</span>:[],get score(){
         <span class="hljs-keyword">var</span> s = <span class="hljs-number">0</span>;
@@ -534,23 +963,75 @@ are less than previously retrieved, then simply return previously retrieved</p>
         <span class="hljs-keyword">return</span> s;
       }};
     }
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p>Function to clear summary for given collection and exercise</p>
 
-  <span class="hljs-keyword">var</span> clearSummary = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> clearSummary = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
     summary[collId].splice(exId,<span class="hljs-number">1</span>);
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p>Function to return summary for given collection and exercise</p>
 
-  <span class="hljs-keyword">var</span> getSummary = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getSummary = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
     <span class="hljs-keyword">if</span>(summary[collId][exId]){
       <span class="hljs-keyword">return</span> summary[collId][exId];
     }
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>Function to create a new summary entry for given collection</p>
 
-  <span class="hljs-keyword">var</span> createColl = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> createColl = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId</span>)</span>{
     summary[collId] = [];
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p>Function returns whether a summary entry is created for given collection</p>
 
-  <span class="hljs-keyword">var</span> isCreated = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> isCreated = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId</span>)</span>{
     <span class="hljs-keyword">if</span>(summary[collId]){
       <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
@@ -567,28 +1048,106 @@ are less than previously retrieved, then simply return previously retrieved</p>
     <span class="hljs-attr">createColl</span>: createColl,
     <span class="hljs-attr">isCreated</span>: isCreated
   };
-})
+})</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p>StateData factory stores data related to state of each exercise (‘New’,’Incomplete’ or ‘Complete’)</p>
 
-.factory(<span class="hljs-string">'StateData'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">var</span> states = [];
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>.factory(<span class="hljs-string">'StateData'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> states = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <p>Function to update state</p>
 
-  <span class="hljs-keyword">var</span> updateState = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId,state</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> updateState = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId,state</span>)</span>{
     states[collId][exId] = state;
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <p>Function to return state for given collectiona and exercise</p>
 
-  <span class="hljs-keyword">var</span> getSingleState = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getSingleState = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
     <span class="hljs-keyword">return</span> states[collId][exId];
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <p>Function to return state for all exercises for given collection</p>
 
-  <span class="hljs-keyword">var</span> getAllStates = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getAllStates = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId</span>)</span>{
     <span class="hljs-keyword">return</span> states[collId];
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              <p>Function to create a state entry for given collection</p>
 
-  <span class="hljs-keyword">var</span> createColl = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> createColl = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId</span>)</span>{
     states[collId] = [];
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
+              </div>
+              <p>Function returns a state is created for given collection</p>
 
-  <span class="hljs-keyword">var</span> isCreated = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> isCreated = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId</span>)</span>{
     <span class="hljs-keyword">if</span>(states[collId]){
       <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
@@ -602,26 +1161,80 @@ are less than previously retrieved, then simply return previously retrieved</p>
     <span class="hljs-attr">createColl</span>: createColl,
     <span class="hljs-attr">isCreated</span>: isCreated
   };
-})
+})</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              <p>Ids factory generates and stores unique ids for each collection and exercise</p>
 
-.factory(<span class="hljs-string">'Ids'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$cordovaNetwork,$rootScope</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>.factory(<span class="hljs-string">'Ids'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$cordovaNetwork,$rootScope</span>)</span>{
   <span class="hljs-keyword">var</span> collIds = [];
-  <span class="hljs-keyword">var</span> exIds = [];
+  <span class="hljs-keyword">var</span> exIds = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-57">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              <p>Function to return exercise id for given collection and exercise
+Function asscertains that a new entry been created for exercise if not already exists</p>
 
-  <span class="hljs-keyword">var</span> getExId = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exerciseId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getExId = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exerciseId</span>)</span>{
     <span class="hljs-keyword">var</span> exId = exIds[collId].indexOf(exerciseId);
     <span class="hljs-keyword">if</span>(exId == <span class="hljs-number">-1</span>){
       exIds[collId].push(exerciseId);
       exId = exIds[collId].indexOf(exerciseId);
     }
     <span class="hljs-keyword">return</span> exId;
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-58">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-58">&#182;</a>
+              </div>
+              <p>Function return original exercise Id</p>
 
-  <span class="hljs-keyword">var</span> getExerciseId = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getExerciseId = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
     <span class="hljs-keyword">return</span> exIds[collId][exId];
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-59">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-59">&#182;</a>
+              </div>
+              <p>Function to return collection id for given collection
+Function asscertains that a new entry been created for collection if not already exists</p>
 
-  <span class="hljs-keyword">var</span> getCollId = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getCollId = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>)</span>{
     <span class="hljs-keyword">var</span> collId = collIds.indexOf(name);
     <span class="hljs-keyword">if</span>(collId == <span class="hljs-number">-1</span>){
       collIds.push(name);
@@ -631,11 +1244,11 @@ are less than previously retrieved, then simply return previously retrieved</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-60">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               <p>also initiate exIds if not already done</p>
 
@@ -645,9 +1258,22 @@ are less than previously retrieved, then simply return previously retrieved</p>
       exIds[collId] = [];
     }
     <span class="hljs-keyword">return</span> collId;
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-61">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
+              </div>
+              <p>Function return collection name based on collection Id</p>
 
-  <span class="hljs-keyword">var</span> getCollName = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId</span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getCollName = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId</span>)</span>{
     <span class="hljs-keyword">return</span> collIds[collId];
   }
 

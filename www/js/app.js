@@ -8,20 +8,19 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
 
 .run(function($ionicPlatform, $ionicHistory, $stateParams, $filter, $ionicPopup, $window, $rootScope,
   Data, StateData, SummaryData, ionicToast, Ids, $ionicLoading) {
-  $rootScope.timeout = 10000;//global timeout for all http requests in milliseconds
+  //Set global timeout for all http requests in milliseconds
+  $rootScope.timeout = 10000;
 
-  //check network connection
+  //Check network connection
   $rootScope.online = navigator.onLine;
   $window.addEventListener("offline", function () {
     $rootScope.$apply(function() {
       $rootScope.online = false;
-      // ionicToast.show("offline",'bottom');
     });
   }, false);
   $window.addEventListener("online", function () {
     $rootScope.$apply(function() {
       $rootScope.online = true;
-      // ionicToast.show("online",'bottom');
     });
   }, false);
 
@@ -37,16 +36,18 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
     });
   }
 
+  //global Function to show loading animation
   $rootScope.show = function(){
     $ionicLoading.show({
       template: '<p>Loading...</p><ion-spinner class="spinner-balanced" icon="spiral"></ion-spinner>'
     });
   }
+  //Global function to hide loading animation
   $rootScope.hide = function(){
     $ionicLoading.hide();
   }
 
-  //ionic.Platform 
+  //Get current platform type from ionic.Platform 
   var isIOS = ionic.Platform.isIOS();
   var isAndroid = ionic.Platform.isAndroid();
   var isWindowsPhone = ionic.Platform.isWindowsPhone();//works for windows 8/8.1 phones
@@ -54,29 +55,32 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
 
   $ionicPlatform.ready(function() {
     if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
+      /* org.apache.cordova.statusbar required*/
       StatusBar.styleDefault();
     }
   });
 
-  //only android and windows have hardware back buttons, return otherwise
+  //Only Android and Windows have hardware back buttons, return otherwise
   if(!isAndroid && !isEdge){
     return;
   }
 
+  //Override default hardware back button functionality
   $ionicPlatform.registerBackButtonAction(function (event){
     var currentState = $ionicHistory.currentStateName();
     if(currentState == "collections"){
       if(isEdge){
+        //If windows, exit the app
         navigator.app.exitApp();//exit the app
       }
       else{
+        //If Android, trigger back as home functionality
         backAsHome.trigger();//exitApp as home button (don't kill the app)
       }
         //event.preventDefault();//don't do anything
     }
     else{
-      //this can also be accompolished using $ionicPlatform.onHardwareBackButton
+      /*this can also be accompolished using $ionicPlatform.onHardwareBackButton*/
       $ionicHistory.goBack();
 
       if(currentState != "exercise"){
@@ -107,19 +111,19 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
     }
   }, 100);
 
-  // override default android back button behavior 
-  //   $ionicPlatform.onHardwareBackButton(function(){
-  // });
+  /* override default android back button behavior 
+     $ionicPlatform.onHardwareBackButton(function(){
+   });*/
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
-  //to override default behaviors of specific platforms (android,ios etc)
+  //To override default behaviors of specific platforms (android,ios etc)
   //e.g. android align its titles to left by default, so needs to change it here
   //refer to docs http://ionicframework.com/docs/api/provider/$ionicConfigProvider/
   $ionicConfigProvider.navBar.alignTitle('center');
   if(!ionic.Platform.isEdge()){
-    //change default back button and text with custom image
+    //Change default back button and text with custom image
     $ionicConfigProvider.backButton.text("");
     $ionicConfigProvider.backButton.icon('my-back-button');
   }
@@ -148,7 +152,7 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
         controller: 'ExerciseCtrl'
   });
 
-  // if none of the above states are matched, use this as the fallback
+  //If none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/collections');
 
 });

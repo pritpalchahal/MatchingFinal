@@ -27,20 +27,19 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              
+              <p>angular.module is a global place for creating, registering and retrieving Angular modules
+‘collocationmatching’ is the name of this angular module example (also set in a <body> attribute in index.html)
+the 2nd parameter is an array of ‘requires’
+‘collocationmatching.services’ is found in services.js
+‘collocationmatching.controllers’ is found in controllers.js</p>
+
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/** angular.module is a global place for creating, registering and retrieving Angular modules
-'collocationmatching' is the name of this angular module example (also set in a &lt;body&gt; attribute in index.html)
-the 2nd parameter is an array of 'requires'
-'collocationmatching.services' is found in services.js
-'collocationmatching.controllers' is found in controllers.js */</span>
-angular.module(<span class="hljs-string">'collocationmatching'</span>, [<span class="hljs-string">'ionic'</span>, <span class="hljs-string">'collocationmatching.controllers'</span>, <span class="hljs-string">'collocationmatching.services'</span>,
+            <div class="content"><div class='highlight'><pre>angular.module(<span class="hljs-string">'collocationmatching'</span>, [<span class="hljs-string">'ionic'</span>, <span class="hljs-string">'collocationmatching.controllers'</span>, <span class="hljs-string">'collocationmatching.services'</span>,
   <span class="hljs-string">'ngDraggable'</span>, <span class="hljs-string">'ngCordova'</span>,<span class="hljs-string">'ionic-toast'</span>])
 
 .run(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$ionicPlatform, $ionicHistory, $stateParams, $filter, $ionicPopup, $window, $rootScope,
-  Data, StateData, SummaryData, ionicToast, Ids, $ionicLoading</span>) </span>{
-  $rootScope.timeout = <span class="hljs-number">10000</span>;<span class="hljs-comment">//global timeout for all http requests in milliseconds</span></pre></div></div>
+  Data, StateData, SummaryData, ionicToast, Ids, $ionicLoading</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -51,14 +50,11 @@ angular.module(<span class="hljs-string">'collocationmatching'</span>, [<span cl
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>check network connection</p>
+              <p>Set global timeout for all http requests in milliseconds</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  $rootScope.online = navigator.onLine;
-  $<span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">"offline"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-    $rootScope.$apply(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-      $rootScope.online = <span class="hljs-literal">false</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  $rootScope.timeout = <span class="hljs-number">10000</span>;</pre></div></div>
             
         </li>
         
@@ -69,30 +65,20 @@ angular.module(<span class="hljs-string">'collocationmatching'</span>, [<span cl
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>ionicToast.show(“offline”,’bottom’);</p>
+              <p>Check network connection</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    });
+            <div class="content"><div class='highlight'><pre>  $rootScope.online = navigator.onLine;
+  $<span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">"offline"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    $rootScope.$apply(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      $rootScope.online = <span class="hljs-literal">false</span>;
+    });
   }, <span class="hljs-literal">false</span>);
   $<span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">"online"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
     $rootScope.$apply(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-      $rootScope.online = <span class="hljs-literal">true</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>ionicToast.show(“online”,’bottom’);</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    });
+      $rootScope.online = <span class="hljs-literal">true</span>;
+    });
   }, <span class="hljs-literal">false</span>);
 
   <span class="hljs-keyword">if</span>(!$rootScope.online){
@@ -105,15 +91,25 @@ angular.module(<span class="hljs-string">'collocationmatching'</span>, [<span cl
           <span class="hljs-attr">type</span>: <span class="hljs-string">'button-negative'</span>
         }]
     });
-  }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>global Function to show loading animation</p>
 
-  $rootScope.show = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $rootScope.show = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
     $ionicLoading.show({
       <span class="hljs-attr">template</span>: <span class="hljs-string">'&lt;p&gt;Loading...&lt;/p&gt;&lt;ion-spinner class="spinner-balanced" icon="spiral"&gt;&lt;/ion-spinner&gt;'</span>
     });
-  }
-  $rootScope.hide = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-    $ionicLoading.hide();
   }</pre></div></div>
             
         </li>
@@ -125,17 +121,13 @@ angular.module(<span class="hljs-string">'collocationmatching'</span>, [<span cl
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>ionic.Platform </p>
+              <p>Global function to hide loading animation</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> isIOS = ionic.Platform.isIOS();
-  <span class="hljs-keyword">var</span> isAndroid = ionic.Platform.isAndroid();
-  <span class="hljs-keyword">var</span> isWindowsPhone = ionic.Platform.isWindowsPhone();<span class="hljs-comment">//works for windows 8/8.1 phones</span>
-  <span class="hljs-keyword">var</span> isEdge = ionic.Platform.isEdge();<span class="hljs-comment">//works for windows 10 phones</span>
-
-  $ionicPlatform.ready(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.StatusBar) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  $rootScope.hide = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    $ionicLoading.hide();
+  }</pre></div></div>
             
         </li>
         
@@ -146,11 +138,19 @@ angular.module(<span class="hljs-string">'collocationmatching'</span>, [<span cl
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>org.apache.cordova.statusbar required</p>
+              <p>Get current platform type from ionic.Platform </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      StatusBar.styleDefault();
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> isIOS = ionic.Platform.isIOS();
+  <span class="hljs-keyword">var</span> isAndroid = ionic.Platform.isAndroid();
+  <span class="hljs-keyword">var</span> isWindowsPhone = ionic.Platform.isWindowsPhone();<span class="hljs-comment">//works for windows 8/8.1 phones</span>
+  <span class="hljs-keyword">var</span> isEdge = ionic.Platform.isEdge();<span class="hljs-comment">//works for windows 10 phones</span>
+
+  $ionicPlatform.ready(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.StatusBar) {
+      <span class="hljs-comment">/* org.apache.cordova.statusbar required*/</span>
+      StatusBar.styleDefault();
     }
   });</pre></div></div>
             
@@ -163,23 +163,13 @@ angular.module(<span class="hljs-string">'collocationmatching'</span>, [<span cl
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>only android and windows have hardware back buttons, return otherwise</p>
+              <p>Only Android and Windows have hardware back buttons, return otherwise</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(!isAndroid &amp;&amp; !isEdge){
     <span class="hljs-keyword">return</span>;
-  }
-
-  $ionicPlatform.registerBackButtonAction(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>)</span>{
-    <span class="hljs-keyword">var</span> currentState = $ionicHistory.currentStateName();
-    <span class="hljs-keyword">if</span>(currentState == <span class="hljs-string">"collections"</span>){
-      <span class="hljs-keyword">if</span>(isEdge){
-        navigator.app.exitApp();<span class="hljs-comment">//exit the app</span>
-      }
-      <span class="hljs-keyword">else</span>{
-        backAsHome.trigger();<span class="hljs-comment">//exitApp as home button (don't kill the app)</span>
-      }</pre></div></div>
+  }</pre></div></div>
             
         </li>
         
@@ -190,12 +180,14 @@ angular.module(<span class="hljs-string">'collocationmatching'</span>, [<span cl
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>event.preventDefault();//don’t do anything</p>
+              <p>Override default hardware back button functionality</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    }
-    <span class="hljs-keyword">else</span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  $ionicPlatform.registerBackButtonAction(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>)</span>{
+    <span class="hljs-keyword">var</span> currentState = $ionicHistory.currentStateName();
+    <span class="hljs-keyword">if</span>(currentState == <span class="hljs-string">"collections"</span>){
+      <span class="hljs-keyword">if</span>(isEdge){</pre></div></div>
             
         </li>
         
@@ -206,11 +198,47 @@ angular.module(<span class="hljs-string">'collocationmatching'</span>, [<span cl
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>this can also be accompolished using $ionicPlatform.onHardwareBackButton</p>
+              <p>If windows, exit the app</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      $ionicHistory.goBack();
+            <div class="content"><div class='highlight'><pre>        navigator.app.exitApp();<span class="hljs-comment">//exit the app</span>
+      }
+      <span class="hljs-keyword">else</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>If Android, trigger back as home functionality</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        backAsHome.trigger();<span class="hljs-comment">//exitApp as home button (don't kill the app)</span>
+      }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>event.preventDefault();//don’t do anything</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    }
+    <span class="hljs-keyword">else</span>{
+      <span class="hljs-comment">/*this can also be accompolished using $ionicPlatform.onHardwareBackButton*/</span>
+      $ionicHistory.goBack();
 
       <span class="hljs-keyword">if</span>(currentState != <span class="hljs-string">"exercise"</span>){
         <span class="hljs-keyword">return</span>;
@@ -224,11 +252,11 @@ angular.module(<span class="hljs-string">'collocationmatching'</span>, [<span cl
         </li>
         
         
-        <li id="section-10">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>update end time</p>
 
@@ -250,37 +278,25 @@ angular.module(<span class="hljs-string">'collocationmatching'</span>, [<span cl
         StateData.updateState(collId,exId,<span class="hljs-string">"Incomplete"</span>);
       }
     }
-  }, <span class="hljs-number">100</span>);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>override default android back button behavior 
-  $ionicPlatform.onHardwareBackButton(function(){
-});</p>
+  }, <span class="hljs-number">100</span>);
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>})
+  <span class="hljs-comment">/* override default android back button behavior 
+     $ionicPlatform.onHardwareBackButton(function(){
+   });*/</span>
+})
 
 .config(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$stateProvider, $urlRouterProvider, $ionicConfigProvider</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-12">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>to override default behaviors of specific platforms (android,ios etc)
+              <p>To override default behaviors of specific platforms (android,ios etc)
 e.g. android align its titles to left by default, so needs to change it here
 refer to docs <a href="http://ionicframework.com/docs/api/provider/$ionicConfigProvider/">http://ionicframework.com/docs/api/provider/$ionicConfigProvider/</a></p>
 
@@ -292,13 +308,13 @@ refer to docs <a href="http://ionicframework.com/docs/api/provider/$ionicConfigP
         </li>
         
         
-        <li id="section-13">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>change default back button and text with custom image</p>
+              <p>Change default back button and text with custom image</p>
 
             </div>
             
@@ -309,11 +325,11 @@ refer to docs <a href="http://ionicframework.com/docs/api/provider/$ionicConfigP
         </li>
         
         
-        <li id="section-14">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Ionic uses AngularUI Router which uses the concept of states
 Learn more here: <a href="https://github.com/angular-ui/ui-router">https://github.com/angular-ui/ui-router</a>
@@ -345,13 +361,13 @@ Each state’s controller can be found in controllers.js</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <p>if none of the above states are matched, use this as the fallback</p>
+              <p>If none of the above states are matched, use this as the fallback</p>
 
             </div>
             
