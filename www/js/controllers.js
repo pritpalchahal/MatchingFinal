@@ -2,16 +2,20 @@ angular.module('collocationmatching.controllers', [])
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+  // listen for the $ionicView.enter event.
+  /*
+  $scope.$on('$ionicView.enter', function(e) {
+  });*/
 
-.controller('BackButtonController', function($scope, $ionicHistory, $stateParams, $filter,
+//Override default back button behavior in this controller
+.controller('BackButtonController', function($scope, $ionicHistory, $stateParams,
   Data, StateData, SummaryData, Ids){
   $scope.customGoBack = function(){
 
+    //Execute normal back button behavior
     $ionicHistory.goBack();
+
+    //Execute additional functionality e.g. Update exercise state
     var currentState = $ionicHistory.currentStateName();
 
     if(currentState != "exercise"){
@@ -23,7 +27,7 @@ angular.module('collocationmatching.controllers', [])
     var collId = Ids.getCollId(name);
     var exId = Ids.getExId(collId,exerciseId);
 
-    //update end time
+    //Update end time
     if(StateData.getSingleState(collId,exId) != "Complete"){
       var time = new Date();
       var timeNow = $filter('date')(time,'medium');
@@ -42,29 +46,37 @@ angular.module('collocationmatching.controllers', [])
   }
 })
 
+//Controller for Collections View page
 .controller('CollectionsCtrl', function($scope, $timeout, $ionicLoading, $state, $ionicPopover, $ionicPopup, Data, 
   $cordovaNetwork, $rootScope, Ids, ionicToast){
   $scope.title = Data.getTitle();
   $scope.collections = [];
 
+  //Request for data from Services.js
   var getData = function(isRefreshing){
+    //Show the loading animation
     $rootScope.show();
     Data.getAllColls(isRefreshing).then(function(response){
+      //Check if response is a 404 error
       if(response && response.status == 404){
         ionicToast.show(Data.get404Msg(),'middle',true);
         return;
       }
+      //Check if response is a timeout error
       if(response && response.status == -1){
         ionicToast.show(Data.getTimeoutMsg(),'middle',true);
         return;
       }
+      //Otherwise; Set model to response
       $scope.collections = response;
       return response;
     }).then(function(res){
+      //Finally, hide loading animation
       $rootScope.hide();
     });
   }
 
+  //If device online, fetch data
   if($rootScope.online){
     getData(false);
   }
@@ -72,6 +84,7 @@ angular.module('collocationmatching.controllers', [])
     ionicToast.show(Data.getErrorMsg(),'bottom',false,2500);
   }
 
+  //Function to refresh data
   $scope.doRefresh = function(){
     if($rootScope.online){
       getData(true);
@@ -88,10 +101,12 @@ angular.module('collocationmatching.controllers', [])
     $scope.popover = popover;
   });
 
+  //Function to open popover
   $scope.openPopover = function($event){
     $scope.popover.show($event);
   };
 
+  //Function to show 'About' popup
   $scope.showAbout = function(){
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
@@ -100,10 +115,11 @@ angular.module('collocationmatching.controllers', [])
     });
 
     alertPopup.then(function(response){
-      //custom functionality
+      /*custom functionality*/
     });
   }
 
+  //Function to show 'HowToPlay' popup
   $scope.showHelp = function(){
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
@@ -112,11 +128,12 @@ angular.module('collocationmatching.controllers', [])
     });
 
     alertPopup.then(function(response){
-      //custom functionality
+      /*custom functionality*/
     });
   }
 })
 
+//Controller for Exercises View page
 .controller('ExsCtrl', function($scope, $timeout, $stateParams, $ionicPopup, $ionicPopover, $rootScope,
   Ids, StateData, SummaryData, Data, ionicToast,$ionicLoading,$ionicListDelegate) {
   
@@ -125,6 +142,7 @@ angular.module('collocationmatching.controllers', [])
 
   var collId = Ids.getCollId($scope.collectionName);
 
+  //Get description for each Collection from Data factory in Services.js
   var desc = Data.getDesc();
   desc.forEach(function(val){
     if(val.key == name){
@@ -138,7 +156,7 @@ angular.module('collocationmatching.controllers', [])
     $scope.collName = "n/a";
   }
 
-  //create new data for this collection
+  //Create new data for this collection if not already created
   if(!StateData.isCreated(collId)){
     StateData.createColl(collId);
   }
@@ -146,18 +164,25 @@ angular.module('collocationmatching.controllers', [])
     SummaryData.createColl(collId);
   }
 
+  //Function to fetch data from Services.js
   var getData = function(collId,isRefreshing){
+    //Show loading animation
     $rootScope.show();
     Data.getAllEx(collId,isRefreshing).then(function(response){
+      //Check 404 error
       if(response.status && response.status == 404){
         ionicToast.show(Data.get404Msg(),'middle',true);
         return;
       }
+      //Check timeout error
       if(response && response.status == -1){
         ionicToast.show(Data.getTimeoutMsg(),'middle',true);
         return;
       }
+      //Otherwise; set exercises model to response
       $scope.exercises = response;
+
+      //Setup starting state if not already exist
       for(var i=0;i<$scope.exercises.length;i++){
         var exerciseId = $scope.exercises[i]._id;
         var exId = Ids.getExId(collId,exerciseId);
@@ -169,15 +194,19 @@ angular.module('collocationmatching.controllers', [])
           StateData.updateState(collId,exId,"New");
         }
       }
+
+      //Get states model from StateData factory in Services.js
       $scope.states = StateData.getAllStates(collId);
     }).then(function(){
+      //Finally hide the loading animation
       $rootScope.hide();
     });
   }
 
-  //fetch the data
+  //Execute fetch data function
   getData(collId,false);
 
+  //Function to Refresh Exercises View page
   $scope.doRefresh = function(){
     if($rootScope.online){
       getData(collId,true); 
@@ -185,13 +214,16 @@ angular.module('collocationmatching.controllers', [])
     else{
       ionicToast.show(Data.getErrorMsg(),'middle');
     }
+    //Notify the controller that refreshing is complete
     $scope.$broadcast('scroll.refreshComplete'); 
   };
 
+  //Function to get Exercise Id
   $scope.getId = function(exerciseId){
     return Ids.getExId(collId,exerciseId);
   }
 
+  //Function to Restart the game
   $scope.doRestart = function(ex){
     var exId = Ids.getExId(collId,ex);
     SummaryData.clearSummary(collId,exId);
@@ -207,21 +239,25 @@ angular.module('collocationmatching.controllers', [])
     }
   }
 
-  //use this method to refresh data
+  //Use this method to refresh states based on data saved in StateData factory
+  //each time Exercise View is activated.
   $scope.$on('$ionicView.enter',function(e){
     $scope.states = StateData.getAllStates(collId);//refresh states
   });
 
+  //Create Popover and bind it with local model
   $ionicPopover.fromTemplateUrl("templates/exercises-popover.html",{
     scope: $scope
   }).then(function(popover){
     $scope.popover = popover;
   });
 
+  //Function to open popover
   $scope.openPopover = function($event){
     $scope.popover.show($event);
   };
 
+  //Function to show 'About' popup
   $scope.showAbout = function(){
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
@@ -230,10 +266,11 @@ angular.module('collocationmatching.controllers', [])
     });
 
     alertPopup.then(function(response){
-      //custom functionality
+      /*custom functionality*/
     });
   }
 
+  //Function to show 'HowToPlay' popup
   $scope.showHelp = function(){
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
@@ -242,22 +279,25 @@ angular.module('collocationmatching.controllers', [])
     });
 
     alertPopup.then(function(response){
-      //custom functionality
+      /*custom functionality*/
     });
   }
 })
 
+//Controller for Game View page
 .controller('ExerciseCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, $ionicPopover,$filter, $timeout,
   ionicToast, Ids, SummaryData, Data, $rootScope) {
-  $scope.slideIndex = 0;//index of initial slide
+  //Index of initial slide
+  $scope.slideIndex = 0;
   $scope.hide = false;
 
+  //Show loading animation
   $rootScope.show();
   var exerciseId = $stateParams.exerciseId;
   var collectionName = $stateParams.collectionName;
   var collId = Ids.getCollId(collectionName);
 
-  //exIds already created in 'ExsCtrl'
+  //Fetch exId from Ids factory as exIds are already created in 'ExsCtrl'
   var exId = Ids.getExId(collId,exerciseId);
   if(!SummaryData.getSummary(collId,exId)){
     SummaryData.createSummary(collId,exId);
@@ -284,23 +324,29 @@ angular.module('collocationmatching.controllers', [])
     return array;
   }
 
+  //Update summary model
   $scope.summary = SummaryData.getSummary(collId,exId);
+  //Initialize drags model
   $scope.drags = [];
 
+  //Fetch Game data from Data Factory in Services.js
   Data.getSingleEx(collId,exId).then(function(response){
+    //Check 404 error
     if(response.status == 404){
       ionicToast.show(Data.get404Msg(),'middle',true);
       return;
     }
+    //Check timeout error
     if(response && response.status == -1){
       ionicToast.show(Data.getTimeoutMsg(),'middle',true);
       return;
     }
+    //Otherwise set words model to response
     $scope.words = response;
     $scope.slides = Data.getSlidesCount(collId,exId);
     $scope.slideCount = new Array($scope.slides);
 
-    //shuffle slides keepig local words same
+    //Shuffle slides keeping local words unshuffled
     var N = Data.getMinSlidesCount(collId,exId);
     var temp = Array.apply(null, {length: N}).map(Number.call,Number);
     var shuffled = shuffle(temp);//[].concat(shuffle(temp));
@@ -318,39 +364,44 @@ angular.module('collocationmatching.controllers', [])
       $scope.words[i] = arr;
     }
 
-    //shuffle without maintaining order
-    // for(var j=0 ; j<$scope.words.length; j++){
-    //   $scope.words[j] = shuffle($scope.words[j]);
-    // }
+    /*Shuffle without maintaining order
+     for(var j=0 ; j<$scope.words.length; j++){
+       $scope.words[j] = shuffle($scope.words[j]);
+     }*/
 
-    //create a shuffled array for shuffling partial phrases
+    //Create a shuffled array for shuffling partial phrases
     var count = $scope.words.length;
     var tmp = Array.apply(null, {length: count}).map(Number.call,Number);
-    // $scope.drags = [].concat(shuffle(tmp));
+    /* $scope.drags = [].concat(shuffle(tmp)); */
     $scope.drags = shuffle(tmp);
 
-  }).then(function(){//keyword 'finally' creates problems here
+  }).then(function(){
+    //Finally hide loading animation
     $rootScope.hide();
   });
 
+  //Get Game title from Data factory
   $scope.title = Data.getExTitle(collId,$stateParams.exerciseId);
 
+  //Generate options for slides
   $scope.options = {
     pagination: '.swiper-pagination',
-    // freeModeSticky: true,
     loop: false,
     spaceBetween: 10,
     initialSlide: $scope.slideIndex,
     effect: 'slide'//fade,slide,cube,coverflow,flip (http://idangero.us/swiper/api)
-    // speed: 500
+    /* freeModeSticky: true, 
+    speed: 500 */
   };
 
+  //Function to Check answer on button click
   $scope.checkAnswer = function(){
     if(!checkAll()){
       ionicToast.show('Answer Incorrect!','middle',false,2500);
     }
   }
 
+  //Function check answer 
   checkAll = function(){
     if(!$scope.words || $scope.words.length == 0){
       return $scope.hide;
@@ -378,27 +429,36 @@ angular.module('collocationmatching.controllers', [])
     return $scope.hide;
   }
 
+  //Refresh data each time game starts and slides initialized
   $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
     // data.slider is the instance of Swiper
     $scope.slideIndex = data.slider.activeIndex;
     checkAll();
-    $scope.$apply();//required to update the view
+    //Update the view by calling $scope.$apply()
+    $scope.$apply();
   });
 
+  //Refresh data each time slide change starts.
   $scope.$on("$ionicSlides.slideChangeStart", function(event, data){
     $scope.slideIndex = data.slider.activeIndex;
     checkAll();
-    $scope.$apply();//required to update the view
+    //Update the view by calling $scope.$apply()
+    $scope.$apply();
   });
 
+  //Functionality when slide change ends.
   $scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
-    // note: the indexes are 0-based
-    // $scope.activeIndex = data.activeIndex;
-    // $scope.previousIndex = data.previousIndex;
+    /* note: the indexes are 0-based
+     $scope.activeIndex = data.activeIndex;
+     $scope.previousIndex = data.previousIndex;*/
   });
+
+  //Function to implement on successful dragging a draggable text from top
   $scope.dragSuccess = function(data,evt,index,slideIndex){
     $scope.words[index][slideIndex].isDraggable = false;
   }
+
+  //Function to implement after Successful dragging an in-game text
   $scope.onDragSuccess = function(data,evt,wordId,slideIndex){
     for(var i=0;i<$scope.words.length;i++){
       var word = $scope.words[i];
@@ -407,6 +467,8 @@ angular.module('collocationmatching.controllers', [])
       }
     }
   }
+
+  //Function to implement after successful dropping an item
   $scope.onDropComplete = function(data,evt,wordId,slideIndex){
     var done = null;
     for(var i=0;i<$scope.words.length;i++){
@@ -430,16 +492,19 @@ angular.module('collocationmatching.controllers', [])
     checkAll();
   }
 
+  //Initialize ionic popover and bind to model
   $ionicPopover.fromTemplateUrl("templates/ex-detail-popover.html",{
     scope: $scope
   }).then(function(popover){
     $scope.popover = popover;
   });
 
+  //Function to open popover
   $scope.openPopover = function($event){
     $scope.popover.show($event);
   }
 
+  //Function to show summary popup
   $scope.showSummary = function(){
     var alertPopup = $ionicPopup.alert({
       scope: $scope,
@@ -448,15 +513,16 @@ angular.module('collocationmatching.controllers', [])
     });
 
     alertPopup.then(function(response){
-      //custom functionality
+      /*custom functionality*/
     });
 
-    //close popup after 3 seconds
-    // $timeout(function(){
-    //   alertPopup.close();
-    // }, 5000);
+    /*close popup after 3 seconds
+     $timeout(function(){
+       alertPopup.close();
+     }, 5000);*/
   }
 
+  //Funciton to show restart game popup
   $scope.restartGame = function(){
     var confirmPopup = $ionicPopup.confirm({
       title: 'Restart this Game!',
@@ -465,7 +531,7 @@ angular.module('collocationmatching.controllers', [])
 
     confirmPopup.then(function(response){
       if(response){
-        //clear model
+        //Clear model
         SummaryData.clearSummary(collId,exId);
         SummaryData.createSummary(collId,exId);
         $scope.hide = false;
@@ -474,7 +540,7 @@ angular.module('collocationmatching.controllers', [])
         var timeNow = $filter('date')(time,'medium');//angularjs date format
         SummaryData.updateStartTime(collId,exId,timeNow);
 
-        //clear view
+        //Clear view
         for(var i=0;i<$scope.words.length;i++){
           var word = $scope.words[i];
           for(var j=0;j<word.length;j++){
@@ -483,11 +549,11 @@ angular.module('collocationmatching.controllers', [])
           }
         }
 
-        //update summary
+        //Update summary
         $scope.summary = SummaryData.getSummary(collId,exId);
       }
       else{
-        // console.log("no");
+        /* console.log("no");*/
       }
     });
   }

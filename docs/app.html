@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>app.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>app.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/** angular.module is a global place for creating, registering and retrieving Angular modules
+'collocationmatching' is the name of this angular module example (also set in a &lt;body&gt; attribute in index.html)
+the 2nd parameter is an array of 'requires'
+'collocationmatching.services' is found in services.js
+'collocationmatching.controllers' is found in controllers.js */</span>
+angular.module(<span class="hljs-string">'collocationmatching'</span>, [<span class="hljs-string">'ionic'</span>, <span class="hljs-string">'collocationmatching.controllers'</span>, <span class="hljs-string">'collocationmatching.services'</span>,
+  <span class="hljs-string">'ngDraggable'</span>, <span class="hljs-string">'ngCordova'</span>,<span class="hljs-string">'ionic-toast'</span>])
+
+.run(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$ionicPlatform, $ionicHistory, $stateParams, $filter, $ionicPopup, $window, $rootScope,
+  Data, StateData, SummaryData, ionicToast, Ids, $ionicLoading</span>) </span>{
+  $rootScope.timeout = <span class="hljs-number">10000</span>;<span class="hljs-comment">//global timeout for all http requests in milliseconds</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>check network connection</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $rootScope.online = navigator.onLine;
+  $<span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">"offline"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    $rootScope.$apply(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      $rootScope.online = <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>ionicToast.show(“offline”,’bottom’);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    });
+  }, <span class="hljs-literal">false</span>);
+  $<span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">"online"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    $rootScope.$apply(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      $rootScope.online = <span class="hljs-literal">true</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>ionicToast.show(“online”,’bottom’);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    });
+  }, <span class="hljs-literal">false</span>);
+
+  <span class="hljs-keyword">if</span>(!$rootScope.online){
+    $ionicPopup.alert({
+      <span class="hljs-attr">title</span>: <span class="hljs-string">'Connection error'</span>,
+      <span class="hljs-attr">subTitle</span>: <span class="hljs-string">'No internet connection detected'</span>,
+      <span class="hljs-attr">buttons</span>: [
+        {
+          <span class="hljs-attr">text</span>: <span class="hljs-string">'Close'</span>,
+          <span class="hljs-attr">type</span>: <span class="hljs-string">'button-negative'</span>
+        }]
+    });
+  }
+
+  $rootScope.show = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    $ionicLoading.show({
+      <span class="hljs-attr">template</span>: <span class="hljs-string">'&lt;p&gt;Loading...&lt;/p&gt;&lt;ion-spinner class="spinner-balanced" icon="spiral"&gt;&lt;/ion-spinner&gt;'</span>
+    });
+  }
+  $rootScope.hide = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    $ionicLoading.hide();
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>ionic.Platform </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> isIOS = ionic.Platform.isIOS();
+  <span class="hljs-keyword">var</span> isAndroid = ionic.Platform.isAndroid();
+  <span class="hljs-keyword">var</span> isWindowsPhone = ionic.Platform.isWindowsPhone();<span class="hljs-comment">//works for windows 8/8.1 phones</span>
+  <span class="hljs-keyword">var</span> isEdge = ionic.Platform.isEdge();<span class="hljs-comment">//works for windows 10 phones</span>
+
+  $ionicPlatform.ready(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.StatusBar) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>org.apache.cordova.statusbar required</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      StatusBar.styleDefault();
+    }
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>only android and windows have hardware back buttons, return otherwise</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(!isAndroid &amp;&amp; !isEdge){
+    <span class="hljs-keyword">return</span>;
+  }
+
+  $ionicPlatform.registerBackButtonAction(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>)</span>{
+    <span class="hljs-keyword">var</span> currentState = $ionicHistory.currentStateName();
+    <span class="hljs-keyword">if</span>(currentState == <span class="hljs-string">"collections"</span>){
+      <span class="hljs-keyword">if</span>(isEdge){
+        navigator.app.exitApp();<span class="hljs-comment">//exit the app</span>
+      }
+      <span class="hljs-keyword">else</span>{
+        backAsHome.trigger();<span class="hljs-comment">//exitApp as home button (don't kill the app)</span>
+      }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>event.preventDefault();//don’t do anything</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    }
+    <span class="hljs-keyword">else</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>this can also be accompolished using $ionicPlatform.onHardwareBackButton</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $ionicHistory.goBack();
+
+      <span class="hljs-keyword">if</span>(currentState != <span class="hljs-string">"exercise"</span>){
+        <span class="hljs-keyword">return</span>;
+      }
+    
+      <span class="hljs-keyword">var</span> exerciseId = $stateParams.exerciseId;
+      <span class="hljs-keyword">var</span> name = $stateParams.collectionName;
+      <span class="hljs-keyword">var</span> collId = Ids.getCollId(name);
+      <span class="hljs-keyword">var</span> exId = Ids.getExId(collId,exerciseId);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>update end time</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(StateData.getSingleState(collId,exId) != <span class="hljs-string">"Complete"</span>){
+        <span class="hljs-keyword">var</span> time = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
+        <span class="hljs-keyword">var</span> timeNow = $filter(<span class="hljs-string">'date'</span>)(time,<span class="hljs-string">'medium'</span>);
+        SummaryData.updateEndTime(collId,exId,timeNow);
+      }
+
+      <span class="hljs-keyword">var</span> totalSlides = Data.getSlidesCount(collId,exId);
+      <span class="hljs-keyword">if</span>(totalSlides == <span class="hljs-number">0</span>){<span class="hljs-keyword">return</span>;}
+
+      <span class="hljs-keyword">if</span>(SummaryData.getSummary(collId,exId).score == totalSlides){
+        StateData.updateState(collId,exId,<span class="hljs-string">"Complete"</span>);
+      }
+      <span class="hljs-keyword">else</span>{
+        StateData.updateState(collId,exId,<span class="hljs-string">"Incomplete"</span>);
+      }
+    }
+  }, <span class="hljs-number">100</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>override default android back button behavior 
+  $ionicPlatform.onHardwareBackButton(function(){
+});</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>})
+
+.config(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$stateProvider, $urlRouterProvider, $ionicConfigProvider</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>to override default behaviors of specific platforms (android,ios etc)
+e.g. android align its titles to left by default, so needs to change it here
+refer to docs <a href="http://ionicframework.com/docs/api/provider/$ionicConfigProvider/">http://ionicframework.com/docs/api/provider/$ionicConfigProvider/</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $ionicConfigProvider.navBar.alignTitle(<span class="hljs-string">'center'</span>);
+  <span class="hljs-keyword">if</span>(!ionic.Platform.isEdge()){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>change default back button and text with custom image</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $ionicConfigProvider.backButton.text(<span class="hljs-string">""</span>);
+    $ionicConfigProvider.backButton.icon(<span class="hljs-string">'my-back-button'</span>);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Ionic uses AngularUI Router which uses the concept of states
+Learn more here: <a href="https://github.com/angular-ui/ui-router">https://github.com/angular-ui/ui-router</a>
+Set up the various states which the app can be in.
+Each state’s controller can be found in controllers.js</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $stateProvider
+
+  .state(<span class="hljs-string">'collections'</span>,{
+    <span class="hljs-attr">url</span>: <span class="hljs-string">'/collections'</span>,
+        <span class="hljs-attr">templateUrl</span>: <span class="hljs-string">'templates/collections.html'</span>,
+        <span class="hljs-attr">controller</span>: <span class="hljs-string">'CollectionsCtrl'</span>
+  })
+
+  .state(<span class="hljs-string">'exs'</span>, {
+    <span class="hljs-attr">url</span>: <span class="hljs-string">'/collections/:collectionName'</span>,
+        <span class="hljs-attr">templateUrl</span>: <span class="hljs-string">'templates/exercises.html'</span>,
+        <span class="hljs-attr">controller</span>: <span class="hljs-string">'ExsCtrl'</span>
+  })
+
+  .state(<span class="hljs-string">'exercise'</span>, {
+    <span class="hljs-attr">url</span>: <span class="hljs-string">'/collections/:collectionName/:exerciseId'</span>,
+        <span class="hljs-attr">templateUrl</span>: <span class="hljs-string">'templates/ex-detail.html'</span>,
+        <span class="hljs-attr">controller</span>: <span class="hljs-string">'ExerciseCtrl'</span>
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>if none of the above states are matched, use this as the fallback</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $urlRouterProvider.otherwise(<span class="hljs-string">'/collections'</span>);
+
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
