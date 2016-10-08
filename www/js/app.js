@@ -36,7 +36,7 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
     });
   }
 
-  //global Function to show loading animation
+  //Global Function to show loading animation
   $rootScope.show = function(){
     $ionicLoading.show({
       template: '<p>Loading...</p><ion-spinner class="spinner-balanced" icon="spiral"></ion-spinner>'
@@ -77,7 +77,7 @@ angular.module('collocationmatching', ['ionic', 'collocationmatching.controllers
         //If Android, trigger back as home functionality
         backAsHome.trigger();//exitApp as home button (don't kill the app)
       }
-        //event.preventDefault();//don't do anything
+        /*event.preventDefault();//don't do anything*/
     }
     else{
       /*this can also be accompolished using $ionicPlatform.onHardwareBackButton*/

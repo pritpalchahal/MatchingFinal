@@ -41,8 +41,8 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Data factory is responsible for fetching data from FLAX server
-,save this data locally and provide controllers with suitable response</p>
+              <p>Data factory is responsible for fetching data from FLAX server,
+save this data locally and provide controllers with suitable response</p>
 
             </div>
             
@@ -183,22 +183,8 @@
       <span class="hljs-keyword">var</span> collectionList = jsonData.page.pageResponse.collectionList.collection;
       <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt;collectionList.length;i++){
         <span class="hljs-keyword">var</span> serviceList = collectionList[i].serviceList.service;
-        <span class="hljs-keyword">var</span> metadataList = collectionList[i].metadataList.metadata;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>console.log(metadataList);</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> j=<span class="hljs-number">0</span> ; j&lt;metadataList.length; j++){
+        <span class="hljs-keyword">var</span> metadataList = collectionList[i].metadataList.metadata;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> j=<span class="hljs-number">0</span> ; j&lt;metadataList.length; j++){
           <span class="hljs-keyword">var</span> obj = metadataList[j];
           <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> k=<span class="hljs-number">0</span>;k&lt;serviceList.length;k++){
             <span class="hljs-keyword">var</span> sObj = serviceList[k];
@@ -231,11 +217,11 @@
         </li>
         
         
-        <li id="section-12">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>Function to fetch all data and return suitable response to Collections controller</p>
 
@@ -254,11 +240,11 @@
         </li>
         
         
-        <li id="section-13">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>For each collection name, check if it contains any exercises or not</p>
 
@@ -272,11 +258,11 @@
         </li>
         
         
-        <li id="section-14">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>Ignore erroneous values</p>
 
@@ -290,11 +276,11 @@
         </li>
         
         
-        <li id="section-15">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>if user if refreshing and due to server error, new collections retrieved
 are less than previously retrieved, then simply return previously retrieved</p>
@@ -307,11 +293,11 @@ are less than previously retrieved, then simply return previously retrieved</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Otherwise return newly retrieved</p>
 
@@ -325,11 +311,11 @@ are less than previously retrieved, then simply return previously retrieved</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>If no collection retrieved, return custom 404 error</p>
 
@@ -342,11 +328,11 @@ are less than previously retrieved, then simply return previously retrieved</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>If all okay, return retrieved collections</p>
 
@@ -362,11 +348,11 @@ are less than previously retrieved, then simply return previously retrieved</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Function to check if given collection is empty or not</p>
 
@@ -395,11 +381,11 @@ are less than previously retrieved, then simply return previously retrieved</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Function fetch all exercises for given collection and return
 suitable response to Exercises controller</p>
@@ -423,11 +409,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>If not refreshing, Initiate all sub arrays</p>
 
@@ -454,11 +440,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Check if array is defined or not</p>
 
@@ -486,11 +472,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Function fetch game data and return suitable response to Exercise Controller</p>
 
@@ -512,11 +498,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Initiate data arrays</p>
 
@@ -569,11 +555,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Function to get Exercise title</p>
 
@@ -591,11 +577,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Function to get slides count</p>
 
@@ -604,32 +590,19 @@ suitable response to Exercises controller</p>
             <div class="content"><div class='highlight'><pre>  getSlidesCount = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">collId,exId</span>)</span>{
     <span class="hljs-keyword">if</span>(!slidesCount[collId][exId]){
       <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-27">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
-              </div>
-              <p>return Math.min.apply(Math,slidesCount[collId][exId]);</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.max.apply(<span class="hljs-built_in">Math</span>,slidesCount[collId][exId]);
+    }
+    <span class="hljs-comment">/* return Math.min.apply(Math,slidesCount[collId][exId]);*/</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.max.apply(<span class="hljs-built_in">Math</span>,slidesCount[collId][exId]);
   }</pre></div></div>
             
         </li>
         
         
-        <li id="section-28">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>Function return minimum slides count</p>
 
@@ -645,11 +618,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Function to remove an Exercise from list</p>
 
@@ -662,11 +635,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-30">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>Function to restart an Exercise</p>
 
@@ -679,11 +652,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-31">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Function to remove an collection from list</p>
 
@@ -696,11 +669,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>Function returns previously fetched words for given collection and exercise</p>
 
@@ -716,11 +689,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-33">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>Function to get description</p>
 
@@ -733,42 +706,29 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-34">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>Function to get left word</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getLeft = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">word</span>)</span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-35">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
-              </div>
-              <p>return word.split(“ “)[0];</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> word.substr(<span class="hljs-number">0</span>,word.indexOf(<span class="hljs-string">" "</span>));
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> getLeft = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">word</span>)</span>{
+    <span class="hljs-comment">/* return word.split(" ")[0]; */</span>
+    <span class="hljs-keyword">return</span> word.substr(<span class="hljs-number">0</span>,word.indexOf(<span class="hljs-string">" "</span>));
   }</pre></div></div>
             
         </li>
         
         
-        <li id="section-36">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>Function to get Right word</p>
 
@@ -781,11 +741,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-37">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>Function to get timeout msg</p>
 
@@ -798,11 +758,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-38">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>Function return error msg</p>
 
@@ -815,11 +775,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-39">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Function return 404 msg</p>
 
@@ -832,11 +792,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-40">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>Function returns exercises title</p>
 
@@ -872,11 +832,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-41">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>SummartData factory stores summary data for each exercise</p>
 
@@ -888,11 +848,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-42">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>Function to update start time</p>
 
@@ -905,11 +865,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-43">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>Function to update end time</p>
 
@@ -922,11 +882,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-44">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>Function to update score</p>
 
@@ -941,11 +901,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-45">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>Function to create an entry for summary for given collection and exercise</p>
 
@@ -968,11 +928,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-46">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p>Function to clear summary for given collection and exercise</p>
 
@@ -985,11 +945,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-47">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p>Function to return summary for given collection and exercise</p>
 
@@ -1004,11 +964,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-48">
+        <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p>Function to create a new summary entry for given collection</p>
 
@@ -1021,11 +981,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-49">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>Function returns whether a summary entry is created for given collection</p>
 
@@ -1053,11 +1013,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-50">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>StateData factory stores data related to state of each exercise (‘New’,’Incomplete’ or ‘Complete’)</p>
 
@@ -1069,11 +1029,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-51">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>Function to update state</p>
 
@@ -1086,11 +1046,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-52">
+        <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>Function to return state for given collectiona and exercise</p>
 
@@ -1103,11 +1063,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-53">
+        <li id="section-50">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               <p>Function to return state for all exercises for given collection</p>
 
@@ -1120,11 +1080,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-54">
+        <li id="section-51">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
               <p>Function to create a state entry for given collection</p>
 
@@ -1137,11 +1097,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-55">
+        <li id="section-52">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
+                <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               <p>Function returns a state is created for given collection</p>
 
@@ -1166,11 +1126,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-56">
+        <li id="section-53">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
+                <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
               <p>Ids factory generates and stores unique ids for each collection and exercise</p>
 
@@ -1183,11 +1143,11 @@ suitable response to Exercises controller</p>
         </li>
         
         
-        <li id="section-57">
+        <li id="section-54">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>Function to return exercise id for given collection and exercise
 Function asscertains that a new entry been created for exercise if not already exists</p>
@@ -1206,11 +1166,11 @@ Function asscertains that a new entry been created for exercise if not already e
         </li>
         
         
-        <li id="section-58">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <p>Function return original exercise Id</p>
 
@@ -1223,11 +1183,11 @@ Function asscertains that a new entry been created for exercise if not already e
         </li>
         
         
-        <li id="section-59">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               <p>Function to return collection id for given collection
 Function asscertains that a new entry been created for collection if not already exists</p>
@@ -1244,13 +1204,13 @@ Function asscertains that a new entry been created for collection if not already
         </li>
         
         
-        <li id="section-60">
+        <li id="section-57">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
-              <p>also initiate exIds if not already done</p>
+              <p>Also, Initiate exIds if not already done</p>
 
             </div>
             
@@ -1263,11 +1223,11 @@ Function asscertains that a new entry been created for collection if not already
         </li>
         
         
-        <li id="section-61">
+        <li id="section-58">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
+                <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
               <p>Function return collection name based on collection Id</p>
 

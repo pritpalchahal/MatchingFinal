@@ -257,7 +257,7 @@ angular.module('collocationmatching.services', [])
     if(!slidesCount[collId][exId]){
       return 0;
     }
-    // return Math.min.apply(Math,slidesCount[collId][exId]);
+    /* return Math.min.apply(Math,slidesCount[collId][exId]);*/
     return Math.max.apply(Math,slidesCount[collId][exId]);
   }
 
@@ -299,7 +299,7 @@ angular.module('collocationmatching.services', [])
 
   //Function to get left word
   var getLeft = function(word){
-    // return word.split(" ")[0];
+    /* return word.split(" ")[0]; */
     return word.substr(0,word.indexOf(" "));
   }
 
