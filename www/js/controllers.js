@@ -9,7 +9,7 @@ angular.module('collocationmatching.controllers', [])
 
 //Override default back button behavior in this controller
 .controller('BackButtonController', function($scope, $ionicHistory, $stateParams,
-  Data, StateData, SummaryData, Ids){
+  Data, StateData, SummaryData, Ids, $filter){
   $scope.customGoBack = function(){
 
     //Execute normal back button behavior
